@@ -15,19 +15,19 @@
 		19ADB8061353BF5223A45346 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 659E1134F58C5EA4DC8F15EC /* PrivacyInfo.xcprivacy */; };
 		1B5D141A96884D868A94F1B6 /* SourceSans3-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E153609EC311414591A0A1ED /* SourceSans3-Regular.ttf */; };
 		1D1FAF1EFC6449D599EA8698 /* SourceSans3-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1DBD5E683CD74EEB901F4186 /* SourceSans3-Medium.ttf */; };
+		369293E8318D4E288D2E3555 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 092F1A7E6FD74C87B66CA181 /* Quicksand-Medium.ttf */; };
 		61AB0888149F4F1ABABD58B6 /* SourceSans3-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4ED0E98DD2B749D29D312186 /* SourceSans3-ExtraBold.ttf */; };
 		6B20215A8749412AB2974E96 /* SourceSans3-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A402E943E73E43D1AA68F7CB /* SourceSans3-Light.ttf */; };
 		6D8BB298C8514F8E91EC5D31 /* SourceSans3-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3E2572CDB404390B385F7FF /* SourceSans3-SemiBold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-Brics-BricsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Brics-BricsTests.a */; };
+		801E87CBD9064FB18C6C47F4 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5ED9E0824AA544FCB3D9A308 /* Quicksand-Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		969EF41BAA1546CDAB2627F2 /* SourceSans3-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 334E27C804AD4DB0BE0D5B97 /* SourceSans3-Black.ttf */; };
-		F2F94E337B2E4A4C84AFBE33 /* SourceSans3-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C118565CE3B94350B05954F1 /* SourceSans3-Bold.ttf */; };
-		FA50507E26894DB7922F9323 /* SourceSans3-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38CE73D463E84784BC944FFD /* SourceSans3-ExtraLight.ttf */; };
-		F74350BD442F4636AAD03441 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA5AC0E9500A4588A6959191 /* Quicksand-Bold.ttf */; };
-		E526D39B94E84D3ABE75D857 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F6E857BF0F34258B47488FE /* Quicksand-Light.ttf */; };
-		369293E8318D4E288D2E3555 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 092F1A7E6FD74C87B66CA181 /* Quicksand-Medium.ttf */; };
-		801E87CBD9064FB18C6C47F4 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5ED9E0824AA544FCB3D9A308 /* Quicksand-Regular.ttf */; };
 		D0B3D71719034147A82FA6E8 /* Quicksand-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E137702279C3481CBB5EC3BB /* Quicksand-SemiBold.ttf */; };
+		E526D39B94E84D3ABE75D857 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F6E857BF0F34258B47488FE /* Quicksand-Light.ttf */; };
+		F2F94E337B2E4A4C84AFBE33 /* SourceSans3-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C118565CE3B94350B05954F1 /* SourceSans3-Bold.ttf */; };
+		F74350BD442F4636AAD03441 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA5AC0E9500A4588A6959191 /* Quicksand-Bold.ttf */; };
+		FA50507E26894DB7922F9323 /* SourceSans3-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38CE73D463E84784BC944FFD /* SourceSans3-ExtraLight.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +44,7 @@
 		00E356EE1AD99517003FC87E /* BricsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BricsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BricsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BricsTests.m; sourceTree = "<group>"; };
+		092F1A7E6FD74C87B66CA181 /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Medium.ttf"; path = "../assets/fonts/Quicksand-Medium.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Brics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Brics/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Brics/AppDelegate.mm; sourceTree = "<group>"; };
@@ -52,27 +53,26 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Brics/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Brics/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Brics-BricsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Brics-BricsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1DBD5E683CD74EEB901F4186 /* SourceSans3-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Medium.ttf"; path = "../assets/fonts/SourceSans3-Medium.ttf"; sourceTree = "<group>"; };
-		334E27C804AD4DB0BE0D5B97 /* SourceSans3-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Black.ttf"; path = "../assets/fonts/SourceSans3-Black.ttf"; sourceTree = "<group>"; };
-		38CE73D463E84784BC944FFD /* SourceSans3-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-ExtraLight.ttf"; path = "../assets/fonts/SourceSans3-ExtraLight.ttf"; sourceTree = "<group>"; };
+		1DBD5E683CD74EEB901F4186 /* SourceSans3-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Medium.ttf"; path = "../assets/fonts/SourceSans3-Medium.ttf"; sourceTree = "<group>"; };
+		334E27C804AD4DB0BE0D5B97 /* SourceSans3-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Black.ttf"; path = "../assets/fonts/SourceSans3-Black.ttf"; sourceTree = "<group>"; };
+		38CE73D463E84784BC944FFD /* SourceSans3-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-ExtraLight.ttf"; path = "../assets/fonts/SourceSans3-ExtraLight.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Brics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brics.debug.xcconfig"; path = "Target Support Files/Pods-Brics/Pods-Brics.debug.xcconfig"; sourceTree = "<group>"; };
-		4ED0E98DD2B749D29D312186 /* SourceSans3-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-ExtraBold.ttf"; path = "../assets/fonts/SourceSans3-ExtraBold.ttf"; sourceTree = "<group>"; };
+		4ED0E98DD2B749D29D312186 /* SourceSans3-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-ExtraBold.ttf"; path = "../assets/fonts/SourceSans3-ExtraBold.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-Brics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brics.release.xcconfig"; path = "Target Support Files/Pods-Brics/Pods-Brics.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Brics-BricsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brics-BricsTests.debug.xcconfig"; path = "Target Support Files/Pods-Brics-BricsTests/Pods-Brics-BricsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-Brics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Brics.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		659E1134F58C5EA4DC8F15EC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Brics/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		5ED9E0824AA544FCB3D9A308 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Regular.ttf"; path = "../assets/fonts/Quicksand-Regular.ttf"; sourceTree = "<group>"; };
+		5F6E857BF0F34258B47488FE /* Quicksand-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Light.ttf"; path = "../assets/fonts/Quicksand-Light.ttf"; sourceTree = "<group>"; };
+		659E1134F58C5EA4DC8F15EC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Brics/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Brics/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Brics-BricsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brics-BricsTests.release.xcconfig"; path = "Target Support Files/Pods-Brics-BricsTests/Pods-Brics-BricsTests.release.xcconfig"; sourceTree = "<group>"; };
-		A402E943E73E43D1AA68F7CB /* SourceSans3-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Light.ttf"; path = "../assets/fonts/SourceSans3-Light.ttf"; sourceTree = "<group>"; };
-		C118565CE3B94350B05954F1 /* SourceSans3-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Bold.ttf"; path = "../assets/fonts/SourceSans3-Bold.ttf"; sourceTree = "<group>"; };
-		E153609EC311414591A0A1ED /* SourceSans3-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Regular.ttf"; path = "../assets/fonts/SourceSans3-Regular.ttf"; sourceTree = "<group>"; };
+		A402E943E73E43D1AA68F7CB /* SourceSans3-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Light.ttf"; path = "../assets/fonts/SourceSans3-Light.ttf"; sourceTree = "<group>"; };
+		BA5AC0E9500A4588A6959191 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
+		C118565CE3B94350B05954F1 /* SourceSans3-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Bold.ttf"; path = "../assets/fonts/SourceSans3-Bold.ttf"; sourceTree = "<group>"; };
+		E137702279C3481CBB5EC3BB /* Quicksand-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-SemiBold.ttf"; path = "../assets/fonts/Quicksand-SemiBold.ttf"; sourceTree = "<group>"; };
+		E153609EC311414591A0A1ED /* SourceSans3-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Regular.ttf"; path = "../assets/fonts/SourceSans3-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F3E2572CDB404390B385F7FF /* SourceSans3-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-SemiBold.ttf"; path = "../assets/fonts/SourceSans3-SemiBold.ttf"; sourceTree = "<group>"; };
-		BA5AC0E9500A4588A6959191 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; name = "Quicksand-Bold.ttf"; path = "../assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5F6E857BF0F34258B47488FE /* Quicksand-Light.ttf */ = {isa = PBXFileReference; name = "Quicksand-Light.ttf"; path = "../assets/fonts/Quicksand-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		092F1A7E6FD74C87B66CA181 /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; name = "Quicksand-Medium.ttf"; path = "../assets/fonts/Quicksand-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5ED9E0824AA544FCB3D9A308 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; name = "Quicksand-Regular.ttf"; path = "../assets/fonts/Quicksand-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E137702279C3481CBB5EC3BB /* Quicksand-SemiBold.ttf */ = {isa = PBXFileReference; name = "Quicksand-SemiBold.ttf"; path = "../assets/fonts/Quicksand-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F3E2572CDB404390B385F7FF /* SourceSans3-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-SemiBold.ttf"; path = "../assets/fonts/SourceSans3-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,7 +198,6 @@
 				E137702279C3481CBB5EC3BB /* Quicksand-SemiBold.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -535,6 +534,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Brics/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Bricks;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -561,6 +561,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Brics/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Bricks;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
