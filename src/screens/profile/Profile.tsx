@@ -200,6 +200,8 @@ const styles = StyleSheet.create({
   },
   listItemTitle: {
     paddingLeft: wp(24),
+    color: colors.black,
+    letterSpacing: -0.5,
     fontSize: fontSize(13),
     fontFamily: font.semiBold,
   },
