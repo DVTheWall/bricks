@@ -92,6 +92,11 @@ const Profile = () => {
             iconName={icons.shieldTick}
             onPress={() => {}}
           />
+          <ListItem
+            title={'Sign Out'}
+            iconName={icons.logout}
+            onPress={() => {}}
+          />
         </View>
 
         <View style={styles.boxView}>

@@ -1,5 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 
 import {colors, fontSize, hp, wp} from '../../utils';
 import {font} from '../../utils/fonts';
@@ -13,6 +21,9 @@ type Props = {
   placeholder?: string;
   isMandetory?: boolean;
   onChangeText: (text: string) => void;
+  customLabelStyle?: StyleProp<TextStyle>;
+  customTextBoxStyle?: StyleProp<ViewStyle>;
+  customShadowStyle?: StyleProp<ViewStyle>;
 };
 
 const TextInputComp = ({
@@ -23,11 +34,14 @@ const TextInputComp = ({
   isMandetory,
   placeholder,
   onChangeText,
+  customLabelStyle,
+  customTextBoxStyle,
+  customShadowStyle,
 }: Props) => {
   return (
     <View>
       {label && (
-        <Text style={styles.labelText}>
+        <Text style={[styles.labelText, customLabelStyle]}>
           {label}
           {isMandetory && (
             <Text style={{...styles.labelText, color: colors.redNeon}}>
@@ -36,8 +50,8 @@ const TextInputComp = ({
           )}
         </Text>
       )}
-      <Shadow shadowStyle={{shadowColor: colors.cyan}}>
-        <View style={styles.textInputContainer}>
+      <Shadow shadowStyle={[{shadowColor: colors.cyan}, customShadowStyle]}>
+        <View style={[styles.textInputContainer, customTextBoxStyle]}>
           <TextInput
             value={value}
             maxLength={maxLength}
@@ -57,10 +71,11 @@ export default TextInputComp;
 
 const styles = StyleSheet.create({
   labelText: {
+    lineHeight: hp(18),
     color: colors.black,
-    marginBottom: hp(2),
+    marginBottom: hp(5),
     fontSize: fontSize(14),
-    fontFamily: font.medium,
+    fontFamily: font.semiBold,
   },
   textInputContainer: {
     // elevation: 5,

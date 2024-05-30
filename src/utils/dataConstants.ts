@@ -196,3 +196,91 @@ export const transactionHistoryData = [
     isCredited: true,
   },
 ];
+
+export const dummyNotifications = [
+  {
+    id: 1,
+    description:
+      'Hotel blue-star started selling their property start investing and get 20% till 20/01/2024.',
+    time: '0 seconds ago',
+    image: '',
+  },
+  {
+    id: 2,
+    description:
+      'Hotel blue-star started selling their property start investing and get 20% till 20/01/2024.',
+    time: '5 minutes ago',
+    image: '',
+  },
+  {
+    id: 3,
+    description:
+      'Hotel blue-star started selling their property start investing and get 20% till 20/01/2024.',
+    time: '15 minutes ago',
+    image: '',
+  },
+  {
+    id: 4,
+    description:
+      'Hotel blue-star started selling their property start investing and get 20% till 20/01/2024.',
+    time: '21 minutes ago',
+    image: '',
+  },
+];
+
+export const periodDataList = [
+  {
+    id: 1,
+    title: '1M',
+    isSelected: true,
+  },
+  {
+    id: 2,
+    title: '6M',
+    isSelected: false,
+  },
+  {
+    id: 3,
+    title: '1Y',
+    isSelected: false,
+  },
+  {
+    id: 4,
+    title: 'ALL',
+    isSelected: false,
+  },
+];
+
+export const indicatorListData = [
+  {
+    id: 1,
+    title: 'Commercial',
+    percentage: '60%',
+    color: colors.orange1,
+  },
+  {
+    id: 2,
+    title: 'Residential',
+    percentage: '20%',
+    color: colors.greenLite,
+  },
+  {
+    id: 3,
+    title: 'Rented',
+    percentage: '20%',
+    color: colors.purple,
+  },
+];
+
+export const savedCardList = [
+  {
+    id: 1,
+    cardNum: '.....2678',
+    isSelected: false,
+  },
+  {
+    id: 2,
+    cardNum: '.....1278',
+    isSelected: false,
+  },
+];

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 
 import {font} from '../../utils/fonts';
@@ -17,8 +18,7 @@ import TextInputComp from '../../components/common/TextInput';
 import StepIndicator from '../../components/other/StepIndicator';
 import {SCREEN} from '../../utils/screenConstants';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
-// type Props = {};
+import {icons} from '../../utils/icons';
 
 const SignUp = ({navigation}: any) => {
   const [fullName, setFullName] = useState('');
@@ -36,6 +36,9 @@ const SignUp = ({navigation}: any) => {
   const [adhar, setAdhar] = useState('');
 
   const [stepCount, setStepCount] = useState(1);
+
+  const [isDescChecked, setIsDescChecked] = useState(false);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
 
   return (
     <View style={commonStyles.root}>
@@ -86,27 +89,98 @@ const SignUp = ({navigation}: any) => {
       </View>
 
       {stepCount === 1 && (
-        <KeyboardAwareScrollView
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps={'handled'}
-          style={styles.inputContainer}>
-          <TextInputComp
-            isMandetory
-            label={`Full Name`}
-            placeholder={`Full Name`}
-            value={fullName}
-            onChangeText={text => setFullName(text)}
-            // error={`You're not register please sign up`}
-          />
-          <TextInputComp
-            isMandetory
-            label={`Mobile Number`}
-            placeholder={`Mobile Number`}
-            value={mobileNumber}
-            onChangeText={text => setMobileNumber(text)}
-            // error={`You're not register please sign up`}
-          />
-        </KeyboardAwareScrollView>
+        <View style={{flex: 1}}>
+          <KeyboardAwareScrollView
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps={'handled'}
+            style={styles.inputContainer}>
+            <View style={{flex: 1}}>
+              <TextInputComp
+                isMandetory
+                label={`Full Name`}
+                placeholder={`Full Name`}
+                value={fullName}
+                onChangeText={text => setFullName(text)}
+                // error={`You're not register please sign up`}
+              />
+              <TextInputComp
+                isMandetory
+                label={`Mobile Number`}
+                placeholder={`Mobile Number`}
+                value={mobileNumber}
+                onChangeText={text => setMobileNumber(text)}
+                // error={`You're not register please sign up`}
+              />
+            </View>
+          </KeyboardAwareScrollView>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              onPress={() => setIsDescChecked(!isDescChecked)}
+              style={{
+                height: wp(20),
+                width: wp(20),
+                borderRadius: wp(2),
+                borderColor: colors.black,
+                borderWidth: wp(0.5),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              {isDescChecked && (
+                <Image
+                  source={icons.checkMark}
+                  style={{width: wp(11), height: hp(9), resizeMode: 'contain'}}
+                />
+              )}
+            </TouchableOpacity>
+            <Text
+              style={{
+                flex: 1,
+                marginLeft: wp(7),
+                fontSize: fontSize(13),
+                lineHeight: hp(21),
+                fontFamily: font.semiBold,
+                color: colors.mediumGrey,
+              }}>
+              {
+                'By Sign Up You Authorized Bricks To Contact(Email, Call, Message, WhatsApp) You Propose Of Sign Up And Sharing Information Of Our Services, Even Though You May Be Registration On Dnd.'
+              }
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', marginTop: hp(25)}}>
+            <TouchableOpacity
+              onPress={() => setIsTermsChecked(!isTermsChecked)}
+              style={{
+                height: wp(20),
+                width: wp(20),
+                borderRadius: wp(2),
+                borderColor: colors.black,
+                borderWidth: wp(0.5),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              {isTermsChecked && (
+                <Image
+                  source={icons.checkMark}
+                  style={{width: wp(11), height: hp(9), resizeMode: 'contain'}}
+                />
+              )}
+            </TouchableOpacity>
+            <Text
+              style={{
+                flex: 1,
+                marginLeft: wp(7),
+                fontSize: fontSize(13),
+                lineHeight: hp(21),
+                fontFamily: font.semiBold,
+                color: colors.mediumGrey,
+              }}>
+              {'I Agree '}
+              <Text style={{color: colors.blue}} onPress={() => {}}>
+                {'Terms & Privacy Policy'}
+              </Text>
+            </Text>
+          </View>
+        </View>
       )}
       {stepCount === 2 && (
         <KeyboardAwareScrollView
@@ -196,7 +270,7 @@ const SignUp = ({navigation}: any) => {
       )}
 
       <Button
-        title="NEXT"
+        title={stepCount === 3 ? 'VERIFY' : 'NEXT'}
         buttonStyle={styles.btnStyle}
         onPress={() => {
           if (stepCount === 1 || stepCount === 2) {
@@ -235,6 +309,7 @@ const styles = StyleSheet.create({
   },
   btnStyle: {
     marginBottom: hp(24),
+    marginTop: hp(24),
   },
   indicatorView: {
     flexDirection: 'row',

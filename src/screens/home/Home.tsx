@@ -16,20 +16,28 @@ import {
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
-import {colors, fontSize, hp, wp} from '../../utils';
+import {SCREEN} from '../../utils/screenConstants';
 import Header from '../../components/common/Header';
 import Shadow from '../../components/common/Shadow';
+import {colors, fontSize, hp, wp} from '../../utils';
 import CategoryListItem from '../../components/home/CategoryListItem';
 import PropertyItemList from '../../components/home/PropertyItemList';
 import {categoryListData, hotPropertiesData} from '../../utils/dataConstants';
 
-const Home = () => {
+const Home = ({navigation}: any) => {
   const renderCategoryItem = ({item}: any) => {
     return <CategoryListItem item={item} onPress={() => {}} />;
   };
 
   const renderHotPropertiesItem = ({item}: any) => {
-    return <PropertyItemList item={item} onBuyNowPress={() => {}} />;
+    return (
+      <PropertyItemList
+        item={item}
+        onBuyNowPress={() => {
+          navigation.navigate(SCREEN.PROPERTYDETAILS, {item: item});
+        }}
+      />
+    );
   };
 
   return (
@@ -39,8 +47,8 @@ const Home = () => {
         title={'Hello, '}
         name={'Quaid!'}
         onLeftIconPress={() => {}}
-        onRightIconPress1={() => {}}
-        onRightIconPress2={() => {}}
+        onRightIconPress1={() => navigation.navigate(SCREEN.PAYMENT)}
+        onRightIconPress2={() => navigation.navigate(SCREEN.NOTIFICATION)}
         customHeaderStyle={{backgroundColor: colors.homeBg}}
         customNameStyle={{fontFamily: font.semiBold}}
       />
@@ -68,19 +76,9 @@ const Home = () => {
                   backgroundColor: colors.lightOrange,
                 }}>
                 <Text style={styles.cardTitleText}>{`Holding Amount`}</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'flex-end',
-                  }}>
+                <View style={commonStyles.flexRow}>
                   <Text style={styles.amountText}>{`1,20,000`}</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginBottom: hp(7),
-                      marginLeft: wp(10),
-                    }}>
+                  <View style={styles.growAmountText}>
                     <Text style={styles.growPercText}>{`10% `}</Text>
                     <Image source={icons.growArrow} style={styles.growArrow} />
                   </View>
@@ -211,7 +209,7 @@ const styles = StyleSheet.create({
     fontFamily: font.semiBold,
   },
   amountText: {
-    lineHeight: hp(36),
+    marginTop: hp(7),
     color: colors.black,
     letterSpacing: -0.5,
     fontFamily: font.bold,
@@ -411,5 +409,11 @@ const styles = StyleSheet.create({
   },
   listFooter: {
     height: hp(60),
+  },
+  growAmountText: {
+    marginTop: hp(7),
+    marginLeft: wp(10),
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });

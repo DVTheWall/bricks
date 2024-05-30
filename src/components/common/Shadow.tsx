@@ -4,8 +4,9 @@ import {StyleSheet} from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 
 import {colors, hp} from '../../utils';
+import {ShadowProps} from '../../interface/Common';
 
-const Shadow = ({children, shadowStyle}: any) => {
+const Shadow = ({children, shadowStyle}: ShadowProps) => {
   return (
     <DropShadow style={[styles.shadowStyle, shadowStyle]}>
       {children}

@@ -9,4 +9,13 @@ export const font = {
   semiBold: 'SourceSans3-SemiBold',
   qRegular: 'Quicksand-Regular',
   qMedium: 'Quicksand-Medium',
+  qBold: 'Quicksand-Bold',
+  qSemiBold: 'Quicksand-SemiBold',
+  mRegular: 'Mukta-Regular',
+  mMedium: 'Mukta-Medium',
+  mBold: 'Mukta-Bold',
+  mrBold: 'Manrope-Bold',
+  mrRegular: 'Manrope-Regular',
+  mrMedium: 'Manrope-Medium',
+  mrSemiBold: 'Manrope-SemiBold',
 };

@@ -26,4 +26,19 @@ export const commonStyles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  icon20: {
+    width: wp(20),
+    height: wp(20),
+    resizeMode: 'contain',
+  },
+  icon16: {
+    width: wp(16),
+    height: wp(16),
+    resizeMode: 'contain',
+  },
+  icon24: {
+    width: wp(24),
+    height: wp(24),
+    resizeMode: 'contain',
+  },
 });

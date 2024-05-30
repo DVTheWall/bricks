@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
   },
   shadowStyle: {
     flex: 1,
-    zIndex: 999,
     shadowRadius: 5,
     shadowOpacity: 0.1,
     shadowColor: colors.black,

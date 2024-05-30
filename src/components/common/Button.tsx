@@ -6,6 +6,7 @@ import {
   TextStyle,
   StyleSheet,
   TouchableOpacity,
+  StyleProp,
 } from 'react-native';
 
 import {font} from '../../utils/fonts';
@@ -19,6 +20,7 @@ interface CustomButtonProps {
   onPress: () => void;
   textStyle?: TextStyle;
   buttonStyle?: ViewStyle;
+  shadowStyle?: StyleProp<ViewStyle>;
 }
 
 const Button: React.FC<CustomButtonProps> = ({
@@ -27,9 +29,10 @@ const Button: React.FC<CustomButtonProps> = ({
   onPress,
   textStyle,
   buttonStyle,
+  shadowStyle,
 }) => {
   return (
-    <Shadow>
+    <Shadow shadowStyle={shadowStyle}>
       <TouchableOpacity
         activeOpacity={0.8}
         style={[styles.button, buttonStyle]}

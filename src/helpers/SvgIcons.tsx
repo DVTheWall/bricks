@@ -45,6 +45,8 @@ const GetIconFromLibrary = (name: string) => {
       return Icons.LoginImg;
     case 'otpImg':
       return Icons.OtpImg;
+    case 'backChevron':
+      return Icons.BackChevron;
     default:
       return Icons.BackArrow;
   }

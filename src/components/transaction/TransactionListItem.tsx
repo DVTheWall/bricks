@@ -1,8 +1,8 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 
-import {font} from '../../../utils/fonts';
-import {colors, fontSize, hp, wp} from '../../../utils';
+import {font} from '../../utils/fonts';
+import {colors, fontSize, hp, wp} from '../../utils';
 
 const TransactionListItem = ({item}: any) => {
   return (

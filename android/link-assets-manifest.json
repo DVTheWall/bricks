@@ -2,6 +2,34 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/Manrope-Bold.ttf",
+      "sha1": "a6b63c832d12337efb3123f47863f54472c81bf5"
+    },
+    {
+      "path": "assets/fonts/Manrope-Medium.ttf",
+      "sha1": "d62e1b2498f65ea5bc20fc5e365d19239527b419"
+    },
+    {
+      "path": "assets/fonts/Manrope-Regular.ttf",
+      "sha1": "036b14064c7b90b4b200f2730981effea5e58b15"
+    },
+    {
+      "path": "assets/fonts/Manrope-SemiBold.ttf",
+      "sha1": "e423e112f4832916b05308934c10aa84fd14c607"
+    },
+    {
+      "path": "assets/fonts/Mukta-Bold.ttf",
+      "sha1": "a928d8465eb1a78f4c442c7f94a231041ff5bcac"
+    },
+    {
+      "path": "assets/fonts/Mukta-Medium.ttf",
+      "sha1": "384b05376b3988a1a58c74c721b019f87e249b7f"
+    },
+    {
+      "path": "assets/fonts/Mukta-Regular.ttf",
+      "sha1": "c7e02ce2f3fcc9faa6fbe659f4d108777b2f66df"
+    },
+    {
       "path": "assets/fonts/Quicksand-Bold.ttf",
       "sha1": "07ca4486c80653a7f3abc18145c2f251d5c9989b"
     },

@@ -8,7 +8,7 @@ import {commonStyles} from '../../styles/styles';
 import Header from '../../components/common/Header';
 import SearchBar from '../../components/common/SearchBar';
 import {transactionHistoryData} from '../../utils/dataConstants';
-import TransactionListItem from '../../components/home/transaction/TransactionListItem';
+import TransactionListItem from '../../components/transaction/TransactionListItem';
 
 const Transaction = () => {
   const [searchText, setSerachText] = useState('');

@@ -9,4 +9,8 @@ export const SCREEN = {
   PORTFOLIO: 'Portfolio',
   TRANSACTION: 'Transaction',
   PROFILE: 'Profile',
+  NOTIFICATION: 'Notification',
+  PAYMENT: 'Payment',
+  PROPERTYDETAILS: 'PropertyDetails',
+  INVESTSCREEN: 'InvestScreen',
 };

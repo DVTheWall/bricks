@@ -80,12 +80,12 @@ const Otp = ({navigation}: any) => {
             height: hp(258),
             resizeMode: 'contain',
             alignSelf: 'center',
-            marginTop: 30,
+            marginTop: hp(58),
           }}
         />
         <Text
           style={{
-            marginTop: 55,
+            marginTop: hp(55),
             textAlign: 'center',
             color: colors.black,
             fontFamily: font.semiBold,
@@ -94,7 +94,7 @@ const Otp = ({navigation}: any) => {
           }}>
           Verify 4- digit sincerity PIN
         </Text>
-        <Shadow shadowStyle={{shadowColor: colors.cyan}}>
+        <Shadow shadowStyle={{shadowColor: colors.cyan, marginTop: hp(12)}}>
           <OTPInputView
             style={styles.otpInput}
             pinCount={4}
@@ -104,15 +104,17 @@ const Otp = ({navigation}: any) => {
             codeInputFieldStyle={styles.underlineStyleBase}
             codeInputHighlightStyle={styles.underlineStyleHighLighted}
             onCodeFilled={handleOtpComplete}
+            selectionColor="red"
           />
         </Shadow>
         <Button
           title="VERIFY"
-          buttonStyle={{marginBottom: 5}}
+          buttonStyle={{marginTop: hp(40)}}
           onPress={() => {
             navigation.navigate(SCREEN.BOTTOMTABS);
           }}
         />
+        <View style={{height: hp(10)}} />
       </KeyboardAwareScrollView>
     </View>
   );
@@ -123,17 +125,17 @@ export default Otp;
 const styles = StyleSheet.create({
   otpInput: {
     width: '80%',
-    height: hp(150),
+    height: hp(58),
     alignSelf: 'center',
     color: colors.black,
   },
   underlineStyleBase: {
     width: wp(53),
     height: hp(58),
-    borderWidth: 1,
+    borderWidth: wp(0.5),
     backgroundColor: colors.white,
     borderRadius: wp(10),
-    borderColor: colors.darkGrey,
+    borderColor: colors.otpInputBorder,
   },
   underlineStyleHighLighted: {
     // borderColor: '#03DAC6',

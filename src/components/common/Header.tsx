@@ -1,14 +1,19 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
+import {useNavigation} from '@react-navigation/native';
+
+import Shadow from './Shadow';
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
 import {colors, fontSize, hp, wp} from '../../utils';
+import BackButton from './BackButton';
 
 const Header = ({
   name,
   title,
+  isBackButton,
   onLeftIconPress,
   customNameStyle,
   customTitleStyle,
@@ -16,9 +21,20 @@ const Header = ({
   onRightIconPress2,
   customHeaderStyle,
 }: any) => {
+  const {goBack} = useNavigation();
   return (
     <View style={[styles.container, customHeaderStyle]}>
       <View style={commonStyles.flexRow}>
+        {isBackButton && (
+          <BackButton />
+          // <Shadow shadowStyle={styles.backBtnShadow}>
+          //   <TouchableOpacity
+          //     style={styles.backBtnStyle}
+          //     onPress={() => goBack()}>
+          //     <Image source={icons.backChevron} style={styles.backChevron} />
+          //   </TouchableOpacity>
+          // </Shadow>
+        )}
         {onLeftIconPress && (
           <TouchableOpacity
             onPress={onLeftIconPress}
@@ -37,6 +53,7 @@ const Header = ({
       <View style={commonStyles.flexRow}>
         {onRightIconPress2 && (
           <TouchableOpacity
+            onPress={onRightIconPress2}
             style={{
               ...styles.rightIconView,
               marginRight: wp(12),
@@ -45,7 +62,9 @@ const Header = ({
           </TouchableOpacity>
         )}
         {onRightIconPress1 && (
-          <TouchableOpacity style={styles.rightIconView}>
+          <TouchableOpacity
+            onPress={onRightIconPress1}
+            style={styles.rightIconView}>
             <Image source={icons.wallet} style={styles.rightIcon} />
           </TouchableOpacity>
         )}
@@ -96,5 +115,29 @@ const styles = StyleSheet.create({
     height: wp(24),
     resizeMode: 'contain',
     tintColor: colors.semiGrey,
+  },
+  backBtnShadow: {
+    shadowRadius: 5,
+    shadowOpacity: 0.15,
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: hp(5),
+    },
+  },
+  backBtnStyle: {
+    width: wp(34),
+    height: wp(34),
+    marginRight: wp(16),
+    alignItems: 'center',
+    borderRadius: wp(100),
+    justifyContent: 'center',
+    backgroundColor: colors.white,
+  },
+  backChevron: {
+    width: wp(8),
+    height: hp(14),
+    marginRight: wp(3),
+    resizeMode: 'contain',
   },
 });
