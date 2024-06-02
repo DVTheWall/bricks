@@ -103,7 +103,6 @@ export default Payment;
 
 const styles = StyleSheet.create({
   customTitleStyle: {
-    lineHeight: hp(36),
     fontSize: fontSize(24),
     fontFamily: font.semiBold,
   },

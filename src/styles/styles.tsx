@@ -41,4 +41,14 @@ export const commonStyles = StyleSheet.create({
     height: wp(24),
     resizeMode: 'contain',
   },
+  icon28: {
+    width: wp(28),
+    height: wp(28),
+    resizeMode: 'contain',
+  },
+  icon32: {
+    width: wp(32),
+    height: wp(32),
+    resizeMode: 'contain',
+  },
 });

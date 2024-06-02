@@ -1,14 +1,11 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
-
-import Shadow from './Shadow';
+import BackButton from './BackButton';
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
 import {colors, fontSize, hp, wp} from '../../utils';
-import BackButton from './BackButton';
 
 const Header = ({
   name,
@@ -21,20 +18,10 @@ const Header = ({
   onRightIconPress2,
   customHeaderStyle,
 }: any) => {
-  const {goBack} = useNavigation();
   return (
     <View style={[styles.container, customHeaderStyle]}>
       <View style={commonStyles.flexRow}>
-        {isBackButton && (
-          <BackButton />
-          // <Shadow shadowStyle={styles.backBtnShadow}>
-          //   <TouchableOpacity
-          //     style={styles.backBtnStyle}
-          //     onPress={() => goBack()}>
-          //     <Image source={icons.backChevron} style={styles.backChevron} />
-          //   </TouchableOpacity>
-          // </Shadow>
-        )}
+        {isBackButton && <BackButton />}
         {onLeftIconPress && (
           <TouchableOpacity
             onPress={onLeftIconPress}

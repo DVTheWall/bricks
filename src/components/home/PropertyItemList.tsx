@@ -6,6 +6,7 @@ import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
 import {colors, fontSize, hp, wp} from '../../utils';
+import FastImage from 'react-native-fast-image';
 
 const PropertyItemList = ({item, onBuyNowPress}: any) => {
   return (
@@ -14,7 +15,7 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
         <ImageBackground source={icons.tag} style={styles.tagIcon}>
           <Text style={styles.tagText}>{`${item?.discount}% OFF`}</Text>
         </ImageBackground>
-        <Image source={item?.image} style={styles.propertyImg} />
+        <FastImage source={{uri: item?.imageURL}} style={styles.propertyImg} />
       </View>
       <View style={styles.bottomView}>
         <Text style={styles.propertyNameText}>{item?.name}</Text>
@@ -72,6 +73,9 @@ const styles = StyleSheet.create({
   propertyImg: {
     width: '100%',
     height: hp(133),
+    resizeMode: 'cover',
+    borderTopLeftRadius: wp(6),
+    borderTopRightRadius: wp(6),
   },
   bottomView: {
     flex: 1,
@@ -103,12 +107,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize(10),
     fontFamily: font.regular,
   },
-  tagText: {
-    lineHeight: hp(13),
-    color: colors.white,
-    fontSize: fontSize(10),
-    fontFamily: font.qMedium,
-  },
   growView: {
     marginLeft: wp(4),
     flexDirection: 'row',
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
     fontFamily: font.light,
   },
   longTermRateText: {
-    lineHeight: hp(14),
     color: colors.black,
     letterSpacing: -0.5,
     fontSize: fontSize(10),
@@ -155,12 +152,18 @@ const styles = StyleSheet.create({
     marginTop: hp(12),
     justifyContent: 'space-between',
   },
+  tagText: {
+    lineHeight: hp(13),
+    color: colors.white,
+    fontSize: fontSize(10),
+    fontFamily: font.qMedium,
+  },
   tagIcon: {
     zIndex: 999,
     top: hp(6.5),
-    width: wp(68),
+    width: wp(70),
     height: hp(18),
-    paddingLeft: wp(9),
+    paddingLeft: wp(8),
     position: 'absolute',
     justifyContent: 'center',
   },

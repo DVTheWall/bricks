@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import {colors} from './src/utils';
 import RootNavigator from './src/navigation/RootNavigator';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const App = () => {
   useEffect(() => {
@@ -14,10 +15,12 @@ const App = () => {
     }, 3000);
   }, []);
   return (
-    <NavigationContainer>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
-      <RootNavigator />
-    </NavigationContainer>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+        <RootNavigator />
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };
 

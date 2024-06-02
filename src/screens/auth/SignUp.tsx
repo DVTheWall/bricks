@@ -19,6 +19,8 @@ import StepIndicator from '../../components/other/StepIndicator';
 import {SCREEN} from '../../utils/screenConstants';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {icons} from '../../utils/icons';
+import {Dropdown} from 'react-native-element-dropdown';
+import Shadow from '../../components/common/Shadow';
 
 const SignUp = ({navigation}: any) => {
   const [fullName, setFullName] = useState('');
@@ -40,23 +42,46 @@ const SignUp = ({navigation}: any) => {
   const [isDescChecked, setIsDescChecked] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
+  const data = [
+    {label: 'Male', value: '1'},
+    {label: 'Female', value: '2'},
+    {label: 'Other', value: '3'},
+  ];
+
+  const data1 = [
+    {label: 'Single', value: '1'},
+    {label: 'Married', value: '2'},
+  ];
+
   return (
     <View style={commonStyles.root}>
       <SafeAreaView />
       <View style={styles.headerContainer}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            if (stepCount === 2 || stepCount === 3) {
-              setStepCount(stepCount - 1);
-            } else {
-              navigation.goBack();
-            }
-          }}
-          style={{}}>
-          <SvgIcons iconName={'backArrow'} />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Sign Up</Text>
+        <View style={commonStyles.flexRow}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              if (stepCount === 2 || stepCount === 3) {
+                setStepCount(stepCount - 1);
+              } else {
+                navigation.goBack();
+              }
+            }}
+            style={{}}>
+            <SvgIcons iconName={'backArrow'} />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>
+            {stepCount === 3 ? 'E-KYC' : 'Sign Up'}
+          </Text>
+        </View>
+        {stepCount === 3 && (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.skipBtn}
+            onPress={() => navigation.navigate(SCREEN.BOTTOMTABS)}>
+            <Text style={styles.skipText}>{'Skip Now'}</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <View style={styles.indicatorView}>
@@ -70,7 +95,7 @@ const SignUp = ({navigation}: any) => {
           isLine
           bgColor={
             stepCount < 2
-              ? colors.xLightGrey
+              ? colors.mediumGrey
               : stepCount > 2
               ? colors.green
               : colors.primary
@@ -80,7 +105,7 @@ const SignUp = ({navigation}: any) => {
           step={3}
           bgColor={
             stepCount < 3
-              ? colors.xLightGrey
+              ? colors.mediumGrey
               : stepCount > 3
               ? colors.green
               : colors.primary
@@ -195,22 +220,68 @@ const SignUp = ({navigation}: any) => {
             onChangeText={text => setEmail(text)}
             // error={`You're not register please sign up`}
           />
-          <TextInputComp
-            isMandetory
-            label={`Gender`}
-            placeholder={`Male`}
-            value={gender}
-            onChangeText={text => setGender(text)}
-            // error={`You're not register please sign up`}
-          />
-          <TextInputComp
-            isMandetory
-            label={`Martial Status`}
-            placeholder={`Single`}
-            value={maritalStatus}
-            onChangeText={text => setMaritalStatus(text)}
-            // error={`You're not register please sign up`}
-          />
+          <Text style={styles.labelText}>
+            {'Gender'}
+            <Text style={{...styles.labelText, color: colors.redNeon}}>
+              {' *'}
+            </Text>
+          </Text>
+          <Shadow shadowStyle={{shadowColor: colors.cyan}}>
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              iconStyle={styles.iconStyle}
+              data={data}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={'Select Gender'}
+              searchPlaceholder="Search..."
+              value={gender}
+              onChange={(item: any) => {
+                setGender(item.value);
+              }}
+              itemTextStyle={styles.selectedTextStyle}
+              containerStyle={{
+                backgroundColor: colors.white,
+                borderBottomLeftRadius: wp(10),
+                borderBottomRightRadius: wp(10),
+              }}
+            />
+          </Shadow>
+          <Text style={styles.errText}>{''}</Text>
+          <Text style={styles.labelText}>
+            {'Marital Status'}
+            <Text style={{...styles.labelText, color: colors.redNeon}}>
+              {' *'}
+            </Text>
+          </Text>
+          <Shadow shadowStyle={{shadowColor: colors.cyan}}>
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              iconStyle={styles.iconStyle}
+              data={data1}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={'Select Marital Status'}
+              searchPlaceholder="Search..."
+              value={maritalStatus}
+              onChange={(item: any) => {
+                setMaritalStatus(item.value);
+              }}
+              itemTextStyle={styles.selectedTextStyle}
+              containerStyle={{
+                backgroundColor: colors.white,
+                borderBottomLeftRadius: wp(10),
+                borderBottomRightRadius: wp(10),
+              }}
+            />
+          </Shadow>
+          <Text style={styles.errText}>{''}</Text>
           <TextInputComp
             isMandetory
             label={`Address`}
@@ -292,6 +363,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: hp(24),
+    justifyContent: 'space-between',
   },
   headerText: {
     color: colors.black,
@@ -314,8 +386,72 @@ const styles = StyleSheet.create({
   indicatorView: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    alignSelf: 'center',
     paddingHorizontal: wp(10),
     marginTop: hp(24),
+  },
+  skipBtn: {
+    borderWidth: wp(0.5),
+    borderRadius: wp(100),
+    paddingVertical: hp(7),
+    borderColor: colors.blue,
+    paddingHorizontal: wp(12),
+  },
+  skipText: {
+    color: colors.blue,
+    fontFamily: font.bold,
+    fontSize: fontSize(10),
+  },
+  dropdown: {
+    height: hp(48),
+    borderRadius: wp(10),
+    borderWidth: wp(0.5),
+    justifyContent: 'center',
+    paddingHorizontal: wp(16),
+    borderColor: colors.darkGrey,
+    backgroundColor: colors.white,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    color: colors.darkGrey,
+    fontSize: fontSize(16),
+    fontFamily: font.semiBold,
+  },
+  selectedTextStyle: {
+    color: colors.black,
+    fontSize: fontSize(16),
+    fontFamily: font.semiBold,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  labelText: {
+    lineHeight: hp(18),
+    color: colors.black,
+    marginBottom: hp(5),
+    fontSize: fontSize(14),
+    fontFamily: font.semiBold,
+  },
+  errText: {
+    marginTop: hp(2),
+    color: colors.red,
+    alignSelf: 'flex-end',
+    fontSize: fontSize(10),
   },
 });

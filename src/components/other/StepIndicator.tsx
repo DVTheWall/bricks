@@ -20,7 +20,7 @@ const StepIndicator = ({bgColor, step, isLine}: any) => {
             styles.stepText,
             {
               color:
-                bgColor === colors.xLightGrey ? colors.black : colors.white,
+                bgColor === colors.mediumGrey ? colors.black : colors.white,
             },
           ]}>
           {step}
@@ -56,8 +56,9 @@ const styles = StyleSheet.create({
   },
   lineStyle: {
     width: wp(110),
-    marginLeft: wp(12),
+    marginHorizontal: wp(12),
     borderWidth: wp(0.5),
     borderStyle: 'dashed',
+    alignSelf: 'center',
   },
 });

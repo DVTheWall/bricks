@@ -1,42 +1,58 @@
 import React from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   TextInput,
   StyleProp,
   TextStyle,
   ViewStyle,
+  StyleSheet,
+  Image,
 } from 'react-native';
 
-import {colors, fontSize, hp, wp} from '../../utils';
-import {font} from '../../utils/fonts';
 import Shadow from './Shadow';
+import {font} from '../../utils/fonts';
+import {colors, fontSize, hp, wp} from '../../utils';
+import {icons} from '../../utils/icons';
+import {commonStyles} from '../../styles/styles';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type Props = {
   value: string;
   label?: string;
   error?: string;
   maxLength?: number;
+  editable?: boolean;
+  onBlur?: () => void;
+  onFocus?: () => void;
   placeholder?: string;
   isMandetory?: boolean;
-  onChangeText: (text: string) => void;
+  isRightIcon?: boolean;
+  onRightIconPress?: () => void;
+  onChangeText?: (text: string) => void;
   customLabelStyle?: StyleProp<TextStyle>;
-  customTextBoxStyle?: StyleProp<ViewStyle>;
+  customInputStyle?: StyleProp<TextStyle>;
   customShadowStyle?: StyleProp<ViewStyle>;
+  customTextBoxStyle?: StyleProp<ViewStyle>;
 };
 
 const TextInputComp = ({
   value,
   label,
   error,
+  onBlur,
+  onFocus,
+  editable,
   maxLength,
   isMandetory,
   placeholder,
+  isRightIcon,
   onChangeText,
+  onRightIconPress,
   customLabelStyle,
-  customTextBoxStyle,
+  customInputStyle,
   customShadowStyle,
+  customTextBoxStyle,
 }: Props) => {
   return (
     <View>
@@ -53,13 +69,23 @@ const TextInputComp = ({
       <Shadow shadowStyle={[{shadowColor: colors.cyan}, customShadowStyle]}>
         <View style={[styles.textInputContainer, customTextBoxStyle]}>
           <TextInput
+            editable={editable}
             value={value}
+            onBlur={onBlur}
+            onFocus={onFocus}
             maxLength={maxLength}
             placeholder={placeholder}
-            style={styles.inputStyle}
+            style={[styles.inputStyle, customInputStyle]}
             onChangeText={onChangeText}
             placeholderTextColor={colors.darkGrey}
           />
+          {isRightIcon && (
+            <TouchableOpacity
+              style={{marginLeft: wp(8)}}
+              onPress={onRightIconPress}>
+              <Image source={icons.calendar} style={commonStyles.icon20} />
+            </TouchableOpacity>
+          )}
         </View>
       </Shadow>
       <Text style={styles.errText}>{error ? error : ''}</Text>
@@ -78,22 +104,17 @@ const styles = StyleSheet.create({
     fontFamily: font.semiBold,
   },
   textInputContainer: {
-    // elevation: 5,
     height: hp(48),
-    // shadowOpacity: 1,
-    // shadowRadius: 0.5,
     borderRadius: wp(10),
     borderWidth: wp(0.5),
-    // paddingVertical: hp(12),
-    justifyContent: 'center',
-    // shadowColor: colors.cyan,
+    alignItems: 'center',
+    flexDirection: 'row',
     paddingHorizontal: wp(16),
     borderColor: colors.darkGrey,
     backgroundColor: colors.white,
-    // shadowOffset: {width: 0, height: hp(2)},
   },
   inputStyle: {
-    // flex: 1,
+    flex: 1,
     color: colors.black,
     fontSize: fontSize(16),
     fontFamily: font.semiBold,

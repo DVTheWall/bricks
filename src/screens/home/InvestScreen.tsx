@@ -9,35 +9,29 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {commonStyles} from '../../styles/styles';
 import Header from '../../components/common/Header';
 import {colors, fontSize, hp, wp} from '../../utils';
 import {font} from '../../utils/fonts';
 import Shadow from '../../components/common/Shadow';
 import Button from '../../components/common/Button';
-import {SCREEN} from '../../utils/screenConstants';
 import TextInputComp from '../../components/common/TextInput';
 import {icons} from '../../utils/icons';
 import Wallet from '../../components/common/Wallet';
 
-type Props = {};
-
-const InvestScreen = ({navigation}: any) => {
+const InvestScreen = () => {
   const [isMonthlyActive, setIsMonthlyActive] = useState(false);
   const [sqft, setSqft] = useState('');
   const [amount, setAmount] = useState('');
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      StatusBar.setHidden(false);
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
   return (
     <View style={commonStyles.container}>
+      <StatusBar
+        barStyle={'dark-content'}
+        translucent={false}
+        backgroundColor={colors.white}
+      />
       <SafeAreaView />
       <Header
         isBackButton
@@ -178,7 +172,6 @@ export default InvestScreen;
 
 const styles = StyleSheet.create({
   customTitleStyle: {
-    lineHeight: hp(36),
     fontSize: fontSize(24),
     fontFamily: font.semiBold,
   },

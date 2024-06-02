@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
@@ -112,6 +113,13 @@ const Otp = ({navigation}: any) => {
           buttonStyle={{marginTop: hp(40)}}
           onPress={() => {
             navigation.navigate(SCREEN.BOTTOMTABS);
+          }}
+        />
+        <Button
+          title={`To Broker's app`}
+          buttonStyle={{marginTop: hp(30)}}
+          onPress={() => {
+            navigation.navigate(SCREEN.BROKERSTAB);
           }}
         />
         <View style={{height: hp(10)}} />

@@ -9,7 +9,9 @@ const NotificationListItem = ({item}: any) => {
     <View style={styles.container}>
       <View style={styles.imgView} />
       <View style={styles.descBox}>
-        <Text style={styles.descText}>{item?.description}</Text>
+        <Text style={styles.descText} numberOfLines={3}>
+          {item?.description}
+        </Text>
         <Text style={styles.timeText}>{item?.time}</Text>
       </View>
     </View>
@@ -20,7 +22,8 @@ export default NotificationListItem;
 
 const styles = StyleSheet.create({
   container: {
-    padding: wp(16),
+    width: '85%',
+    margin: wp(16),
     flexDirection: 'row',
   },
   descBox: {
@@ -33,6 +36,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.mediumGrey,
   },
   descText: {
+    flexWrap: 'wrap',
+    textAlign: 'left',
     lineHeight: hp(18),
     color: colors.black,
     fontSize: fontSize(14),

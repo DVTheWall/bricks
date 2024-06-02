@@ -1,5 +1,8 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   Animated,
+  Dimensions,
+  FlatList,
   Image,
   SafeAreaView,
   StatusBar,
@@ -8,24 +11,28 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {commonStyles} from '../../styles/styles';
 import {icons} from '../../utils/icons';
 import FastImage from 'react-native-fast-image';
-import Shadow from '../../components/common/Shadow';
-import BackButton from '../../components/common/BackButton';
-import {colors, fontSize, hp, wp} from '../../utils';
+import {colors, fontSize, hp, isIos, wp} from '../../utils';
 import {font} from '../../utils/fonts';
 import Button from '../../components/common/Button';
 import {LineChart} from 'react-native-gifted-charts';
 import {SCREEN} from '../../utils/screenConstants';
+import BackButtonBlur from '../../components/common/BackButtonBlur';
+import Carousel from 'react-native-reanimated-carousel';
+import LinearGradient from 'react-native-linear-gradient';
+import {carouselData} from '../../utils/dataConstants';
 
 // type Props = {};
 const HEADER_MAX_HEIGHT = 300;
 const HEADER_MIN_HEIGHT = 130;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
-const HighlightItem = ({icon, detail, isUnit, description}) => {
+const {width} = Dimensions.get('window');
+
+const HighlightItem = ({icon, detail, isUnit, description}: any) => {
   return (
     // <Shadow shadowStyle={styles.highlightBoxShadow}>
     <View
@@ -56,7 +63,6 @@ const HighlightItem = ({icon, detail, isUnit, description}) => {
               fontFamily: font.regular,
               fontSize: fontSize(10),
               color: colors.lightBlack,
-              lineHeight: hp(13),
             }}>
             {' sqft'}
           </Text>
@@ -78,9 +84,21 @@ const HighlightItem = ({icon, detail, isUnit, description}) => {
 
 const PropertyDetails = ({navigation, route}: any) => {
   const {item} = route?.params;
-  console.log('ITEM::', item);
+
+  const carouselRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  const renderItem = ({item}: any) => (
+    <View>
+      <FastImage source={{uri: item.uri}} style={styles.image} />
+      <LinearGradient
+        colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']}
+        style={styles.linearGradient}
+      />
+    </View>
+  );
 
   const headerHeight = scrollY.interpolate({
     inputRange: [0, HEADER_SCROLL_DISTANCE],
@@ -94,14 +112,12 @@ const PropertyDetails = ({navigation, route}: any) => {
     extrapolate: 'clamp',
   });
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      StatusBar.setHidden(true);
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     StatusBar.setHidden(true);
+  //   });
+  //   return unsubscribe;
+  // }, [navigation]);
   const data = [
     {value: 5000, label: '1'},
     {value: 8000, label: '3'},
@@ -123,20 +139,84 @@ const PropertyDetails = ({navigation, route}: any) => {
 
   return (
     <View style={commonStyles.container}>
-      {/* <StatusBar hidden /> */}
+      <StatusBar
+        barStyle={'light-content'}
+        translucent
+        backgroundColor="transparent"
+      />
       <View
-        style={{position: 'absolute', zIndex: 999, left: wp(16), top: hp(70)}}>
-        <BackButton />
+        style={{
+          position: 'absolute',
+          zIndex: 999,
+          left: wp(20),
+          top: isIos ? hp(70) : hp(40),
+        }}>
+        <BackButtonBlur />
       </View>
+      <Animated.View
+        style={{
+          alignItems: 'center',
+          height: width * 0.75,
+          borderBottomRightRadius: wp(20),
+          borderBottomLeftRadius: wp(20),
+          overflow: 'hidden',
+          // top: 0,
+          // left: 0,
+          // right: 0,
+          // position: 'absolute',
+        }}>
+        <Carousel
+          loop={false}
+          ref={carouselRef}
+          data={carouselData}
+          renderItem={renderItem}
+          width={width}
+          height={width * 0.75}
+          onSnapToItem={index => setActiveIndex(index)}
+        />
+        <FlatList
+          ref={carouselRef}
+          data={carouselData}
+          horizontal
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              onPress={() => {
+                setActiveIndex(index);
+                // carouselRef?.current?.scrollTo({index});
+              }}>
+              <FastImage
+                source={{uri: item.uri}}
+                style={[
+                  styles.previewImage,
+                  {
+                    borderColor:
+                      index === activeIndex
+                        ? colors.primary
+                        : colors.mediumGrey,
+                    borderWidth: index === activeIndex ? wp(2) : wp(1),
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={styles.previewList}
+          style={styles.previewFlatList}
+          ItemSeparatorComponent={() => <View style={{width: wp(16)}} />}
+          ListFooterComponent={() => <View style={{width: wp(40)}} />}
+          showsHorizontalScrollIndicator={false}
+        />
+      </Animated.View>
       <Animated.ScrollView
         bounces={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}
-        scrollEventThrottle={16}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: false},
-        )}>
+        // contentContainerStyle={styles.scrollViewContent}
+        // scrollEventThrottle={16}
+        // onScroll={Animated.event(
+        //   [{nativeEvent: {contentOffset: {y: scrollY}}}],
+        //   {useNativeDriver: false},
+        // )}
+      >
         <View>
           <View style={styles.boxContainer}>
             <View>
@@ -155,7 +235,6 @@ const PropertyDetails = ({navigation, route}: any) => {
                   fontFamily: font.bold,
                   fontSize: fontSize(20),
                   letterSpacing: -0.5,
-                  lineHeight: hp(25),
                   color: colors.greenNeon,
                 }}>
                 {`₹${item?.rate}`}
@@ -164,7 +243,6 @@ const PropertyDetails = ({navigation, route}: any) => {
                     fontFamily: font.semiBold,
                     fontSize: fontSize(10),
                     letterSpacing: -0.5,
-                    lineHeight: hp(13),
                     color: colors.mediumGrey,
                   }}>
                   {'    Per sqft'}
@@ -283,8 +361,8 @@ const PropertyDetails = ({navigation, route}: any) => {
                 // isAnimated={true}
                 // animateOnDataChange={true}
                 thickness={2}
-                xAxisLabelTextStyle={styles.xAxisLabel}
-                yAxisTextStyle={styles.yAxisLabel}
+                // xAxisLabelTextStyle={styles.xAxisLabel}
+                // yAxisTextStyle={styles.yAxisLabel}
                 height={250}
                 width={390}
                 // yAxisLabelTexts={['0', '20', '40', '60', '80', '100']}
@@ -303,7 +381,7 @@ const PropertyDetails = ({navigation, route}: any) => {
             </View>
           </View>
 
-          <View style={styles.boxView}>
+          <View style={{...styles.boxView, paddingBottom: hp(16)}}>
             <Text style={styles.boxTitleText}>{'Property Documentation'}</Text>
             <View
               style={{
@@ -311,14 +389,13 @@ const PropertyDetails = ({navigation, route}: any) => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 paddingHorizontal: wp(16),
-                paddingVertical: hp(8),
+                paddingVertical: hp(12),
               }}>
               <Text
                 style={{
                   fontFamily: font.semiBold,
                   fontSize: fontSize(14),
-                  lineHeight: hp(18),
-                  color: colors.darkGrey,
+                  color: colors.xDarkGrey,
                 }}>
                 {'Registration Document'}
               </Text>
@@ -327,7 +404,6 @@ const PropertyDetails = ({navigation, route}: any) => {
                   style={{
                     fontFamily: font.semiBold,
                     fontSize: fontSize(12),
-                    // lineHeight: hp(15),
                     color: colors.blue,
                   }}>
                   {'Preview'}
@@ -346,14 +422,13 @@ const PropertyDetails = ({navigation, route}: any) => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 paddingHorizontal: wp(16),
-                paddingVertical: hp(8),
+                paddingVertical: hp(12),
               }}>
               <Text
                 style={{
                   fontFamily: font.semiBold,
                   fontSize: fontSize(14),
-                  lineHeight: hp(18),
-                  color: colors.darkGrey,
+                  color: colors.xDarkGrey,
                 }}>
                 {'Privacy Policy Document'}
               </Text>
@@ -362,7 +437,6 @@ const PropertyDetails = ({navigation, route}: any) => {
                   style={{
                     fontFamily: font.semiBold,
                     fontSize: fontSize(12),
-                    // lineHeight: hp(15),
                     color: colors.blue,
                   }}>
                   {'Preview'}
@@ -383,14 +457,68 @@ const PropertyDetails = ({navigation, route}: any) => {
         />
       </View>
       <SafeAreaView />
-      <Animated.View style={[styles.header, {height: headerHeight}]}>
+      {/* <Animated.View style={[styles.header, {height: headerHeight}]}>
         <FastImage
           source={{
             uri: 'https://img.freepik.com/free-photo/swimming-pool-beach-luxury-hotel-outdoor-pools-spa-amara-dolce-vita-luxury-hotel-resort-tekirova-kemer-turkey_146671-18751.jpg?t=st=1716921896~exp=1716925496~hmac=4d793fe9b745622b6a3aecb14582404a6e8c228a39c3694ae71b8b29f2c447e8&w=1060',
           }}
           style={{width: '100%', height: HEADER_MAX_HEIGHT}}
         />
-      </Animated.View>
+      </Animated.View> */}
+      {/* <Animated.View
+        style={{
+          alignItems: 'center',
+          height: headerHeight,
+          borderBottomRightRadius: wp(20),
+          borderBottomLeftRadius: wp(20),
+          overflow: 'hidden',
+          top: 0,
+          left: 0,
+          right: 0,
+          position: 'absolute',
+        }}>
+        <Carousel
+          loop={false}
+          ref={carouselRef}
+          data={carouselData}
+          renderItem={renderItem}
+          width={width}
+          height={width * 0.75}
+          onSnapToItem={index => setActiveIndex(index)}
+        />
+        <FlatList
+          ref={carouselRef}
+          data={carouselData}
+          horizontal
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              onPress={() => {
+                setActiveIndex(index);
+                carouselRef?.current?.scrollTo({index});
+              }}>
+              <Image
+                source={{uri: item.uri}}
+                style={[
+                  styles.previewImage,
+                  {
+                    borderColor:
+                      index === activeIndex
+                        ? colors.primary
+                        : colors.mediumGrey,
+                    borderWidth: index === activeIndex ? wp(2) : wp(1),
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={styles.previewList}
+          style={styles.previewFlatList}
+          ItemSeparatorComponent={() => <View style={{width: wp(16)}} />}
+          ListFooterComponent={() => <View style={{width: wp(40)}} />}
+          showsHorizontalScrollIndicator={false}
+        />
+      </Animated.View> */}
     </View>
   );
 };
@@ -463,5 +591,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
     marginTop: hp(24),
+  },
+  image: {
+    width: width,
+    height: width * 0.75,
+  },
+  previewImage: {
+    width: wp(75),
+    height: hp(47),
+    borderRadius: wp(8),
+  },
+  previewList: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  previewFlatList: {
+    bottom: hp(14),
+    position: 'absolute',
+    paddingHorizontal: wp(20),
+  },
+  linearGradient: {
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '30%',
+    position: 'absolute',
   },
 });

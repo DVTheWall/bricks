@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   customTitleStyle: {
-    lineHeight: hp(36),
     letterSpacing: -0.5,
     fontSize: fontSize(24),
     fontFamily: font.semiBold,

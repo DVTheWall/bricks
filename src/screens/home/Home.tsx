@@ -134,7 +134,11 @@ const Home = ({navigation}: any) => {
         />
         <View style={styles.subTitleContainer}>
           <Text style={styles.subTitleText}>{'Hot Selling Properties'}</Text>
-          <TouchableOpacity style={commonStyles.flexRow}>
+          <TouchableOpacity
+            style={commonStyles.flexRow}
+            onPress={() => {
+              navigation.navigate(SCREEN.PROPERTYLIST, {isFromCustomer: true});
+            }}>
             <Text style={styles.viewAllText}>{'More'}</Text>
             <Image source={icons.downChevron} style={styles.downChevron} />
           </TouchableOpacity>

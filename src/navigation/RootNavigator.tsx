@@ -10,6 +10,11 @@ import Notification from '../screens/notification/Notification';
 import Payment from '../screens/payment/Payment';
 import PropertyDetails from '../screens/home/PropertyDetails';
 import InvestScreen from '../screens/home/InvestScreen';
+import BrokersTab from './TabNavigationBroker';
+import PropertyDetailsBroker from '../screens/brokers/property/PropertyDetailsBroker';
+import CustomerDetails from '../screens/brokers/customers/CustomerDetails';
+import AddCustomer from '../screens/brokers/customers/AddCustomer';
+import PropertyList from '../screens/brokers/property/PropertyList';
 
 export type RootStackParamList = {
   Welcome: undefined;
@@ -21,6 +26,11 @@ export type RootStackParamList = {
   Payment: undefined;
   PropertyDetails: undefined;
   InvestScreen: undefined;
+  BrokersTab: undefined;
+  PropertyDetailsBroker: undefined;
+  CustomerDetails: undefined;
+  AddCustomer: undefined;
+  PropertyList: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -38,10 +48,18 @@ const RootNavigator = () => {
       <Stack.Screen name={'Otp'} component={Otp} />
       <Stack.Screen name={'SignUp'} component={SignUp} />
       <Stack.Screen name={'BottomTabs'} component={BottomTabs} />
+      <Stack.Screen name={'BrokersTab'} component={BrokersTab} />
       <Stack.Screen name={'Notification'} component={Notification} />
       <Stack.Screen name={'Payment'} component={Payment} />
       <Stack.Screen name={'PropertyDetails'} component={PropertyDetails} />
       <Stack.Screen name={'InvestScreen'} component={InvestScreen} />
+      <Stack.Screen name={'CustomerDetails'} component={CustomerDetails} />
+      <Stack.Screen name={'AddCustomer'} component={AddCustomer} />
+      <Stack.Screen name={'PropertyList'} component={PropertyList} />
+      <Stack.Screen
+        name={'PropertyDetailsBroker'}
+        component={PropertyDetailsBroker}
+      />
     </Stack.Navigator>
   );
 };

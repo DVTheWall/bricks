@@ -11,21 +11,8 @@ import {icons} from '../utils/icons';
 import {SCREEN} from '../utils/screenConstants';
 import {colors, fontSize, hp, isIos, wp} from '../utils';
 import {font} from '../utils/fonts';
-// import Icon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
-
-// const SettingsScreen = () => (
-//   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//     <Text>Settings Screen</Text>
-//   </View>
-// );
-
-// const ProfileScreen = () => (
-//   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//     <Text>Profile Screen</Text>
-//   </View>
-// );
 
 const BottomTabs = () => {
   return (

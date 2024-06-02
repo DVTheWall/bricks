@@ -13,4 +13,13 @@ export const SCREEN = {
   PAYMENT: 'Payment',
   PROPERTYDETAILS: 'PropertyDetails',
   INVESTSCREEN: 'InvestScreen',
+  PROPERTYLIST: 'PropertyList',
+  BROKERSTAB: 'BrokersTab',
+  DASHBOARD: 'Dashboard',
+  PROPERTIES: 'Properties',
+  CUSTOMERS: 'Customers',
+  ORDERS: 'Orders',
+  PROPERTYDETAILSBROKER: 'PropertyDetailsBroker',
+  CUSTOMERDETAILS: 'CustomerDetails',
+  ADDCUSTOMER: 'AddCustomer',
 };
