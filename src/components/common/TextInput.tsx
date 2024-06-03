@@ -24,6 +24,7 @@ type Props = {
   maxLength?: number;
   editable?: boolean;
   onBlur?: () => void;
+  multiline?: boolean;
   onFocus?: () => void;
   placeholder?: string;
   isMandetory?: boolean;
@@ -44,6 +45,7 @@ const TextInputComp = ({
   onFocus,
   editable,
   maxLength,
+  multiline,
   isMandetory,
   placeholder,
   isRightIcon,
@@ -78,6 +80,7 @@ const TextInputComp = ({
             style={[styles.inputStyle, customInputStyle]}
             onChangeText={onChangeText}
             placeholderTextColor={colors.darkGrey}
+            multiline={multiline}
           />
           {isRightIcon && (
             <TouchableOpacity

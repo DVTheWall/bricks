@@ -509,3 +509,138 @@ export const customersList = [
       'https://s3-alpha-sig.figma.com/img/0577/f0e9/b7fca2f32639871454da0de95f951709?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=TJ3k5~zEPtLpELQgVbSh-aqcJ4vcdQmHhMIB1iap~LuDMJAz1uXZI79EmyP3I5AcMBFigymkkZyausMzYefKv77gHm5YkWIyKpsrdAAfkWWVKaygsNPpo4FXwvQ7rGTWCpvwg4CgNlYo9sD3Dmkw1A3uOtMWiZpGEKsL2Pr2GaAenaZ~7SUGsFog9~gsr0pPngp6s84T-Be9KI6-R1xGdWEGmFVPcDmjdPVobDqF5WZ7SmH6xryWV8UsCuY5KfgBTgQZ6VPwXN1Hj2v5LEQQxUuteqraFEl2GMK5DCuRNEcI8J9aQBr1SUjQfIUJKwFJ-yYc943BpwCkUA79ri6TKQ__',
   },
 ];
+
+export const ordersListData = [
+  {
+    id: 1,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 2,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 3,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 4,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 5,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 6,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 7,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 8,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 9,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 10,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+  {
+    id: 11,
+    orderId: '5243846-Yzl',
+    customerName: 'Esther Howard',
+    propertyType: 'Apartments',
+    address: '3891 Ranchview Dr. Richardson, California 62639',
+    area: '966',
+    price: '₹52.15 lac',
+    status: 'Status',
+    profileURL:
+      'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+];

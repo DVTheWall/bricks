@@ -15,6 +15,8 @@ import PropertyDetailsBroker from '../screens/brokers/property/PropertyDetailsBr
 import CustomerDetails from '../screens/brokers/customers/CustomerDetails';
 import AddCustomer from '../screens/brokers/customers/AddCustomer';
 import PropertyList from '../screens/brokers/property/PropertyList';
+import OrderDetails from '../screens/brokers/orders/OrderDetails';
+import AddOrders from '../screens/brokers/orders/AddOrders';
 
 export type RootStackParamList = {
   Welcome: undefined;
@@ -31,6 +33,8 @@ export type RootStackParamList = {
   CustomerDetails: undefined;
   AddCustomer: undefined;
   PropertyList: undefined;
+  OrderDetails: undefined;
+  AddOrders: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -56,6 +60,8 @@ const RootNavigator = () => {
       <Stack.Screen name={'CustomerDetails'} component={CustomerDetails} />
       <Stack.Screen name={'AddCustomer'} component={AddCustomer} />
       <Stack.Screen name={'PropertyList'} component={PropertyList} />
+      <Stack.Screen name={'OrderDetails'} component={OrderDetails} />
+      <Stack.Screen name={'AddOrders'} component={AddOrders} />
       <Stack.Screen
         name={'PropertyDetailsBroker'}
         component={PropertyDetailsBroker}

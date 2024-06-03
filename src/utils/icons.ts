@@ -69,4 +69,10 @@ export const icons = {
   mail: require('../../assets/icons/mail.png'),
   searchProfile: require('../../assets/icons/searchProfile.png'),
   calendar: require('../../assets/icons/calendar.png'),
+  package: require('../../assets/icons/package.png'),
+  residential: require('../../assets/icons/residential.png'),
+  goldCoins: require('../../assets/icons/goldCoins.png'),
+  clock: require('../../assets/icons/clock.png'),
+  timer: require('../../assets/icons/timer.png'),
+  orderBg: require('../../assets/icons/orderBg.png'),
 };

@@ -18,4 +18,8 @@ export const font = {
   mrRegular: 'Manrope-Regular',
   mrMedium: 'Manrope-Medium',
   mrSemiBold: 'Manrope-SemiBold',
+  pRegular: 'Poppins-Regular',
+  pMedium: 'Poppins-Medium',
+  pBold: 'Poppins-Bold',
+  pSemiBold: 'Poppins-SemiBold',
 };

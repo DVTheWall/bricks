@@ -40,7 +40,6 @@ const Customers = ({navigation}: any) => {
         customTitleStyle={styles.customTitleStyle}
         customHeaderStyle={styles.customHeaderStyle}
       />
-
       <SearchBox
         value={searchText}
         onFilterPress={() => {}}

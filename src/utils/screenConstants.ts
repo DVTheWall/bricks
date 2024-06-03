@@ -22,4 +22,6 @@ export const SCREEN = {
   PROPERTYDETAILSBROKER: 'PropertyDetailsBroker',
   CUSTOMERDETAILS: 'CustomerDetails',
   ADDCUSTOMER: 'AddCustomer',
+  ORDERDETAILS: 'OrderDetails',
+  ADDORDERS: 'AddOrders',
 };
