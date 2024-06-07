@@ -106,14 +106,14 @@ export default Wallet;
 
 const styles = StyleSheet.create({
   gradientBorder: {
-    borderRadius: wp(12),
     padding: wp(1),
+    borderRadius: wp(12),
     marginHorizontal: wp(16),
   },
   button: {
+    overflow: 'hidden',
     borderRadius: wp(12),
     backgroundColor: colors.white,
-    overflow: 'hidden',
   },
   gradientBackground: {
     padding: wp(12),

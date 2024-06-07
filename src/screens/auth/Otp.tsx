@@ -115,13 +115,6 @@ const Otp = ({navigation}: any) => {
             navigation.navigate(SCREEN.BOTTOMTABS);
           }}
         />
-        <Button
-          title={`To Broker's app`}
-          buttonStyle={{marginTop: hp(30)}}
-          onPress={() => {
-            navigation.navigate(SCREEN.BROKERSTAB);
-          }}
-        />
         <View style={{height: hp(10)}} />
       </KeyboardAwareScrollView>
     </View>

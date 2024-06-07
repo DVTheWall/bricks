@@ -4,9 +4,10 @@ import {Image, StyleSheet, View, TouchableOpacity} from 'react-native';
 import Shadow from './Shadow';
 import {icons} from '../../utils/icons';
 import {colors, hp, wp} from '../../utils';
+import {FABProps} from '../../interface/Common';
 import {commonStyles} from '../../styles/styles';
 
-const FAB = ({onPress}: any) => {
+const FAB = ({onPress}: FABProps) => {
   return (
     <Shadow shadowStyle={styles.shadowStyle}>
       <View style={styles.container}>
@@ -25,7 +26,7 @@ export default FAB;
 
 const styles = StyleSheet.create({
   shadowStyle: {
-    shadowRadius: 8,
+    shadowRadius: 5,
     shadowOpacity: 0.2,
     shadowColor: colors.black,
     shadowOffset: {
@@ -45,8 +46,8 @@ const styles = StyleSheet.create({
     borderWidth: wp(1),
     alignItems: 'center',
     borderRadius: wp(100),
-    borderColor: '#FCC4C4',
     justifyContent: 'center',
+    borderColor: colors.semiOrange,
     backgroundColor: colors.primary,
   },
 });

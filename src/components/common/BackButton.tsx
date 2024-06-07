@@ -1,13 +1,13 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
+import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+
 import {useNavigation} from '@react-navigation/native';
+
 import Shadow from './Shadow';
 import {icons} from '../../utils/icons';
 import {colors, hp, wp} from '../../utils';
 
-type Props = {};
-
-const BackButton = (props: Props) => {
+const BackButton = () => {
   const {goBack} = useNavigation();
   return (
     <Shadow shadowStyle={styles.backBtnShadow}>

@@ -31,6 +31,7 @@ export const colors = {
   xLightGreen: '#f0fbf5',
   greenLite: '#9BDFC4',
   lightOrange: '#FFDAC6',
+  semiOrange: '#FCC4C4',
   mediumGrey: '#A2A2A2',
   pink: '#FF5EA2',
   lightBlack: '#232323',

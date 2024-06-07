@@ -46,6 +46,8 @@ const RootNavigator = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
+
+        presentation: 'card',
       }}>
       <Stack.Screen name={'Welcome'} component={Welcome} />
       <Stack.Screen name={'Login'} component={Login} />

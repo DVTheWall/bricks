@@ -46,7 +46,7 @@ const Home = ({navigation}: any) => {
       <Header
         title={'Hello, '}
         name={'Quaid!'}
-        onLeftIconPress={() => {}}
+        // onLeftIconPress={() => {}}
         onRightIconPress1={() => navigation.navigate(SCREEN.PAYMENT)}
         onRightIconPress2={() => navigation.navigate(SCREEN.NOTIFICATION)}
         customHeaderStyle={{backgroundColor: colors.homeBg}}
@@ -140,7 +140,7 @@ const Home = ({navigation}: any) => {
               navigation.navigate(SCREEN.PROPERTYLIST, {isFromCustomer: true});
             }}>
             <Text style={styles.viewAllText}>{'More'}</Text>
-            <Image source={icons.downChevron} style={styles.downChevron} />
+            {/* <Image source={icons.downChevron} style={styles.downChevron} /> */}
           </TouchableOpacity>
         </View>
         <FlatList

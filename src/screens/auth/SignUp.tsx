@@ -88,14 +88,14 @@ const SignUp = ({navigation}: any) => {
         <StepIndicator
           step={1}
           isLine
-          bgColor={stepCount > 1 && colors.green}
+          bgColor={stepCount > 1 ? colors.green : colors.primary}
         />
         <StepIndicator
           step={2}
           isLine
           bgColor={
             stepCount < 2
-              ? colors.mediumGrey
+              ? colors.xLightGrey
               : stepCount > 2
               ? colors.green
               : colors.primary
@@ -105,7 +105,7 @@ const SignUp = ({navigation}: any) => {
           step={3}
           bgColor={
             stepCount < 3
-              ? colors.mediumGrey
+              ? colors.xLightGrey
               : stepCount > 3
               ? colors.green
               : colors.primary

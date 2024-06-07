@@ -5,6 +5,7 @@ import BackButton from './BackButton';
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
+import {HeaderProps} from '../../interface/Common';
 import {colors, fontSize, hp, wp} from '../../utils';
 
 const Header = ({
@@ -17,7 +18,7 @@ const Header = ({
   onRightIconPress1,
   onRightIconPress2,
   customHeaderStyle,
-}: any) => {
+}: HeaderProps) => {
   return (
     <View style={[styles.container, customHeaderStyle]}>
       <View style={commonStyles.flexRow}>

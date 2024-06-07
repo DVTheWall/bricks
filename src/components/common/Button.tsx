@@ -1,27 +1,11 @@
 import React from 'react';
-import {
-  Text,
-  Image,
-  ViewStyle,
-  TextStyle,
-  StyleSheet,
-  TouchableOpacity,
-  StyleProp,
-} from 'react-native';
+import {Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
+import Shadow from './Shadow';
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {colors, fontSize, hp, wp} from '../../utils';
-import Shadow from './Shadow';
-
-interface CustomButtonProps {
-  title: string;
-  isIcon?: boolean;
-  onPress: () => void;
-  textStyle?: TextStyle;
-  buttonStyle?: ViewStyle;
-  shadowStyle?: StyleProp<ViewStyle>;
-}
+import {CustomButtonProps} from '../../interface/Common';
 
 const Button: React.FC<CustomButtonProps> = ({
   title,
@@ -46,18 +30,13 @@ const Button: React.FC<CustomButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    // elevation: 5,
     height: hp(48),
-    // shadowOpacity: 1,
-    // shadowRadius: 0.5,
     borderRadius: wp(10),
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
     paddingHorizontal: wp(24),
-    // shadowColor: colors.black,
     backgroundColor: colors.primary,
-    // shadowOffset: {width: 0, height: hp(2)},
   },
   text: {
     textAlign: 'center',

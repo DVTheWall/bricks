@@ -425,6 +425,24 @@ export const carouselData = [
   {
     uri: 'https://s3-alpha-sig.figma.com/img/a1db/6a57/2b0ebdb52da7ce12cfbbd236745f8811?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=URtxqcDxh9qIcI6QlQCLUf5-n0Hz1EhxtTzYVcUmebJ1ok8nvuo8bt4lHO3u2weNtxozXrHuEtd7U2YWUwVdyPF9wk6oe39Y-GNlOfifau2RM-2vK7h-kvvnnNPkNtwJdmxs1-57UxHKc6SmQnXJxZFz7Rf~xr1sf6EVq9WlU~d1IRlp8tdwX2GBSk9BTnKaUwO8TR1TB~lszZA3S8SvDATcPZ54qrkibszq6XCR5z7LrkE2bqKrRVLSDhdPjJvIrsOzfpgiFcZ6SQ2o3PmSmMR4c8MYPYlfL3pHWN4Qn8lqXMbtju1FFrLzo4vFkcjaoDrtUDy7syBtTkq90I6Qrg__',
   },
+  {
+    uri: 'https://s3-alpha-sig.figma.com/img/a1db/6a57/2b0ebdb52da7ce12cfbbd236745f8811?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=URtxqcDxh9qIcI6QlQCLUf5-n0Hz1EhxtTzYVcUmebJ1ok8nvuo8bt4lHO3u2weNtxozXrHuEtd7U2YWUwVdyPF9wk6oe39Y-GNlOfifau2RM-2vK7h-kvvnnNPkNtwJdmxs1-57UxHKc6SmQnXJxZFz7Rf~xr1sf6EVq9WlU~d1IRlp8tdwX2GBSk9BTnKaUwO8TR1TB~lszZA3S8SvDATcPZ54qrkibszq6XCR5z7LrkE2bqKrRVLSDhdPjJvIrsOzfpgiFcZ6SQ2o3PmSmMR4c8MYPYlfL3pHWN4Qn8lqXMbtju1FFrLzo4vFkcjaoDrtUDy7syBtTkq90I6Qrg__',
+  },
+  {
+    uri: 'https://s3-alpha-sig.figma.com/img/cb3b/2a4f/afaebfb0ff9ee617d8edcfbe9fb35963?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=MIN8BQTvwNSp~iALf~A68JlBMWeuR-k~-97Kk8teU6xPx9ZRVzZ9baHkt~GUmq--CLJ~rdz8fLYIwShrbF5vXrVTh5hOsfGbv0BgvkRHfokLr~Zg36piGLW-ejyNHEJwOWEmLpsSaZ51XzARzB46O4kg0ewNvk-O4ymijqAn3Laclo99sC3ph~N0Fx3-4SXoohN8MAk0Yx4WrL90GHNzZaSIud5iVruB2B-CESrmVrcLsgloCgbU86~pK6Us7AEri8Uv~fvV9IBKfHiFGYSjjCAhZvALmFz0Rx-lZSedlmMLnRybaYhdgAYSqNNwR6B6JMtJ1-I2Ocwc5HkYnVbvAw__',
+  },
+  {
+    uri: 'https://s3-alpha-sig.figma.com/img/33d6/7a46/a3f63f9e85327c18c42ecda382af7390?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=o7PCkR3wuilzdL9aDSqzC~FA-XF6YEJvQ5hBSATh3pXFYsCuLjqwOq-gQxj4yWFM0GOpD-XI-etJGoO11OCp20YK9d0hb9Q9Lc-RgMxZHqHuQuybAEFAo0~ejft6XAh6Inn8D77v0CN8eBU8TjbwDEgJFl-YbLiMu-G1I1b84ylT~Mk0ZLOa8tMi-tPnCejGD6m3Yr1yc3Q6Eswgv0TgpUsnIe6CKuf2KLQKoOaRcpKJ8H8INCiyKf-W9otFR5g300GlChpmI~WsDQ2SZPf-Uf1Xr6FMlQFAHIWoSgrhUpSDvr9rtnkEyGd2Qa-NPr0ljhjFsMyMk8uyBl8rk3-vJA__',
+  },
+  {
+    uri: 'https://s3-alpha-sig.figma.com/img/73d5/40e3/d8cf7e3fb8cdd4f9a223fb8d182a7794?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=hW3o9c4iLNy-pZ-V1LevRRKJUFEKPwHPTvyhJbOmBoBkuaNNrMI2X9CAjoqbE2DLTSNTl~eijrW9esfYgmABlLWASC6btYpyP0TWb9tpvynQHAuCehie28qr8AKup06y5LeCN71KAasQyjeBfBwoOX03Fqe9Rm~JaImvOvoaVPhMmJmqfnEyD~q0IN9tB3WcpLEq69zcsw7I2BQ2veQaMzN49ktKEHEMN3gaSASKB2KAPRsMvkEWBXUSFuvKB-6dtWW5sFBvHOylnHGY0-LpfLtYG5XBhioGRSW1qz0qcVjnqgu7uWpnl6TgIYhgAy52TrIUMRdV67sKwXOe7rYXJw__',
+  },
+  {
+    uri: 'https://s3-alpha-sig.figma.com/img/3b04/9f1e/a1a3eb220e2862a1abf5640908c336b0?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=EnKEAHYVK90RjOmAoyHPsz7O~1ZdGTSw-XVTC1fHdcMLHI4GWllKzaj1mirNWXRxCNaMgO7vDqTN4lRflAhLaxEFRKZMr-qM2VHVy3GBl8vDdodv0B~-zgZr83LlKKkVFVklWXUTIqP1nD7wET6-q0qw8vqVDDeLd-iV9ylGrXV2XNAbcl7u~hVf1-equAyU-pvoaPgfMFWgd9LaIbpLxPyWdTc-rfmZ-QruCyZsViJdOlTYKvvtOS7WRXVYAvaBbFKRE252xXw3EQKAED~ICFET3rZOzNTpOa9JEJVNmMXNo7wh-Q5BXnF6aeSD5n9TV8MDkMd6b531ya2Yalozrw__',
+  },
+  {
+    uri: 'https://s3-alpha-sig.figma.com/img/a1db/6a57/2b0ebdb52da7ce12cfbbd236745f8811?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=URtxqcDxh9qIcI6QlQCLUf5-n0Hz1EhxtTzYVcUmebJ1ok8nvuo8bt4lHO3u2weNtxozXrHuEtd7U2YWUwVdyPF9wk6oe39Y-GNlOfifau2RM-2vK7h-kvvnnNPkNtwJdmxs1-57UxHKc6SmQnXJxZFz7Rf~xr1sf6EVq9WlU~d1IRlp8tdwX2GBSk9BTnKaUwO8TR1TB~lszZA3S8SvDATcPZ54qrkibszq6XCR5z7LrkE2bqKrRVLSDhdPjJvIrsOzfpgiFcZ6SQ2o3PmSmMR4c8MYPYlfL3pHWN4Qn8lqXMbtju1FFrLzo4vFkcjaoDrtUDy7syBtTkq90I6Qrg__',
+  },
 ];
 
 export const customersList = [
@@ -642,5 +660,50 @@ export const ordersListData = [
     status: 'Status',
     profileURL:
       'https://s3-alpha-sig.figma.com/img/b449/79e1/c98ecb3ec92ac86805fe55581fbeaa60?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iWKKsusS6BsZ~RNgvoF~RSAeda7bSKnj8Mlzn3Pe97HVWbWCiM~XFmfzpsWv4gNz1TSUySS1V1keWR~K5Sk4VNQcGTJEFU0E57ZXv1pEVqwmAuHmt9cqPo09Jr5NQ63egh7DnUA3wEiEPmsWBoa3pMZoR0mARutfhJA0RJB8OPnruU0Jkl5843KgKVAIIxF4RmuCBEWFA9VN-3Xnw0u3GHTWyRM2HxqtCRFb6oAbVZSRO~93qNfQf6gPK1na3x1lC-H9LlyWL4HDJxZzLX95FUd7dnFWcwIfrXfGo4vxcMXISHeVyj9p3lBl4sqgZh8UYgKDTojORLLzLg4i9~5VSQ__',
+  },
+];
+
+export const propertyHighlightData = [
+  {
+    id: 1,
+    icon: icons.building,
+    detail: 'Hotel',
+    description: 'Property Type',
+    isUnit: false,
+  },
+  {
+    id: 2,
+    icon: icons.threeSquare,
+    detail: '25,000',
+    description: 'Total Sqft',
+    isUnit: true,
+  },
+  {
+    id: 3,
+    icon: icons.money,
+    detail: '₹9000',
+    description: 'Minimum Purchase',
+    isUnit: true,
+  },
+  {
+    id: 4,
+    icon: icons.building,
+    detail: 'Hotel',
+    description: 'Property Type',
+    isUnit: false,
+  },
+  {
+    id: 5,
+    icon: icons.threeSquare,
+    detail: '25,000',
+    description: 'Total Sqft',
+    isUnit: true,
+  },
+  {
+    id: 6,
+    icon: icons.money,
+    detail: '₹9000',
+    description: 'Minimum Purchase',
+    isUnit: true,
   },
 ];

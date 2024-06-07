@@ -42,7 +42,6 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
                 <Text style={styles.growPercText}>
                   {`${item?.longTermPerc}% `}
                 </Text>
-                <Image source={icons.growArrow} style={styles.growArrow} />
               </View>
             </View>
           </View>
@@ -112,18 +111,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: wp(100),
-    paddingVertical: hp(2),
-    paddingHorizontal: wp(5),
+    paddingVertical: hp(1),
+    paddingHorizontal: wp(3),
     backgroundColor: colors.lightGreen,
   },
   growPercText: {
     color: colors.green,
     fontSize: fontSize(10),
     fontFamily: font.semiBold,
+    lineHeight: hp(13),
   },
   growArrow: {
-    width: wp(7),
-    height: hp(7),
+    width: wp(8),
+    height: hp(8),
     resizeMode: 'contain',
   },
   longTermText: {

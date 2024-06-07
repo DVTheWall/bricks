@@ -4,10 +4,9 @@ import {StyleSheet, Text, View} from 'react-native';
 import {font} from '../../utils/fonts';
 import {commonStyles} from '../../styles/styles';
 import {colors, fontSize, hp, wp} from '../../utils';
+import {StepIndicatorProps} from '../../interface/Common';
 
-// type Props = {};
-
-const StepIndicator = ({bgColor, step, isLine}: any) => {
+const StepIndicator = ({bgColor, step, isLine}: StepIndicatorProps) => {
   return (
     <View style={commonStyles.flexRow}>
       <View
@@ -20,7 +19,7 @@ const StepIndicator = ({bgColor, step, isLine}: any) => {
             styles.stepText,
             {
               color:
-                bgColor === colors.mediumGrey ? colors.black : colors.white,
+                bgColor === colors.xLightGrey ? colors.black : colors.white,
             },
           ]}>
           {step}
@@ -56,9 +55,9 @@ const styles = StyleSheet.create({
   },
   lineStyle: {
     width: wp(110),
-    marginHorizontal: wp(12),
-    borderWidth: wp(0.5),
-    borderStyle: 'dashed',
     alignSelf: 'center',
+    borderStyle: 'dashed',
+    borderWidth: wp(0.5),
+    marginHorizontal: wp(12),
   },
 });

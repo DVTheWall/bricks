@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   FlatList,
   Image,
@@ -16,6 +17,7 @@ import {font} from '../../utils/fonts';
 import Wallet from '../../components/common/Wallet';
 import {icons} from '../../utils/icons';
 import {savedCardList} from '../../utils/dataConstants';
+import Button from '../../components/common/Button';
 
 type Props = {};
 
@@ -71,7 +73,16 @@ const Payment = ({navigation}: any) => {
         <Text style={styles.titleText}>{'Bricks Wallet'}</Text>
         <Wallet />
       </View>
-      <View style={styles.btnContainer}>
+      <View style={styles.bottomBtnContainer}>
+        <Button
+          title="Pay Now"
+          onPress={() => {}}
+          buttonStyle={styles.btn}
+          shadowStyle={{shadowOpacity: 0}}
+        />
+      </View>
+      <SafeAreaView />
+      {/* <View style={styles.btnContainer}>
         <TouchableOpacity onPress={() => {}} style={styles.btnStyle}>
           <Image
             source={icons.plus}
@@ -83,8 +94,8 @@ const Payment = ({navigation}: any) => {
           <Image source={icons.miniTrans} style={commonStyles.icon16} />
           <Text style={styles.btnText}>{'Withdraw'}</Text>
         </TouchableOpacity>
-      </View>
-      <Text style={styles.titleText}>{'Credit and Debit Card'}</Text>
+      </View> */}
+      {/* <Text style={styles.titleText}>{'Credit and Debit Card'}</Text>
       <View>
         <FlatList data={cardList} renderItem={renderCardList} />
         <TouchableOpacity style={styles.addPaymentBtn}>
@@ -94,7 +105,7 @@ const Payment = ({navigation}: any) => {
           />
           <Text style={styles.addPaymentText}>{'Add payment method'}</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -113,6 +124,7 @@ const styles = StyleSheet.create({
     borderTopWidth: wp(0.5),
     borderColor: colors.borderColor,
     marginTop: hp(8),
+    flex: 1,
   },
   titleText: {
     fontFamily: font.semiBold,
@@ -182,5 +194,13 @@ const styles = StyleSheet.create({
     fontFamily: font.semiBold,
     fontSize: fontSize(14),
     color: colors.primary,
+  },
+  bottomBtnContainer: {
+    paddingHorizontal: wp(15),
+    paddingTop: hp(8),
+    paddingBottom: hp(24),
+  },
+  btn: {
+    borderRadius: wp(4),
   },
 });

@@ -16,26 +16,7 @@ import {colors, fontSize, hp, wp} from '../../utils';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-
-type Props = {
-  value: string;
-  label?: string;
-  error?: string;
-  maxLength?: number;
-  editable?: boolean;
-  onBlur?: () => void;
-  multiline?: boolean;
-  onFocus?: () => void;
-  placeholder?: string;
-  isMandetory?: boolean;
-  isRightIcon?: boolean;
-  onRightIconPress?: () => void;
-  onChangeText?: (text: string) => void;
-  customLabelStyle?: StyleProp<TextStyle>;
-  customInputStyle?: StyleProp<TextStyle>;
-  customShadowStyle?: StyleProp<ViewStyle>;
-  customTextBoxStyle?: StyleProp<ViewStyle>;
-};
+import {TextInputProps} from '../../interface/Common';
 
 const TextInputComp = ({
   value,
@@ -55,7 +36,7 @@ const TextInputComp = ({
   customInputStyle,
   customShadowStyle,
   customTextBoxStyle,
-}: Props) => {
+}: TextInputProps) => {
   return (
     <View>
       {label && (

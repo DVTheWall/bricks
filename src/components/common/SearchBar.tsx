@@ -11,20 +11,14 @@ import Shadow from './Shadow';
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {colors, fontSize, hp, wp} from '../../utils';
-
-type Props = {
-  value: string;
-  placeholder?: string;
-  onFilterPress: () => void;
-  onChangeText: (text: string) => void;
-};
+import {SearchBarProps} from '../../interface/Common';
 
 const SearchBar = ({
   value,
   placeholder,
   onChangeText,
   onFilterPress,
-}: Props) => {
+}: SearchBarProps) => {
   return (
     <View style={styles.container}>
       <Shadow shadowStyle={styles.shadowStyle}>

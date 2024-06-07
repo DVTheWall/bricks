@@ -1,17 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
 import {
-  Animated,
   Dimensions,
   FlatList,
   Image,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {commonStyles} from '../../styles/styles';
 import {icons} from '../../utils/icons';
 import FastImage from 'react-native-fast-image';
@@ -23,18 +26,12 @@ import {SCREEN} from '../../utils/screenConstants';
 import BackButtonBlur from '../../components/common/BackButtonBlur';
 import Carousel from 'react-native-reanimated-carousel';
 import LinearGradient from 'react-native-linear-gradient';
-import {carouselData} from '../../utils/dataConstants';
-
-// type Props = {};
-const HEADER_MAX_HEIGHT = 300;
-const HEADER_MIN_HEIGHT = 130;
-const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
+import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
 
 const {width} = Dimensions.get('window');
 
-const HighlightItem = ({icon, detail, isUnit, description}: any) => {
+const HighlightItem = ({item}: any) => {
   return (
-    // <Shadow shadowStyle={styles.highlightBoxShadow}>
     <View
       style={{
         alignItems: 'center',
@@ -43,11 +40,12 @@ const HighlightItem = ({icon, detail, isUnit, description}: any) => {
         borderColor: colors.borderColor,
         padding: wp(8),
         backgroundColor: 'rgba(245, 246, 248, 1)',
-        width: '30%',
+        marginRight: wp(16),
+        width: wp(110),
       }}>
       <Image
         style={{width: wp(20), height: wp(20), resizeMode: 'contain'}}
-        source={icon}
+        source={item?.icon}
       />
       <Text
         style={{
@@ -56,8 +54,8 @@ const HighlightItem = ({icon, detail, isUnit, description}: any) => {
           color: colors.lightBlack,
           marginVertical: hp(8),
         }}>
-        {detail}
-        {isUnit && (
+        {item?.detail}
+        {item?.isUnit && (
           <Text
             style={{
               fontFamily: font.regular,
@@ -75,10 +73,9 @@ const HighlightItem = ({icon, detail, isUnit, description}: any) => {
           color: colors.lightBlack,
           lineHeight: hp(13),
         }}>
-        {description}
+        {item?.description}
       </Text>
     </View>
-    // </Shadow>
   );
 };
 
@@ -86,9 +83,26 @@ const PropertyDetails = ({navigation, route}: any) => {
   const {item} = route?.params;
 
   const carouselRef = useRef(null);
+  const flatListRef = useRef(null);
+  const highlightFlatListRef = useRef(null);
+  const [highlightIndex, setHighlightIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const scrollY = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      let nextIndex = highlightIndex + 1;
+      if (nextIndex >= propertyHighlightData.length - 2) {
+        nextIndex = 0;
+      }
+      highlightFlatListRef.current?.scrollToIndex({
+        index: nextIndex,
+        animated: true,
+      });
+      setHighlightIndex(nextIndex);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [highlightIndex]);
 
   const renderItem = ({item}: any) => (
     <View>
@@ -100,24 +114,10 @@ const PropertyDetails = ({navigation, route}: any) => {
     </View>
   );
 
-  const headerHeight = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE],
-    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-    extrapolate: 'clamp',
-  });
+  const renderPropertyHighlight = ({item}: any) => {
+    return <HighlightItem item={item} />;
+  };
 
-  const headerTitleOpacity = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE / 1.3, HEADER_SCROLL_DISTANCE],
-    outputRange: [1, 0, 0],
-    extrapolate: 'clamp',
-  });
-
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     StatusBar.setHidden(true);
-  //   });
-  //   return unsubscribe;
-  // }, [navigation]);
   const data = [
     {value: 5000, label: '1'},
     {value: 8000, label: '3'},
@@ -137,13 +137,29 @@ const PropertyDetails = ({navigation, route}: any) => {
     {value: 5600, label: '31'},
   ];
 
+  const handleCarouselSnap = (index: number) => {
+    setActiveIndex(index);
+    if (flatListRef.current) {
+      //@ts-ignore
+      flatListRef.current.scrollToIndex({index, animated: true});
+    }
+  };
+
+  const handleFlatListPress = (index: number) => {
+    setActiveIndex(index);
+    if (carouselRef.current) {
+      //@ts-ignore
+      carouselRef.current.scrollTo({index, animated: true});
+    }
+  };
+
   return (
     <View style={commonStyles.container}>
-      <StatusBar
+      {/* <StatusBar
         barStyle={'light-content'}
         translucent
         backgroundColor="transparent"
-      />
+      /> */}
       <View
         style={{
           position: 'absolute',
@@ -153,38 +169,30 @@ const PropertyDetails = ({navigation, route}: any) => {
         }}>
         <BackButtonBlur />
       </View>
-      <Animated.View
+      <View
         style={{
           alignItems: 'center',
           height: width * 0.75,
           borderBottomRightRadius: wp(20),
           borderBottomLeftRadius: wp(20),
           overflow: 'hidden',
-          // top: 0,
-          // left: 0,
-          // right: 0,
-          // position: 'absolute',
         }}>
         <Carousel
-          loop={false}
+          loop={true}
           ref={carouselRef}
           data={carouselData}
           renderItem={renderItem}
           width={width}
           height={width * 0.75}
-          onSnapToItem={index => setActiveIndex(index)}
+          onSnapToItem={handleCarouselSnap}
         />
         <FlatList
-          ref={carouselRef}
+          ref={flatListRef}
           data={carouselData}
           horizontal
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item, index}) => (
-            <TouchableOpacity
-              onPress={() => {
-                setActiveIndex(index);
-                // carouselRef?.current?.scrollTo({index});
-              }}>
+            <TouchableOpacity onPress={() => handleFlatListPress(index)}>
               <FastImage
                 source={{uri: item.uri}}
                 style={[
@@ -206,17 +214,8 @@ const PropertyDetails = ({navigation, route}: any) => {
           ListFooterComponent={() => <View style={{width: wp(40)}} />}
           showsHorizontalScrollIndicator={false}
         />
-      </Animated.View>
-      <Animated.ScrollView
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-        // contentContainerStyle={styles.scrollViewContent}
-        // scrollEventThrottle={16}
-        // onScroll={Animated.event(
-        //   [{nativeEvent: {contentOffset: {y: scrollY}}}],
-        //   {useNativeDriver: false},
-        // )}
-      >
+      </View>
+      <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
         <View>
           <View style={styles.boxContainer}>
             <View>
@@ -314,12 +313,22 @@ const PropertyDetails = ({navigation, route}: any) => {
 
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+                // flexDirection: 'row',
+                // alignItems: 'center',
+                // justifyContent: 'space-between',
                 marginTop: hp(14),
               }}>
-              <HighlightItem
+              <FlatList
+                horizontal
+                ref={highlightFlatListRef}
+                data={propertyHighlightData}
+                renderItem={renderPropertyHighlight}
+                showsHorizontalScrollIndicator={false}
+                onScrollToIndexFailed={() => {
+                  setHighlightIndex(0);
+                }}
+              />
+              {/* <HighlightItem
                 icon={icons.building}
                 detail={'Hotel'}
                 description={'Property Type'}
@@ -336,24 +345,13 @@ const PropertyDetails = ({navigation, route}: any) => {
                 detail={'₹9000'}
                 description={'Minimum Purchase'}
                 isUnit={true}
-              />
+              /> */}
             </View>
           </View>
 
           <View style={styles.boxView}>
             <Text style={styles.boxTitleText}>{'Investment Graph'}</Text>
             <View style={styles.chartContainer}>
-              {/* <LineChart
-                data={data}
-                width={400}
-                height={250}
-                xAxis={{
-                  // Adjust interval for 2 days
-                  numberOfVisibleLabels: Math.ceil(data.length / 2), // Ensure all labels are visible
-                  ...chartConfig.xAxis,
-                }}
-                yAxis={chartConfig.yAxis}
-              /> */}
               <LineChart
                 data={data}
                 showDataPointOnFocus
@@ -374,7 +372,6 @@ const PropertyDetails = ({navigation, route}: any) => {
                 xAxisColor={colors.mediumGrey}
                 yAxisColor={colors.mediumGrey}
                 maxValue={10000}
-
                 // endSpacing={30}
                 // yAxisOffset={}
               />
@@ -446,7 +443,7 @@ const PropertyDetails = ({navigation, route}: any) => {
           </View>
           <View style={{height: hp(40)}} />
         </View>
-      </Animated.ScrollView>
+      </ScrollView>
 
       <View style={styles.btnContainer}>
         <Button
@@ -457,68 +454,6 @@ const PropertyDetails = ({navigation, route}: any) => {
         />
       </View>
       <SafeAreaView />
-      {/* <Animated.View style={[styles.header, {height: headerHeight}]}>
-        <FastImage
-          source={{
-            uri: 'https://img.freepik.com/free-photo/swimming-pool-beach-luxury-hotel-outdoor-pools-spa-amara-dolce-vita-luxury-hotel-resort-tekirova-kemer-turkey_146671-18751.jpg?t=st=1716921896~exp=1716925496~hmac=4d793fe9b745622b6a3aecb14582404a6e8c228a39c3694ae71b8b29f2c447e8&w=1060',
-          }}
-          style={{width: '100%', height: HEADER_MAX_HEIGHT}}
-        />
-      </Animated.View> */}
-      {/* <Animated.View
-        style={{
-          alignItems: 'center',
-          height: headerHeight,
-          borderBottomRightRadius: wp(20),
-          borderBottomLeftRadius: wp(20),
-          overflow: 'hidden',
-          top: 0,
-          left: 0,
-          right: 0,
-          position: 'absolute',
-        }}>
-        <Carousel
-          loop={false}
-          ref={carouselRef}
-          data={carouselData}
-          renderItem={renderItem}
-          width={width}
-          height={width * 0.75}
-          onSnapToItem={index => setActiveIndex(index)}
-        />
-        <FlatList
-          ref={carouselRef}
-          data={carouselData}
-          horizontal
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item, index}) => (
-            <TouchableOpacity
-              onPress={() => {
-                setActiveIndex(index);
-                carouselRef?.current?.scrollTo({index});
-              }}>
-              <Image
-                source={{uri: item.uri}}
-                style={[
-                  styles.previewImage,
-                  {
-                    borderColor:
-                      index === activeIndex
-                        ? colors.primary
-                        : colors.mediumGrey,
-                    borderWidth: index === activeIndex ? wp(2) : wp(1),
-                  },
-                ]}
-              />
-            </TouchableOpacity>
-          )}
-          contentContainerStyle={styles.previewList}
-          style={styles.previewFlatList}
-          ItemSeparatorComponent={() => <View style={{width: wp(16)}} />}
-          ListFooterComponent={() => <View style={{width: wp(40)}} />}
-          showsHorizontalScrollIndicator={false}
-        />
-      </Animated.View> */}
     </View>
   );
 };
@@ -526,17 +461,6 @@ const PropertyDetails = ({navigation, route}: any) => {
 export default PropertyDetails;
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    paddingTop: HEADER_MAX_HEIGHT,
-  },
-  header: {
-    top: 0,
-    left: 0,
-    right: 0,
-    overflow: 'hidden',
-    position: 'absolute',
-    height: HEADER_MAX_HEIGHT,
-  },
   boxPercView: {
     backgroundColor: colors.lightGreen,
     borderRadius: wp(100),
@@ -553,7 +477,6 @@ const styles = StyleSheet.create({
   boxContainer: {
     padding: wp(16),
     flexDirection: 'row',
-    // alignContent: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: wp(0.5),
     borderColor: colors.borderColor,
