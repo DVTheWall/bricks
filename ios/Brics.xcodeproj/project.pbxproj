@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* BricsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BricsTests.m */; };
 		0C80B921A6F3F58F76C31292 /* libPods-Brics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Brics.a */; };
+		0C814E65DE4348F59BCE6C0E /* Manrope-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3294042133742FDB56316F7 /* Manrope-Regular.ttf */; };
+		122FA85DCE4848F5AB873967 /* Manrope-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B0A783AD697482EB37B5D29 /* Manrope-Medium.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -18,23 +20,25 @@
 		1E4D9E379577433FA3ECE93A /* Mukta-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BAA0A724AD74AA594D8A3AD /* Mukta-Bold.ttf */; };
 		243D4C4F66164303AB582688 /* Mukta-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 669BA4690411496884650AB6 /* Mukta-Regular.ttf */; };
 		369293E8318D4E288D2E3555 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 092F1A7E6FD74C87B66CA181 /* Quicksand-Medium.ttf */; };
+		3E8778BDBDF842AAAA2A9E64 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E46CF1FED4B4B52BDAD9555 /* Poppins-SemiBold.ttf */; };
+		40D5C91A006740858E238F06 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B7DEB04F08C4D999ED485E2 /* Poppins-Bold.ttf */; };
 		61AB0888149F4F1ABABD58B6 /* SourceSans3-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4ED0E98DD2B749D29D312186 /* SourceSans3-ExtraBold.ttf */; };
 		6B20215A8749412AB2974E96 /* SourceSans3-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A402E943E73E43D1AA68F7CB /* SourceSans3-Light.ttf */; };
 		6D8BB298C8514F8E91EC5D31 /* SourceSans3-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3E2572CDB404390B385F7FF /* SourceSans3-SemiBold.ttf */; };
+		72FAD02D33764019A1831217 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1DFD6F52826748A5BFB9FDE5 /* Poppins-Medium.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-Brics-BricsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Brics-BricsTests.a */; };
+		7B5534F5522C472CB893009B /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD31C9D95C494D5A85921EAC /* Poppins-Regular.ttf */; };
 		7DAE700EF03E4CA7A018648A /* Mukta-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2318DF0A0A8347249C8C0591 /* Mukta-Medium.ttf */; };
 		801E87CBD9064FB18C6C47F4 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5ED9E0824AA544FCB3D9A308 /* Quicksand-Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		969EF41BAA1546CDAB2627F2 /* SourceSans3-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 334E27C804AD4DB0BE0D5B97 /* SourceSans3-Black.ttf */; };
+		B6B62EB1489E4F7C866A96CA /* Manrope-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1358C365273741D6B03ABF27 /* Manrope-SemiBold.ttf */; };
+		BBE3E54A562544BAA391A9AD /* Manrope-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27487850477B406DB663021E /* Manrope-Bold.ttf */; };
 		D0B3D71719034147A82FA6E8 /* Quicksand-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E137702279C3481CBB5EC3BB /* Quicksand-SemiBold.ttf */; };
 		E526D39B94E84D3ABE75D857 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F6E857BF0F34258B47488FE /* Quicksand-Light.ttf */; };
 		F2F94E337B2E4A4C84AFBE33 /* SourceSans3-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C118565CE3B94350B05954F1 /* SourceSans3-Bold.ttf */; };
 		F74350BD442F4636AAD03441 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA5AC0E9500A4588A6959191 /* Quicksand-Bold.ttf */; };
 		FA50507E26894DB7922F9323 /* SourceSans3-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38CE73D463E84784BC944FFD /* SourceSans3-ExtraLight.ttf */; };
-		BBE3E54A562544BAA391A9AD /* Manrope-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27487850477B406DB663021E /* Manrope-Bold.ttf */; };
-		122FA85DCE4848F5AB873967 /* Manrope-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B0A783AD697482EB37B5D29 /* Manrope-Medium.ttf */; };
-		0C814E65DE4348F59BCE6C0E /* Manrope-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3294042133742FDB56316F7 /* Manrope-Regular.ttf */; };
-		B6B62EB1489E4F7C866A96CA /* Manrope-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1358C365273741D6B03ABF27 /* Manrope-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +56,9 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BricsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BricsTests.m; sourceTree = "<group>"; };
 		092F1A7E6FD74C87B66CA181 /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Medium.ttf"; path = "../assets/fonts/Quicksand-Medium.ttf"; sourceTree = "<group>"; };
+		0B7DEB04F08C4D999ED485E2 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		0BAA0A724AD74AA594D8A3AD /* Mukta-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Mukta-Bold.ttf"; path = "../assets/fonts/Mukta-Bold.ttf"; sourceTree = "<group>"; };
+		1358C365273741D6B03ABF27 /* Manrope-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Manrope-SemiBold.ttf"; path = "../assets/fonts/Manrope-SemiBold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Brics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Brics/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Brics/AppDelegate.mm; sourceTree = "<group>"; };
@@ -62,7 +68,11 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Brics/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Brics-BricsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Brics-BricsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DBD5E683CD74EEB901F4186 /* SourceSans3-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Medium.ttf"; path = "../assets/fonts/SourceSans3-Medium.ttf"; sourceTree = "<group>"; };
+		1DFD6F52826748A5BFB9FDE5 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		2318DF0A0A8347249C8C0591 /* Mukta-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Mukta-Medium.ttf"; path = "../assets/fonts/Mukta-Medium.ttf"; sourceTree = "<group>"; };
+		27487850477B406DB663021E /* Manrope-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Manrope-Bold.ttf"; path = "../assets/fonts/Manrope-Bold.ttf"; sourceTree = "<group>"; };
+		2B0A783AD697482EB37B5D29 /* Manrope-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Manrope-Medium.ttf"; path = "../assets/fonts/Manrope-Medium.ttf"; sourceTree = "<group>"; };
+		2E46CF1FED4B4B52BDAD9555 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		334E27C804AD4DB0BE0D5B97 /* SourceSans3-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Black.ttf"; path = "../assets/fonts/SourceSans3-Black.ttf"; sourceTree = "<group>"; };
 		38CE73D463E84784BC944FFD /* SourceSans3-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-ExtraLight.ttf"; path = "../assets/fonts/SourceSans3-ExtraLight.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Brics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brics.debug.xcconfig"; path = "Target Support Files/Pods-Brics/Pods-Brics.debug.xcconfig"; sourceTree = "<group>"; };
@@ -77,16 +87,14 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Brics/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Brics-BricsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brics-BricsTests.release.xcconfig"; path = "Target Support Files/Pods-Brics-BricsTests/Pods-Brics-BricsTests.release.xcconfig"; sourceTree = "<group>"; };
 		A402E943E73E43D1AA68F7CB /* SourceSans3-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Light.ttf"; path = "../assets/fonts/SourceSans3-Light.ttf"; sourceTree = "<group>"; };
+		B3294042133742FDB56316F7 /* Manrope-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Manrope-Regular.ttf"; path = "../assets/fonts/Manrope-Regular.ttf"; sourceTree = "<group>"; };
 		BA5AC0E9500A4588A6959191 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
 		C118565CE3B94350B05954F1 /* SourceSans3-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Bold.ttf"; path = "../assets/fonts/SourceSans3-Bold.ttf"; sourceTree = "<group>"; };
 		E137702279C3481CBB5EC3BB /* Quicksand-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-SemiBold.ttf"; path = "../assets/fonts/Quicksand-SemiBold.ttf"; sourceTree = "<group>"; };
 		E153609EC311414591A0A1ED /* SourceSans3-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-Regular.ttf"; path = "../assets/fonts/SourceSans3-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F3E2572CDB404390B385F7FF /* SourceSans3-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSans3-SemiBold.ttf"; path = "../assets/fonts/SourceSans3-SemiBold.ttf"; sourceTree = "<group>"; };
-		27487850477B406DB663021E /* Manrope-Bold.ttf */ = {isa = PBXFileReference; name = "Manrope-Bold.ttf"; path = "../assets/fonts/Manrope-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2B0A783AD697482EB37B5D29 /* Manrope-Medium.ttf */ = {isa = PBXFileReference; name = "Manrope-Medium.ttf"; path = "../assets/fonts/Manrope-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B3294042133742FDB56316F7 /* Manrope-Regular.ttf */ = {isa = PBXFileReference; name = "Manrope-Regular.ttf"; path = "../assets/fonts/Manrope-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		1358C365273741D6B03ABF27 /* Manrope-SemiBold.ttf */ = {isa = PBXFileReference; name = "Manrope-SemiBold.ttf"; path = "../assets/fonts/Manrope-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FD31C9D95C494D5A85921EAC /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +225,10 @@
 				2B0A783AD697482EB37B5D29 /* Manrope-Medium.ttf */,
 				B3294042133742FDB56316F7 /* Manrope-Regular.ttf */,
 				1358C365273741D6B03ABF27 /* Manrope-SemiBold.ttf */,
+				0B7DEB04F08C4D999ED485E2 /* Poppins-Bold.ttf */,
+				1DFD6F52826748A5BFB9FDE5 /* Poppins-Medium.ttf */,
+				FD31C9D95C494D5A85921EAC /* Poppins-Regular.ttf */,
+				2E46CF1FED4B4B52BDAD9555 /* Poppins-SemiBold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -337,6 +349,10 @@
 				122FA85DCE4848F5AB873967 /* Manrope-Medium.ttf in Resources */,
 				0C814E65DE4348F59BCE6C0E /* Manrope-Regular.ttf in Resources */,
 				B6B62EB1489E4F7C866A96CA /* Manrope-SemiBold.ttf in Resources */,
+				40D5C91A006740858E238F06 /* Poppins-Bold.ttf in Resources */,
+				72FAD02D33764019A1831217 /* Poppins-Medium.ttf in Resources */,
+				7B5534F5522C472CB893009B /* Poppins-Regular.ttf in Resources */,
+				3E8778BDBDF842AAAA2A9E64 /* Poppins-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

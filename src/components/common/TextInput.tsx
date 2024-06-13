@@ -31,6 +31,7 @@ const TextInputComp = ({
   placeholder,
   isRightIcon,
   onChangeText,
+  keyboardType,
   onRightIconPress,
   customLabelStyle,
   customInputStyle,
@@ -62,6 +63,7 @@ const TextInputComp = ({
             onChangeText={onChangeText}
             placeholderTextColor={colors.darkGrey}
             multiline={multiline}
+            keyboardType={keyboardType}
           />
           {isRightIcon && (
             <TouchableOpacity

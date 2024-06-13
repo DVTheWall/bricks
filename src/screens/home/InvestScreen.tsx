@@ -1,29 +1,30 @@
 /* eslint-disable react-native/no-inline-styles */
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 import React, {useState} from 'react';
-import {commonStyles} from '../../styles/styles';
-import Header from '../../components/common/Header';
-import {colors, fontSize, hp, wp} from '../../utils';
+import {
+  Text,
+  View,
+  Image,
+  StatusBar,
+  ScrollView,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
+
 import {font} from '../../utils/fonts';
+import {icons} from '../../utils/icons';
+import {commonStyles} from '../../styles/styles';
+import Wallet from '../../components/common/Wallet';
+import Header from '../../components/common/Header';
 import Shadow from '../../components/common/Shadow';
 import Button from '../../components/common/Button';
+import {colors, fontSize, hp, wp} from '../../utils';
 import TextInputComp from '../../components/common/TextInput';
-import {icons} from '../../utils/icons';
-import Wallet from '../../components/common/Wallet';
 
 const InvestScreen = () => {
-  const [isMonthlyActive, setIsMonthlyActive] = useState(false);
   const [sqft, setSqft] = useState('');
   const [amount, setAmount] = useState('');
+  const [isMonthlyActive, setIsMonthlyActive] = useState(false);
 
   return (
     <View style={commonStyles.container}>
@@ -95,9 +96,9 @@ const InvestScreen = () => {
         </Shadow>
       </View>
 
-      <View style={{flex: 1, marginTop: hp(30)}}>
+      <View style={styles.tabContainerMonthlyActive}>
         {isMonthlyActive && (
-          <ScrollView style={{}}>
+          <ScrollView>
             <View style={styles.inputContainer}>
               <TextInputComp
                 label="Enter the Number of Sqft"
@@ -116,17 +117,8 @@ const InvestScreen = () => {
                 customTextBoxStyle={[styles.customTextBox, {marginBottom: 0}]}
               />
               <View style={[commonStyles.flexRow, {marginBottom: hp(32)}]}>
-                <Image
-                  source={icons.info}
-                  style={{height: wp(16), width: wp(16), resizeMode: 'contain'}}
-                />
-                <Text
-                  style={{
-                    fontFamily: font.semiBold,
-                    fontSize: fontSize(10),
-                    marginLeft: wp(5),
-                    color: colors.mediumGrey,
-                  }}>
+                <Image source={icons.info} style={commonStyles.icon16} />
+                <Text style={styles.totalAmountText}>
                   {'Total amount updates based on square footage selected.'}
                 </Text>
               </View>
@@ -139,18 +131,7 @@ const InvestScreen = () => {
                 customTextBoxStyle={styles.customTextBox}
               />
             </View>
-            <Text
-              style={{
-                fontFamily: font.semiBold,
-                fontSize: fontSize(12),
-                lineHeight: hp(15),
-                marginLeft: wp(16),
-                marginTop: hp(27),
-                color: colors.mediumGrey,
-                marginBottom: hp(12),
-              }}>
-              {'Pay with'}
-            </Text>
+            <Text style={styles.paywithText}>{'Pay with'}</Text>
             <Wallet />
           </ScrollView>
         )}
@@ -180,13 +161,13 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     height: hp(44),
-    marginHorizontal: wp(16),
-    backgroundColor: colors.tabBg,
+    padding: wp(4),
     marginTop: hp(20),
     borderRadius: wp(8),
-    padding: wp(4),
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
+    marginHorizontal: wp(16),
+    backgroundColor: colors.tabBg,
   },
   tabShadow: {
     flex: 1,
@@ -198,41 +179,60 @@ const styles = StyleSheet.create({
     },
   },
   tabView: {
-    justifyContent: 'center',
-    alignItems: 'center',
     height: '100%',
     borderRadius: wp(6),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tabText: {
-    fontFamily: font.semiBold,
     fontSize: fontSize(14),
+    fontFamily: font.semiBold,
   },
   tabSeperator: {
-    height: hp(20),
     width: wp(1),
-    backgroundColor: colors.white,
+    height: hp(20),
     marginHorizontal: wp(12),
+    backgroundColor: colors.white,
   },
   btnContainer: {
-    paddingHorizontal: wp(15),
     paddingVertical: hp(8),
+    paddingHorizontal: wp(15),
   },
   btn: {
     borderRadius: wp(4),
   },
   textInputLabel: {
-    fontSize: fontSize(12),
     lineHeight: hp(15),
+    fontSize: fontSize(12),
     color: colors.mediumGrey,
   },
   customTextBox: {
     borderRadius: wp(4),
-    borderColor: colors.borderColor,
     marginBottom: hp(12),
+    borderColor: colors.borderColor,
   },
   inputContainer: {
+    paddingHorizontal: wp(16),
     borderBottomWidth: wp(0.5),
     borderColor: colors.borderColor,
-    paddingHorizontal: wp(16),
+  },
+  totalAmountText: {
+    marginLeft: wp(5),
+    fontSize: fontSize(10),
+    color: colors.mediumGrey,
+    fontFamily: font.semiBold,
+  },
+  paywithText: {
+    marginTop: hp(27),
+    marginLeft: wp(16),
+    lineHeight: hp(15),
+    marginBottom: hp(12),
+    fontSize: fontSize(12),
+    color: colors.mediumGrey,
+    fontFamily: font.semiBold,
+  },
+  tabContainerMonthlyActive: {
+    flex: 1,
+    marginTop: hp(30),
   },
 });

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable handle-callback-err */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
 import React, {useState} from 'react';
 import {
@@ -16,9 +19,53 @@ import Button from '../../components/common/Button';
 import {colors, fontSize, hp, wp} from '../../utils';
 import TextInputComp from '../../components/common/TextInput';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useDispatch} from 'react-redux';
+import {login, sendOtp} from '../../store/action/authActions';
+import ToastAlert from '../../components/common/Alert';
 
 const Login = ({navigation}: any) => {
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
   const [mobileNumber, setMobileNumber] = useState('');
+  const [isSignupError, setIsSignupError] = useState(false);
+
+  const onContinuePress = () => {
+    if (mobileNumber?.length !== 10) {
+      ToastAlert({
+        toastType: 'error',
+        title: 'Invalid!',
+        description: 'Mobile number should contains 10 digits',
+      });
+      return;
+    }
+    setIsLoading(true);
+    const loginRequest = {
+      data: {mobile: mobileNumber},
+      onSuccess: (res: any | []) => {
+        if (res?.data?.message === 'Success') {
+          const otpRequest = {
+            data: {number: mobileNumber},
+            onSuccess: (response: any | []) => {
+              // console.log('SEND OTP RES========', JSON.stringify(response));
+              setIsLoading(false);
+              navigation.navigate(SCREEN.OTP, {number: mobileNumber});
+              setMobileNumber('');
+            },
+            onFail: (err: any) => {
+              setIsLoading(false);
+            },
+          };
+          dispatch(sendOtp(otpRequest) as never);
+        }
+      },
+      onFail: (err: any) => {
+        setIsSignupError(true);
+        setIsLoading(false);
+      },
+    };
+    dispatch(login(loginRequest) as never);
+  };
 
   return (
     <View style={commonStyles.root}>
@@ -46,15 +93,16 @@ const Login = ({navigation}: any) => {
             label={`Mobile Number`}
             placeholder={`Mobile Number`}
             value={mobileNumber}
+            keyboardType={'numeric'}
+            maxLength={10}
             onChangeText={text => setMobileNumber(text)}
-            error={`You're not register please sign up`}
+            error={isSignupError ? `You're not register please sign up` : ''}
           />
           <Button
+            loader={isLoading}
             title="CONTINUE"
             buttonStyle={styles.btnStyle}
-            onPress={() => {
-              navigation.navigate(SCREEN.OTP);
-            }}
+            onPress={onContinuePress}
           />
           <Text style={styles.accText}>
             {`Don't Have an Account?`}

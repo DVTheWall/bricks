@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
@@ -21,9 +22,15 @@ import {colors, fontSize, hp, wp} from '../../utils';
 const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
   return (
     <Pressable style={styles.container}>
-      <FastImage source={{uri: item?.imageURL}} style={styles.propertyImg} />
+      <FastImage
+        source={{
+          uri: `https://bricks-dev.katsamsoft.com${item?.property_cover_image}`,
+        }}
+        style={styles.propertyImg}
+      />
       <ImageBackground source={icons.tag} style={styles.tagIcon}>
-        <Text style={styles.tagText}>{`${item?.commission}% OFF`}</Text>
+        <Text style={styles.tagText}>{`7% OFF`}</Text>
+        {/* <Text style={styles.tagText}>{`${item?.commission}% OFF`}</Text> */}
       </ImageBackground>
       <TouchableOpacity style={styles.likeBtn}>
         <Image source={icons.heart} style={commonStyles.icon16} />
@@ -33,38 +40,48 @@ const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
           <Text style={styles.nameText}>{item?.name}</Text>
           <View style={{...commonStyles.flexRow, marginVertical: hp(8)}}>
             <Image source={icons.buildings} style={commonStyles.icon16} />
-            <Text style={styles.propertyTypeText}>{item?.type}</Text>
+            <Text style={styles.propertyTypeText}>
+              {item?.property_categorization}
+            </Text>
           </View>
           <View style={commonStyles.flexRow}>
             <Image source={icons.locationNormal} style={commonStyles.icon16} />
             <Text style={[styles.propertyTypeText, {color: colors.lightBlack}]}>
-              {item?.address}
+              {item?.complete_address}
             </Text>
           </View>
         </View>
         <View style={{justifyContent: 'space-between'}}>
-          <Text style={styles.priceText}>{`₹${item?.price}`}</Text>
-          <Text style={styles.dateText}>{`${item?.date}`}</Text>
+          <Text style={styles.priceText}>{`₹52.15 Lac`}</Text>
+          {/* <Text style={styles.priceText}>{`₹${item?.price}`}</Text> */}
+          <Text style={styles.dateText}>{`03 May`}</Text>
+          {/* <Text style={styles.dateText}>{`${item?.date}`}</Text> */}
         </View>
       </View>
       <View style={styles.bottomContainer}>
         <View>
-          <Text style={styles.subTypeText}>{item?.subType}</Text>
+          <Text style={styles.subTypeText}>{'2 bhk+2t'}</Text>
+          {/* <Text style={styles.subTypeText}>{item?.subType}</Text> */}
           <View
             style={{
               ...commonStyles.flexRow,
               marginTop: hp(6),
-              width: '95%',
             }}>
-            <Text numberOfLines={1} style={styles.detailText}>
-              {`${item?.buildUpArea} SQ.FT.`}
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={styles.detailText}>
+              {`966 SQ.FT.`}
+              {/* {`${item?.buildUpArea} SQ.FT.`} */}
               <Text style={styles.subDetailText}>{'(Built Up)'}</Text>
             </Text>
             <View style={styles.verticalSeperator} />
             <Text
+              ellipsizeMode="tail"
               numberOfLines={1}
-              style={[styles.detailText, {width: wp(115)}]}>
-              {item?.longTermRate}
+              style={styles.detailText}>
+              {'16000'}
+              {/* {item?.longTermRate} */}
               <Text style={styles.subDetailText}>{' (Long Term Rate)'}</Text>
             </Text>
           </View>
@@ -160,6 +177,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize(12),
     fontFamily: font.qMedium,
     color: colors.lightBlack,
+    width: wp(110),
   },
   subDetailText: {
     fontSize: fontSize(10),

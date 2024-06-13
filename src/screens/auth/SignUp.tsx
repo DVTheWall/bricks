@@ -1,28 +1,35 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable quotes */
 import React, {useState} from 'react';
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  Image,
 } from 'react-native';
 
+import {Dropdown} from 'react-native-element-dropdown';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 import {font} from '../../utils/fonts';
+import {icons} from '../../utils/icons';
 import SvgIcons from '../../helpers/SvgIcons';
 import {commonStyles} from '../../styles/styles';
+import {SCREEN} from '../../utils/screenConstants';
+import Shadow from '../../components/common/Shadow';
 import Button from '../../components/common/Button';
 import {colors, fontSize, hp, wp} from '../../utils';
 import TextInputComp from '../../components/common/TextInput';
 import StepIndicator from '../../components/other/StepIndicator';
-import {SCREEN} from '../../utils/screenConstants';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {icons} from '../../utils/icons';
-import {Dropdown} from 'react-native-element-dropdown';
-import Shadow from '../../components/common/Shadow';
+import {useDispatch} from 'react-redux';
+import {signUpUser} from '../../store/action/authActions';
+import {resetStack} from '../../helpers/globalFunctions';
 
 const SignUp = ({navigation}: any) => {
+  const dispatch = useDispatch();
+
   const [fullName, setFullName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
 
@@ -42,16 +49,70 @@ const SignUp = ({navigation}: any) => {
   const [isDescChecked, setIsDescChecked] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const clearStates = () => {
+    setFullName('');
+    setMobileNumber('');
+    setEmail('');
+    setGender('');
+    setMaritalStatus('');
+    setAddress('');
+    setCity('');
+    setState('');
+    setPan('');
+    setPanName('');
+    setAdhar('');
+  };
+
   const data = [
-    {label: 'Male', value: '1'},
-    {label: 'Female', value: '2'},
-    {label: 'Other', value: '3'},
+    {label: 'Male', value: 'Male'},
+    {label: 'Female', value: 'Female'},
+    {label: 'Other', value: 'Other'},
   ];
 
   const data1 = [
-    {label: 'Single', value: '1'},
-    {label: 'Married', value: '2'},
+    {label: 'Single', value: 'Single'},
+    {label: 'Married', value: 'Married'},
   ];
+
+  const onVerifyPress = () => {
+    if (stepCount === 1 || stepCount === 2) {
+      setStepCount(stepCount + 1);
+    } else {
+      let signUpData = {
+        full_name: fullName,
+        mobile_number: mobileNumber,
+        is_terms_agreed: isTermsChecked ? '1' : '0',
+        dob: '03-02-1995',
+        email: email,
+        gender: gender,
+        marital_status: maritalStatus,
+        address: address,
+        city: city,
+        state: state,
+        pan_card: pan,
+        name_on_pan: panName,
+        aadhar_card_number: adhar,
+      };
+      setIsLoading(true);
+      const request = {
+        // need to make it dynamic
+        data: signUpData,
+        onSuccess: (res: any | []) => {
+          // console.log('res============', res);
+          setIsLoading(false);
+          resetStack(SCREEN.LOGIN);
+          clearStates();
+        },
+        onFail: (err: any) => {
+          // console.log('ERR=====', err);
+          setIsLoading(false);
+        },
+      };
+      dispatch(signUpUser(request) as never);
+    }
+  };
 
   return (
     <View style={commonStyles.root}>
@@ -341,15 +402,10 @@ const SignUp = ({navigation}: any) => {
       )}
 
       <Button
+        loader={isLoading}
         title={stepCount === 3 ? 'VERIFY' : 'NEXT'}
         buttonStyle={styles.btnStyle}
-        onPress={() => {
-          if (stepCount === 1 || stepCount === 2) {
-            setStepCount(stepCount + 1);
-          } else {
-            navigation.navigate(SCREEN.BOTTOMTABS);
-          }
-        }}
+        onPress={onVerifyPress}
       />
       <SafeAreaView />
     </View>

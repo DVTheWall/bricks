@@ -1,5 +1,11 @@
 import React from 'react';
-import {Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
 import Shadow from './Shadow';
 import {font} from '../../utils/fonts';
@@ -14,6 +20,7 @@ const Button: React.FC<CustomButtonProps> = ({
   textStyle,
   buttonStyle,
   shadowStyle,
+  loader,
 }) => {
   return (
     <Shadow shadowStyle={shadowStyle}>
@@ -21,7 +28,12 @@ const Button: React.FC<CustomButtonProps> = ({
         activeOpacity={0.8}
         style={[styles.button, buttonStyle]}
         onPress={onPress}>
-        <Text style={[styles.text, textStyle]}>{title}</Text>
+        {loader ? (
+          <ActivityIndicator color={colors.white} />
+        ) : (
+          <Text style={[styles.text, textStyle]}>{title}</Text>
+        )}
+
         {isIcon && <Image source={icons.arrowForward} style={styles.icon} />}
       </TouchableOpacity>
     </Shadow>

@@ -48,4 +48,5 @@ export const colors = {
   pinkBorder: '#FFE9E9',
   pinkBg: '#FFF4F4',
   xDarkGrey: '#686868',
+  loaderOpacity: 'rgba(0,0,0,0.3)',
 };

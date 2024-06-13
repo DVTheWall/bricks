@@ -76,3 +76,7 @@ export const icons = {
   timer: require('../../assets/icons/timer.png'),
   orderBg: require('../../assets/icons/orderBg.png'),
 };
+
+export const lotties = {
+  loader: require('../../assets/lotties/loader.json'),
+};

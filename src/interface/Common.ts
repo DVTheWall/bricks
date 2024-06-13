@@ -1,4 +1,18 @@
-import {StyleProp, TextStyle, ViewStyle} from 'react-native';
+import {AnimationObject} from 'lottie-react-native';
+import {
+  KeyboardTypeOptions,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
+
+export interface IRootState {
+  common: ICommon;
+}
+
+export interface ICommon {
+  test: string;
+}
 
 export interface ShadowProps {
   children?: any;
@@ -6,6 +20,7 @@ export interface ShadowProps {
 }
 
 export interface CustomButtonProps {
+  loader?: boolean;
   title: string;
   isIcon?: boolean;
   onPress: () => void;
@@ -50,6 +65,7 @@ export interface TextInputProps {
   isMandetory?: boolean;
   isRightIcon?: boolean;
   onRightIconPress?: () => void;
+  keyboardType?: KeyboardTypeOptions;
   onChangeText?: (text: string) => void;
   customLabelStyle?: StyleProp<TextStyle>;
   customInputStyle?: StyleProp<TextStyle>;
@@ -61,4 +77,11 @@ export interface StepIndicatorProps {
   step?: number;
   isLine?: boolean;
   bgColor?: string;
+}
+
+export interface LottieViewerProps {
+  children: any;
+  loop?: boolean;
+  lottieStyle: StyleProp<ViewStyle>;
+  source: string | AnimationObject | {uri: string};
 }

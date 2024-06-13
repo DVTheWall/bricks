@@ -8,8 +8,6 @@ import {RFValue} from 'react-native-responsive-fontsize';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-// console.log('DIME----', screenHeight, screenWidth);
-
 export const wp = (val: number) => {
   return widthPercentageToDP((val * 100) / screenWidth);
 };

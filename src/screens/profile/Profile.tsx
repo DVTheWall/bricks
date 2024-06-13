@@ -1,4 +1,7 @@
-import React from 'react';
+/* eslint-disable handle-callback-err */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -15,6 +18,11 @@ import {commonStyles} from '../../styles/styles';
 import Header from '../../components/common/Header';
 import Button from '../../components/common/Button';
 import {colors, fontSize, hp, wp} from '../../utils';
+import {removeAsyncStorage, resetStack} from '../../helpers/globalFunctions';
+import {useDispatch, useSelector} from 'react-redux';
+import {walletProfile} from '../../store/action/profileActions';
+import Loader from '../../components/common/Loader';
+import {SCREEN} from '../../utils/screenConstants';
 
 const ListItem = ({onPress, title, iconName}: any) => {
   return (
@@ -26,16 +34,40 @@ const ListItem = ({onPress, title, iconName}: any) => {
 };
 
 const Profile = () => {
+  const {walletProfileData} = useSelector((state: any) => state.data);
+
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const request = {
+      // need to make it dynamic
+      data: {customer: '9548456788'},
+      onSuccess: (res: any | []) => {
+        setIsLoading(false);
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+      },
+    };
+    dispatch(walletProfile(request) as never);
+  }, []);
+
   return (
     <View style={commonStyles.container}>
       <SafeAreaView />
+      <Loader visible={isLoading} />
       <Header
         title={'Profile'}
         customTitleStyle={styles.customTitleStyle}
         customHeaderStyle={styles.customHeaderStyle}
       />
       <View style={styles.boxView}>
-        <Text style={styles.userNameText}>{'@akshat.ybl234'}</Text>
+        <Text style={styles.userNameText}>
+          {walletProfileData[0]?.customer_name}
+        </Text>
       </View>
 
       <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
@@ -43,11 +75,15 @@ const Profile = () => {
           <Text style={styles.boxTitleText}>{'Wallet'}</Text>
           <View style={styles.walletBoxView}>
             <View style={commonStyles.flexRow}>
-              <Text style={styles.amountText}>{'₹5000'}</Text>
+              <Text style={styles.amountText}>
+                {walletProfileData[0]?.wallet_amount
+                  ? `₹${walletProfileData[0]?.wallet_amount}`
+                  : '₹0.0'}
+              </Text>
               <Image source={icons.arrowUp} style={styles.upChevronStyle} />
             </View>
             <Text style={styles.walletDescText}>
-              {'Added 0.3% more last week'}
+              {'Added 0.0% more last week'}
             </Text>
             <View style={styles.walletBtnContainer}>
               <Button
@@ -95,7 +131,10 @@ const Profile = () => {
           <ListItem
             title={'Sign Out'}
             iconName={icons.logout}
-            onPress={() => {}}
+            onPress={() => {
+              removeAsyncStorage();
+              resetStack(SCREEN.WELCOME);
+            }}
           />
         </View>
 

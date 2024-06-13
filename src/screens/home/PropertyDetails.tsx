@@ -1,32 +1,39 @@
+/* eslint-disable quotes */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable handle-callback-err */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import {commonStyles} from '../../styles/styles';
-import {icons} from '../../utils/icons';
+import {
+  Text,
+  View,
+  Image,
+  FlatList,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
+
 import FastImage from 'react-native-fast-image';
-import {colors, fontSize, hp, isIos, wp} from '../../utils';
-import {font} from '../../utils/fonts';
-import Button from '../../components/common/Button';
 import {LineChart} from 'react-native-gifted-charts';
-import {SCREEN} from '../../utils/screenConstants';
-import BackButtonBlur from '../../components/common/BackButtonBlur';
 import Carousel from 'react-native-reanimated-carousel';
 import LinearGradient from 'react-native-linear-gradient';
+
+import {font} from '../../utils/fonts';
+import {icons} from '../../utils/icons';
+import {commonStyles} from '../../styles/styles';
+import {SCREEN} from '../../utils/screenConstants';
+import Button from '../../components/common/Button';
+import {colors, fontSize, hp, isIos, wp} from '../../utils';
+import BackButtonBlur from '../../components/common/BackButtonBlur';
 import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
+import Loader from '../../components/common/Loader';
+import {getPropertyDetails} from '../../store/action/propertyActions';
+import {useDispatch} from 'react-redux';
 
 const {width} = Dimensions.get('window');
 
@@ -82,11 +89,32 @@ const HighlightItem = ({item}: any) => {
 const PropertyDetails = ({navigation, route}: any) => {
   const {item} = route?.params;
 
+  const dispatch = useDispatch();
+
   const carouselRef = useRef(null);
   const flatListRef = useRef(null);
   const highlightFlatListRef = useRef(null);
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [propertyDetailsData, setPropertyDetailsData] = useState<any>([]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const request = {
+      data: {
+        name: item?.name,
+      },
+      onSuccess: (res: any | []) => {
+        setPropertyDetailsData(res?.data?.data?.properties_details_data[0]);
+        setIsLoading(false);
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+      },
+    };
+    dispatch(getPropertyDetails(request) as never);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -94,6 +122,7 @@ const PropertyDetails = ({navigation, route}: any) => {
       if (nextIndex >= propertyHighlightData.length - 2) {
         nextIndex = 0;
       }
+      //@ts-ignore
       highlightFlatListRef.current?.scrollToIndex({
         index: nextIndex,
         animated: true,
@@ -155,6 +184,7 @@ const PropertyDetails = ({navigation, route}: any) => {
 
   return (
     <View style={commonStyles.container}>
+      <Loader visible={isLoading} />
       {/* <StatusBar
         barStyle={'light-content'}
         translucent
@@ -227,7 +257,7 @@ const PropertyDetails = ({navigation, route}: any) => {
                   lineHeight: hp(30),
                   color: colors.lightBlack,
                 }}>
-                {item?.name}
+                {propertyDetailsData?.property_name}
               </Text>
               <Text
                 style={{
@@ -236,7 +266,8 @@ const PropertyDetails = ({navigation, route}: any) => {
                   letterSpacing: -0.5,
                   color: colors.greenNeon,
                 }}>
-                {`₹${item?.rate}`}
+                {`₹9,000`}
+                {/* {`₹${item?.rate}`} */}
                 <Text
                   style={{
                     fontFamily: font.semiBold,
@@ -278,7 +309,7 @@ const PropertyDetails = ({navigation, route}: any) => {
                   letterSpacing: -0.5,
                   lineHeight: hp(17),
                 }}>
-                {'208, Ring road, Indore, Madhya Pradesh '}
+                {propertyDetailsData?.complete_address}
               </Text>
             </View>
             <TouchableOpacity>

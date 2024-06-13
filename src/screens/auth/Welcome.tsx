@@ -3,13 +3,10 @@ import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
-import SvgIcons from '../../helpers/SvgIcons';
 import {commonStyles} from '../../styles/styles';
 import {SCREEN} from '../../utils/screenConstants';
 import Button from '../../components/common/Button';
 import {colors, fontSize, hp, isIos, wp} from '../../utils';
-
-// type Props = {};
 
 const Welcome = ({navigation}: any) => {
   return (
@@ -17,7 +14,6 @@ const Welcome = ({navigation}: any) => {
       <SafeAreaView />
       <View style={commonStyles.subContainer1}>
         <Image source={icons.welcomeImg} style={styles.welcomeImg} />
-        {/* <SvgIcons iconName={'welcomeImg'} /> */}
       </View>
       <View style={commonStyles.flex}>
         <Text style={styles.welcomeText}>

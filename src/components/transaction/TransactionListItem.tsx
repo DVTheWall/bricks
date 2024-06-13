@@ -1,18 +1,26 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 
+import moment from 'moment';
+
 import {font} from '../../utils/fonts';
+import {icons} from '../../utils/icons';
 import {colors, fontSize, hp, wp} from '../../utils';
 
 const TransactionListItem = ({item}: any) => {
+  const isCredited = item?.transaction_type === 'Credit';
   return (
     <View style={styles.container}>
-      <Text style={styles.timeText}>{item?.time}</Text>
+      <Text style={styles.timeText}>
+        {moment(item?.creation)?.format('dddd Do MMM')}
+      </Text>
+      {/* <Text style={styles.timeText}>{item?.time}</Text> */}
       <View style={styles.titleContainer}>
         <View style={styles.titleBox}>
-          <Image source={item?.icon} style={styles.iconStyle} />
+          {/* <Image source={item?.icon} style={styles.iconStyle} /> */}
+          <Image source={icons.rupeeCircle} style={styles.iconStyle} />
           <View>
-            <Text style={styles.titleText}>{item?.title}</Text>
+            <Text style={styles.titleText}>{item?.name}</Text>
             {item?.investedIn && (
               <Text
                 style={
@@ -24,9 +32,9 @@ const TransactionListItem = ({item}: any) => {
         <Text
           style={{
             ...styles.amountText,
-            color: item?.isCredited ? colors.green : colors.saffron,
+            color: isCredited ? colors.green : colors.saffron,
           }}>
-          {`${item?.isCredited ? '+' : '-'}₹${item?.amount}`}
+          {`${isCredited ? '+' : '-'}₹${item?.amount}`}
         </Text>
       </View>
     </View>

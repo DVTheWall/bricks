@@ -1,3 +1,4 @@
+/* eslint-disable handle-callback-err */
 /* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
@@ -20,9 +21,16 @@ import {colors, fontSize, hp, wp} from '../../utils';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Shadow from '../../components/common/Shadow';
+import ToastAlert from '../../components/common/Alert';
+import {resetStack} from '../../helpers/globalFunctions';
+import {verifyOtp} from '../../store/action/authActions';
+import {useDispatch} from 'react-redux';
 
-const Otp = ({navigation}: any) => {
+const Otp = ({navigation, route}: any) => {
+  const {number} = route?.params;
+  const dispatch = useDispatch();
   const [otp, setOtp] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOtpChange = (code: string) => {
     setOtp(code);
@@ -30,6 +38,42 @@ const Otp = ({navigation}: any) => {
 
   const handleOtpComplete = (code: string) => {
     console.log(`OTP is ${code}`);
+  };
+
+  const onVerifyPress = () => {
+    if (otp?.length !== 4) {
+      ToastAlert({
+        toastType: 'error',
+        title: 'Invalid!',
+        description: 'Please enter correct OTP',
+      });
+      return;
+    }
+    const data = {
+      number: number,
+      otp: otp,
+    };
+    setIsLoading(true);
+    const request = {
+      data: data,
+      onSuccess: (res: any | []) => {
+        // console.log('VEIRFY OTP RES========', JSON.stringify(res));
+        setIsLoading(false);
+        if (res.data.message === 'success') {
+          resetStack(SCREEN.BOTTOMTABS);
+        } else {
+          ToastAlert({
+            toastType: 'error',
+            title: 'Invalid!',
+            description: 'Please enter correct OTP',
+          });
+        }
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+      },
+    };
+    dispatch(verifyOtp(request) as never);
   };
 
   return (
@@ -67,10 +111,10 @@ const Otp = ({navigation}: any) => {
             textAlign: 'center',
             letterSpacing: -0.5,
           }}>
-          OTP sent to <Text style={{color: colors.green}}>+91 7000980933</Text>
+          OTP sent to{' '}
+          <Text style={{color: colors.green}}>{`+91 ${number}`}</Text>
         </Text>
       </View>
-      {/* <SvgIcons iconName={'otpImg'} /> */}
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps={'handled'}
         extraScrollHeight={hp(50)}>
@@ -101,7 +145,6 @@ const Otp = ({navigation}: any) => {
             pinCount={4}
             code={otp}
             onCodeChanged={handleOtpChange}
-            autoFocusOnLoad
             codeInputFieldStyle={styles.underlineStyleBase}
             codeInputHighlightStyle={styles.underlineStyleHighLighted}
             onCodeFilled={handleOtpComplete}
@@ -109,11 +152,10 @@ const Otp = ({navigation}: any) => {
           />
         </Shadow>
         <Button
+          loader={isLoading}
           title="VERIFY"
           buttonStyle={{marginTop: hp(40)}}
-          onPress={() => {
-            navigation.navigate(SCREEN.BOTTOMTABS);
-          }}
+          onPress={onVerifyPress}
         />
         <View style={{height: hp(10)}} />
       </KeyboardAwareScrollView>

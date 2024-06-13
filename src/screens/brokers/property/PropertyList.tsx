@@ -1,5 +1,8 @@
+/* eslint-disable handle-callback-err */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
 import {font} from '../../../utils/fonts';
@@ -10,21 +13,42 @@ import SearchBox from '../../../components/brokers/SearchBox';
 import {propertySellingData} from '../../../utils/dataConstants';
 import SellingPropertyItem from '../../../components/brokers/SellingPropertyItem';
 import {SCREEN} from '../../../utils/screenConstants';
+import {useDispatch, useSelector} from 'react-redux';
+import {getPropertyList} from '../../../store/action/propertyActions';
+import Loader from '../../../components/common/Loader';
 
-const PropertyList = ({route, navigation}: any) => {
-  const {isFromCustomer} = route?.params || false;
+const PropertyList = ({navigation}: any) => {
+  const {propertyList} = useSelector((state: any) => state.data);
+
+  const dispatch = useDispatch();
+
   const [searchText, setSerachText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const request = {
+      // need to make it dynamic
+      data: {
+        name: '',
+        property_categorization: '',
+      },
+      onSuccess: (res: any | []) => {
+        setIsLoading(false);
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+      },
+    };
+    dispatch(getPropertyList(request) as never);
+  }, []);
 
   const renderSellingProperty = ({item}: any) => {
     return (
       <SellingPropertyItem
         item={item}
         onBuyNowPress={() => {
-          if (isFromCustomer) {
-            navigation.navigate(SCREEN.PROPERTYDETAILS, {item: item});
-          } else {
-            navigation.navigate(SCREEN.PROPERTYDETAILSBROKER);
-          }
+          navigation.navigate(SCREEN.PROPERTYDETAILS, {item: item});
         }}
       />
     );
@@ -32,7 +56,9 @@ const PropertyList = ({route, navigation}: any) => {
   return (
     <View style={commonStyles.container}>
       <SafeAreaView />
+      <Loader visible={isLoading} />
       <Header
+        isBackButton
         title={'Properties'}
         customTitleStyle={styles.customTitleStyle}
         customHeaderStyle={styles.customHeaderStyle}
@@ -45,7 +71,7 @@ const PropertyList = ({route, navigation}: any) => {
       />
       <Text style={styles.titleText}>{'Hot Selling Properties'}</Text>
       <FlatList
-        data={propertySellingData}
+        data={propertyList}
         renderItem={renderSellingProperty}
         style={styles.propertyListView}
         ListFooterComponent={() => <View style={{height: hp(150)}} />}
