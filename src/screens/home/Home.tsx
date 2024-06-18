@@ -45,7 +45,7 @@ const Home = ({navigation}: any) => {
       <SafeAreaView />
       <Header
         title={'Hello, '}
-        name={'Quaid!'}
+        name={`Quaid!`}
         // onLeftIconPress={() => {}}
         onRightIconPress1={() => navigation.navigate(SCREEN.PAYMENT)}
         onRightIconPress2={() => navigation.navigate(SCREEN.NOTIFICATION)}

@@ -1,7 +1,7 @@
 import {LOGIN} from '../types';
 
 const INITIAL_STATE = {
-  loginUserData: {},
+  userData: {},
 };
 
 export default (
@@ -12,7 +12,7 @@ export default (
     case LOGIN:
       return {
         ...state,
-        loginUserData: {...state.loginUserData, ...action.payload},
+        userData: action.payload,
       };
     default:
       return state;

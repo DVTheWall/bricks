@@ -2,12 +2,10 @@ import React from 'react';
 import {
   Text,
   View,
-  TextInput,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-  StyleSheet,
   Image,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 
 import Shadow from './Shadow';
@@ -15,7 +13,6 @@ import {font} from '../../utils/fonts';
 import {colors, fontSize, hp, wp} from '../../utils';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {TextInputProps} from '../../interface/Common';
 
 const TextInputComp = ({
@@ -74,7 +71,7 @@ const TextInputComp = ({
           )}
         </View>
       </Shadow>
-      <Text style={styles.errText}>{error ? error : ''}</Text>
+      <Text style={styles.errText}>{error ? error : ' '}</Text>
     </View>
   );
 };
@@ -110,5 +107,6 @@ const styles = StyleSheet.create({
     color: colors.red,
     alignSelf: 'flex-end',
     fontSize: fontSize(10),
+    lineHeight: hp(12),
   },
 });

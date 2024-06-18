@@ -1,9 +1,7 @@
 /* eslint-disable curly */
-import {GET, POST, api} from '../../api/apiConst';
-import {localStore} from '../../api/constants';
+import {POST, api} from '../../api/apiConst';
 import {makeAPIRequest} from '../../api/global';
 import ToastAlert from '../../components/common/Alert';
-import {setAsyncStorage} from '../../helpers/globalFunctions';
 import {GET_WALLET_PROFILE_DATA} from '../types';
 
 export const walletProfile =

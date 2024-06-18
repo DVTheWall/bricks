@@ -4,12 +4,13 @@ import {localStore} from '../../api/constants';
 import {makeAPIRequest} from '../../api/global';
 import ToastAlert from '../../components/common/Alert';
 import {setAsyncStorage} from '../../helpers/globalFunctions';
+import {LOGIN} from '../types';
 
 export const login =
   (request: {
     onSuccess(response: any): unknown;
     onFail(error: any): unknown;
-    data: {};
+    data: {} | any;
   }) =>
   async () => {
     return makeAPIRequest({
@@ -56,15 +57,20 @@ export const verifyOtp =
     onFail(error: any): unknown;
     data: {} | any;
   }) =>
-  async () => {
+  async (dispatch: any) => {
     return makeAPIRequest({
       method: GET,
       url: api.verifyOtp,
       params: request.data,
     })
       .then((response: any) => {
-        setAsyncStorage(localStore.userData, request?.data?.number);
         if (request.onSuccess) request.onSuccess(response);
+        setAsyncStorage(localStore.userData, response?.data?.user);
+        setAsyncStorage(localStore.token, response?.data?.token);
+        dispatch({
+          type: LOGIN,
+          payload: response?.data?.user,
+        });
       })
       .catch(error => {
         if (request.onFail) request.onFail(error);

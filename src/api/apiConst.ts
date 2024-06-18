@@ -5,8 +5,8 @@ export const PUT = 'PUT';
 export const api = {
   // auth
   login: 'bricks.api.auth.login',
-  sendOtp: 'bricks.api.customer.send_otp',
-  verifyOtp: 'bricks.api.customer.verify_otp',
+  sendOtp: 'bricks.api.auth.send_otp',
+  verifyOtp: 'bricks.api.auth.verify_otp',
   signUp: 'bricks.api.customer.sign_up',
 
   // profile

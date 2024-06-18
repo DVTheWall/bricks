@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
@@ -11,17 +10,18 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {useDispatch} from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 import {font} from '../../utils/fonts';
 import SvgIcons from '../../helpers/SvgIcons';
 import {commonStyles} from '../../styles/styles';
 import {SCREEN} from '../../utils/screenConstants';
 import Button from '../../components/common/Button';
 import {colors, fontSize, hp, wp} from '../../utils';
-import TextInputComp from '../../components/common/TextInput';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useDispatch} from 'react-redux';
-import {login, sendOtp} from '../../store/action/authActions';
 import ToastAlert from '../../components/common/Alert';
+import TextInputComp from '../../components/common/TextInput';
+import {login, sendOtp} from '../../store/action/authActions';
 
 const Login = ({navigation}: any) => {
   const dispatch = useDispatch();
@@ -39,17 +39,19 @@ const Login = ({navigation}: any) => {
       });
       return;
     }
+    const data = {mobile: mobileNumber};
     setIsLoading(true);
     const loginRequest = {
-      data: {mobile: mobileNumber},
+      data: data,
       onSuccess: (res: any | []) => {
-        if (res?.data?.message === 'Success') {
+        if (res?.data?.message === 'Logged In') {
           const otpRequest = {
-            data: {number: mobileNumber},
+            data: data,
             onSuccess: (response: any | []) => {
-              // console.log('SEND OTP RES========', JSON.stringify(response));
+              if (response?.data?.message) {
+                navigation.navigate(SCREEN.OTP, data);
+              }
               setIsLoading(false);
-              navigation.navigate(SCREEN.OTP, {number: mobileNumber});
               setMobileNumber('');
             },
             onFail: (err: any) => {

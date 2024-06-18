@@ -11,10 +11,24 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import store from './src/store';
 import {colors} from './src/utils';
 import RootNavigator from './src/navigation/RootNavigator';
-import {navigationRef} from './src/helpers/globalFunctions';
+import {
+  getAsyncStorage,
+  navigationRef,
+  resetStack,
+} from './src/helpers/globalFunctions';
+import {localStore} from './src/api/constants';
+import {SCREEN} from './src/utils/screenConstants';
 
 const App = () => {
+  const getToken = async () => {
+    const token = await getAsyncStorage(localStore.token);
+    if (token !== null) {
+      resetStack(SCREEN.BOTTOMTABS);
+    }
+  };
+
   useEffect(() => {
+    getToken();
     setTimeout(() => {
       SplashScreen.hide();
     }, 3000);

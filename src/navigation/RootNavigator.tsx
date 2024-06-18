@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Welcome from '../screens/auth/Welcome';
@@ -17,9 +17,6 @@ import AddCustomer from '../screens/brokers/customers/AddCustomer';
 import PropertyList from '../screens/brokers/property/PropertyList';
 import OrderDetails from '../screens/brokers/orders/OrderDetails';
 import AddOrders from '../screens/brokers/orders/AddOrders';
-import {getAsyncStorage, resetStack} from '../helpers/globalFunctions';
-import {localStore} from '../api/constants';
-import {SCREEN} from '../utils/screenConstants';
 
 export type RootStackParamList = {
   Welcome: undefined;
@@ -38,33 +35,24 @@ export type RootStackParamList = {
   PropertyList: undefined;
   OrderDetails: undefined;
   AddOrders: undefined;
+  Home: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  useEffect(() => {
-    getAsyncStorage(localStore.userData).then(res => {
-      if (res) {
-        resetStack(SCREEN.BOTTOMTABS);
-      }
-    });
-  }, []);
-
   return (
     <Stack.Navigator
       initialRouteName={'Welcome'}
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
-
-        presentation: 'card',
       }}>
+      <Stack.Screen name={'BottomTabs'} component={BottomTabs} />
       <Stack.Screen name={'Welcome'} component={Welcome} />
       <Stack.Screen name={'Login'} component={Login} />
       <Stack.Screen name={'Otp'} component={Otp} />
       <Stack.Screen name={'SignUp'} component={SignUp} />
-      <Stack.Screen name={'BottomTabs'} component={BottomTabs} />
       <Stack.Screen name={'BrokersTab'} component={BrokersTab} />
       <Stack.Screen name={'Notification'} component={Notification} />
       <Stack.Screen name={'Payment'} component={Payment} />

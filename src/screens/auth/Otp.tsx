@@ -1,7 +1,7 @@
 /* eslint-disable handle-callback-err */
-/* eslint-disable quotes */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Text,
   View,
@@ -11,26 +11,36 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {useDispatch} from 'react-redux';
+import OTPInputView from '@twotalltotems/react-native-otp-input';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import SvgIcons from '../../helpers/SvgIcons';
 import {commonStyles} from '../../styles/styles';
 import {SCREEN} from '../../utils/screenConstants';
 import Button from '../../components/common/Button';
-import {colors, fontSize, hp, wp} from '../../utils';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Shadow from '../../components/common/Shadow';
+import {colors, fontSize, hp, wp} from '../../utils';
 import ToastAlert from '../../components/common/Alert';
 import {resetStack} from '../../helpers/globalFunctions';
 import {verifyOtp} from '../../store/action/authActions';
-import {useDispatch} from 'react-redux';
 
 const Otp = ({navigation, route}: any) => {
-  const {number} = route?.params;
+  const {mobile} = route?.params;
   const dispatch = useDispatch();
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const otpInputRef = useRef(null);
+
+  useEffect(() => {
+    if (otpInputRef.current) {
+      //@ts-ignore
+      otpInputRef?.current?.focusField(0);
+    }
+  }, []);
 
   const handleOtpChange = (code: string) => {
     setOtp(code);
@@ -50,16 +60,15 @@ const Otp = ({navigation, route}: any) => {
       return;
     }
     const data = {
-      number: number,
+      mobile: mobile,
       otp: otp,
     };
     setIsLoading(true);
     const request = {
       data: data,
       onSuccess: (res: any | []) => {
-        // console.log('VEIRFY OTP RES========', JSON.stringify(res));
         setIsLoading(false);
-        if (res.data.message === 'success') {
+        if (res?.status === 200) {
           resetStack(SCREEN.BOTTOMTABS);
         } else {
           ToastAlert({
@@ -112,12 +121,10 @@ const Otp = ({navigation, route}: any) => {
             letterSpacing: -0.5,
           }}>
           OTP sent to{' '}
-          <Text style={{color: colors.green}}>{`+91 ${number}`}</Text>
+          <Text style={{color: colors.green}}>{`+91 ${mobile}`}</Text>
         </Text>
       </View>
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps={'handled'}
-        extraScrollHeight={hp(50)}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'}>
         <Image
           source={icons.otpImg}
           style={{
@@ -141,14 +148,17 @@ const Otp = ({navigation, route}: any) => {
         </Text>
         <Shadow shadowStyle={{shadowColor: colors.cyan, marginTop: hp(12)}}>
           <OTPInputView
+            ref={otpInputRef}
             style={styles.otpInput}
             pinCount={4}
             code={otp}
+            autoFocusOnLoad={false}
             onCodeChanged={handleOtpChange}
             codeInputFieldStyle={styles.underlineStyleBase}
             codeInputHighlightStyle={styles.underlineStyleHighLighted}
             onCodeFilled={handleOtpComplete}
-            selectionColor="red"
+            keyboardType="number-pad"
+            selectionColor={colors.primary}
           />
         </Shadow>
         <Button

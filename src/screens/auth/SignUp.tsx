@@ -1,3 +1,5 @@
+/* eslint-disable handle-callback-err */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable quotes */
 import React, {useState} from 'react';
@@ -10,6 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {useDispatch} from 'react-redux';
 import {Dropdown} from 'react-native-element-dropdown';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -21,11 +24,15 @@ import {SCREEN} from '../../utils/screenConstants';
 import Shadow from '../../components/common/Shadow';
 import Button from '../../components/common/Button';
 import {colors, fontSize, hp, wp} from '../../utils';
+import ToastAlert from '../../components/common/Alert';
+import {signUpUser} from '../../store/action/authActions';
 import TextInputComp from '../../components/common/TextInput';
 import StepIndicator from '../../components/other/StepIndicator';
-import {useDispatch} from 'react-redux';
-import {signUpUser} from '../../store/action/authActions';
-import {resetStack} from '../../helpers/globalFunctions';
+import {
+  isValidPan,
+  resetStack,
+  isValidEmail,
+} from '../../helpers/globalFunctions';
 
 const SignUp = ({navigation}: any) => {
   const dispatch = useDispatch();
@@ -50,6 +57,18 @@ const SignUp = ({navigation}: any) => {
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [nameErr, setNameErr] = useState('');
+  const [numberErr, setNumberErr] = useState('');
+  const [emailErr, setEmailErr] = useState('');
+  const [genderErr, setGenderErr] = useState('');
+  const [maritalErr, setMaritalErr] = useState('');
+  const [addressErr, setAddressErr] = useState('');
+  const [cityErr, setCityErr] = useState('');
+  const [stateErr, setStateErr] = useState('');
+  const [panNumErr, setPanNumErr] = useState('');
+  const [panNameErr, setPanNameErr] = useState('');
+  const [adharErr, setAdharErr] = useState('');
 
   const clearStates = () => {
     setFullName('');
@@ -76,41 +95,162 @@ const SignUp = ({navigation}: any) => {
     {label: 'Married', value: 'Married'},
   ];
 
+  const step1Validation = () => {
+    if (fullName === '') {
+      setNameErr('Please enter your full name');
+      return false;
+    }
+    if (mobileNumber === '') {
+      setNumberErr('Please enter your mobile number');
+      return false;
+    }
+    if (mobileNumber?.length !== 10) {
+      setNumberErr('Mobile number should contain 10 digits.');
+      return false;
+    }
+    if (!isTermsChecked) {
+      ToastAlert({
+        toastType: 'info',
+        description: 'Please check agree our terms & conditions to continue',
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const step2Validation = () => {
+    if (email === '') {
+      setEmailErr('Please enter your email');
+      return false;
+    }
+    if (!isValidEmail(email)) {
+      setEmailErr('Please enter valid email address');
+      return false;
+    }
+    if (gender === '') {
+      setGenderErr('Please select your gender');
+      return false;
+    }
+    if (maritalStatus === '') {
+      setMaritalErr('Please select your marital status');
+      return false;
+    }
+    if (address === '') {
+      setAddressErr('Please enter your address');
+      return false;
+    }
+    if (city === '') {
+      setCityErr('Please enter your city');
+      return false;
+    }
+    if (state === '') {
+      setStateErr('Please enter your state');
+      return false;
+    }
+    return true;
+  };
+
+  const step3Validation = () => {
+    if (pan === '') {
+      setPanNumErr('Please enter your PAN number');
+      return false;
+    }
+    if (!isValidPan(pan)) {
+      setPanNumErr('Please enter valid PAN number');
+      return false;
+    }
+    if (panName === '') {
+      setPanNameErr('Please enter name on PAN');
+      return false;
+    }
+    if (adhar === '') {
+      setAdharErr('Please enter your Adhar number');
+      return false;
+    }
+    if (adhar?.length !== 12) {
+      setAdharErr('Adhar number should contain 12 digits');
+      return false;
+    }
+    return true;
+  };
+
+  const handleBlur = (field: string) => {
+    if (field === 'fullName' && fullName !== '') {
+      setNameErr('');
+    }
+    if (
+      field === 'mobileNumber' &&
+      mobileNumber !== '' &&
+      mobileNumber?.length === 10
+    ) {
+      setNumberErr('');
+    }
+    if (field === 'email' && email !== '' && isValidEmail(email)) {
+      setEmailErr('');
+    }
+    if (field === 'address' && address !== '') {
+      setAddressErr('');
+    }
+    if (field === 'city' && city !== '') {
+      setCityErr('');
+    }
+    if (field === 'state' && state !== '') {
+      setStateErr('');
+    }
+    if (field === 'pan' && pan !== '' && isValidPan(pan)) {
+      setPanNumErr('');
+    }
+    if (field === 'panName' && panName !== '') {
+      setPanNameErr('');
+    }
+    if (field === 'adhar' && adhar !== '' && adhar?.length === 12) {
+      setAdharErr('');
+    }
+  };
+
   const onVerifyPress = () => {
-    if (stepCount === 1 || stepCount === 2) {
-      setStepCount(stepCount + 1);
+    if (stepCount === 1) {
+      if (step1Validation()) {
+        setStepCount(stepCount + 1);
+      }
+    } else if (stepCount === 2) {
+      if (step2Validation()) {
+        setStepCount(stepCount + 1);
+      }
     } else {
-      let signUpData = {
-        full_name: fullName,
-        mobile_number: mobileNumber,
-        is_terms_agreed: isTermsChecked ? '1' : '0',
-        dob: '03-02-1995',
-        email: email,
-        gender: gender,
-        marital_status: maritalStatus,
-        address: address,
-        city: city,
-        state: state,
-        pan_card: pan,
-        name_on_pan: panName,
-        aadhar_card_number: adhar,
-      };
-      setIsLoading(true);
-      const request = {
-        // need to make it dynamic
-        data: signUpData,
-        onSuccess: (res: any | []) => {
-          // console.log('res============', res);
-          setIsLoading(false);
-          resetStack(SCREEN.LOGIN);
-          clearStates();
-        },
-        onFail: (err: any) => {
-          // console.log('ERR=====', err);
-          setIsLoading(false);
-        },
-      };
-      dispatch(signUpUser(request) as never);
+      if (step3Validation()) {
+        let signUpData = {
+          full_name: fullName,
+          mobile_number: mobileNumber,
+          is_terms_agreed: isTermsChecked ? '1' : '0',
+          dob: '03-02-1995',
+          email: email,
+          gender: gender,
+          marital_status: maritalStatus,
+          address: address,
+          city: city,
+          state: state,
+          pan_card: pan,
+          name_on_pan: panName,
+          aadhar_card_number: adhar,
+        };
+        setIsLoading(true);
+        const request = {
+          // need to make it dynamic
+          data: signUpData,
+          onSuccess: (res: any | []) => {
+            // console.log('res============', res);
+            setIsLoading(false);
+            resetStack(SCREEN.LOGIN);
+            clearStates();
+          },
+          onFail: (err: any) => {
+            // console.log('ERR=====', err);
+            setIsLoading(false);
+          },
+        };
+        dispatch(signUpUser(request) as never);
+      }
     }
   };
 
@@ -175,19 +315,20 @@ const SignUp = ({navigation}: any) => {
       </View>
 
       {stepCount === 1 && (
-        <View style={{flex: 1}}>
+        <View style={commonStyles.flex}>
           <KeyboardAwareScrollView
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps={'handled'}
             style={styles.inputContainer}>
-            <View style={{flex: 1}}>
+            <View style={commonStyles.flex}>
               <TextInputComp
                 isMandetory
                 label={`Full Name`}
                 placeholder={`Full Name`}
                 value={fullName}
                 onChangeText={text => setFullName(text)}
-                // error={`You're not register please sign up`}
+                error={nameErr}
+                onBlur={() => handleBlur('fullName')}
               />
               <TextInputComp
                 isMandetory
@@ -195,76 +336,43 @@ const SignUp = ({navigation}: any) => {
                 placeholder={`Mobile Number`}
                 value={mobileNumber}
                 onChangeText={text => setMobileNumber(text)}
-                // error={`You're not register please sign up`}
+                error={numberErr}
+                maxLength={10}
+                onBlur={() => handleBlur('mobileNumber')}
+                keyboardType={'numeric'}
               />
             </View>
           </KeyboardAwareScrollView>
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity
-              onPress={() => setIsDescChecked(!isDescChecked)}
-              style={{
-                height: wp(20),
-                width: wp(20),
-                borderRadius: wp(2),
-                borderColor: colors.black,
-                borderWidth: wp(0.5),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              {isDescChecked && (
-                <Image
-                  source={icons.checkMark}
-                  style={{width: wp(11), height: hp(9), resizeMode: 'contain'}}
-                />
-              )}
-            </TouchableOpacity>
-            <Text
-              style={{
-                flex: 1,
-                marginLeft: wp(7),
-                fontSize: fontSize(13),
-                lineHeight: hp(21),
-                fontFamily: font.semiBold,
-                color: colors.mediumGrey,
-              }}>
-              {
-                'By Sign Up You Authorized Bricks To Contact(Email, Call, Message, WhatsApp) You Propose Of Sign Up And Sharing Information Of Our Services, Even Though You May Be Registration On Dnd.'
-              }
-            </Text>
-          </View>
-          <View style={{flexDirection: 'row', marginTop: hp(25)}}>
-            <TouchableOpacity
-              onPress={() => setIsTermsChecked(!isTermsChecked)}
-              style={{
-                height: wp(20),
-                width: wp(20),
-                borderRadius: wp(2),
-                borderColor: colors.black,
-                borderWidth: wp(0.5),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              {isTermsChecked && (
-                <Image
-                  source={icons.checkMark}
-                  style={{width: wp(11), height: hp(9), resizeMode: 'contain'}}
-                />
-              )}
-            </TouchableOpacity>
-            <Text
-              style={{
-                flex: 1,
-                marginLeft: wp(7),
-                fontSize: fontSize(13),
-                lineHeight: hp(21),
-                fontFamily: font.semiBold,
-                color: colors.mediumGrey,
-              }}>
-              {'I Agree '}
-              <Text style={{color: colors.blue}} onPress={() => {}}>
-                {'Terms & Privacy Policy'}
+          <View style={{alignItems: 'flex-end'}}>
+            <View style={commonStyles.flexRowOnly}>
+              <TouchableOpacity
+                onPress={() => setIsDescChecked(!isDescChecked)}
+                style={styles.checkBoxStyle}>
+                {isDescChecked && (
+                  <Image source={icons.checkMark} style={commonStyles.icon12} />
+                )}
+              </TouchableOpacity>
+              <Text style={styles.termsText}>
+                {
+                  'By Sign Up You Authorized Bricks To Contact(Email, Call, Message, WhatsApp) You Propose Of Sign Up And Sharing Information Of Our Services, Even Though You May Be Registration On Dnd.'
+                }
               </Text>
-            </Text>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: hp(25)}}>
+              <TouchableOpacity
+                onPress={() => setIsTermsChecked(!isTermsChecked)}
+                style={styles.checkBoxStyle}>
+                {isTermsChecked && (
+                  <Image source={icons.checkMark} style={commonStyles.icon12} />
+                )}
+              </TouchableOpacity>
+              <Text style={styles.termsText}>
+                {'I Agree '}
+                <Text style={{color: colors.blue}} onPress={() => {}}>
+                  {'Terms & Privacy Policy'}
+                </Text>
+              </Text>
+            </View>
           </View>
         </View>
       )}
@@ -279,7 +387,8 @@ const SignUp = ({navigation}: any) => {
             placeholder={`Email Address*`}
             value={email}
             onChangeText={text => setEmail(text)}
-            // error={`You're not register please sign up`}
+            error={emailErr}
+            onBlur={() => handleBlur('email')}
           />
           <Text style={styles.labelText}>
             {'Gender'}
@@ -292,7 +401,7 @@ const SignUp = ({navigation}: any) => {
               style={styles.dropdown}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
-              iconStyle={styles.iconStyle}
+              iconStyle={commonStyles.icon20}
               data={data}
               maxHeight={300}
               labelField="label"
@@ -311,7 +420,7 @@ const SignUp = ({navigation}: any) => {
               }}
             />
           </Shadow>
-          <Text style={styles.errText}>{''}</Text>
+          <Text style={styles.errText}>{gender === '' ? genderErr : ''}</Text>
           <Text style={styles.labelText}>
             {'Marital Status'}
             <Text style={{...styles.labelText, color: colors.redNeon}}>
@@ -323,7 +432,7 @@ const SignUp = ({navigation}: any) => {
               style={styles.dropdown}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
-              iconStyle={styles.iconStyle}
+              iconStyle={commonStyles.icon20}
               data={data1}
               maxHeight={300}
               labelField="label"
@@ -342,14 +451,17 @@ const SignUp = ({navigation}: any) => {
               }}
             />
           </Shadow>
-          <Text style={styles.errText}>{''}</Text>
+          <Text style={styles.errText}>
+            {maritalStatus === '' ? maritalErr : ''}
+          </Text>
           <TextInputComp
             isMandetory
             label={`Address`}
             placeholder={`Address`}
             value={address}
             onChangeText={text => setAddress(text)}
-            // error={`You're not register please sign up`}
+            error={addressErr}
+            onBlur={() => handleBlur('address')}
           />
           <TextInputComp
             isMandetory
@@ -357,7 +469,8 @@ const SignUp = ({navigation}: any) => {
             placeholder={`City`}
             value={city}
             onChangeText={text => setCity(text)}
-            // error={`You're not register please sign up`}
+            error={cityErr}
+            onBlur={() => handleBlur('city')}
           />
           <TextInputComp
             isMandetory
@@ -365,7 +478,8 @@ const SignUp = ({navigation}: any) => {
             placeholder={`State`}
             value={state}
             onChangeText={text => setState(text)}
-            // error={`You're not register please sign up`}
+            error={stateErr}
+            onBlur={() => handleBlur('state')}
           />
         </KeyboardAwareScrollView>
       )}
@@ -380,7 +494,8 @@ const SignUp = ({navigation}: any) => {
             placeholder={`PAN Number`}
             value={pan}
             onChangeText={text => setPan(text)}
-            // error={`You're not register please sign up`}
+            error={panNumErr}
+            onBlur={() => handleBlur('pan')}
           />
           <TextInputComp
             isMandetory
@@ -388,7 +503,8 @@ const SignUp = ({navigation}: any) => {
             placeholder={`Name on PAN`}
             value={panName}
             onChangeText={text => setPanName(text)}
-            // error={`You're not register please sign up`}
+            error={panNameErr}
+            onBlur={() => handleBlur('panName')}
           />
           <TextInputComp
             isMandetory
@@ -396,7 +512,9 @@ const SignUp = ({navigation}: any) => {
             placeholder={`Aadhaar Number`}
             value={adhar}
             onChangeText={text => setAdhar(text)}
-            // error={`You're not register please sign up`}
+            error={adharErr}
+            maxLength={12}
+            onBlur={() => handleBlur('adhar')}
           />
         </KeyboardAwareScrollView>
       )}
@@ -416,19 +534,19 @@ export default SignUp;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
     marginTop: hp(24),
+    alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   headerText: {
-    color: colors.black,
-    fontFamily: font.semiBold,
-    fontSize: fontSize(24),
+    marginLeft: wp(16),
     lineHeight: hp(36),
+    color: colors.black,
     textAlign: 'center',
     letterSpacing: -0.5,
-    marginLeft: wp(16),
+    fontSize: fontSize(24),
+    fontFamily: font.semiBold,
   },
   inputContainer: {
     flex: 1,
@@ -436,15 +554,15 @@ const styles = StyleSheet.create({
     paddingBottom: hp(50),
   },
   btnStyle: {
-    marginBottom: hp(24),
     marginTop: hp(24),
+    marginBottom: hp(24),
   },
   indicatorView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    paddingHorizontal: wp(10),
     marginTop: hp(24),
+    alignSelf: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: wp(10),
   },
   skipBtn: {
     borderWidth: wp(0.5),
@@ -467,18 +585,6 @@ const styles = StyleSheet.create({
     borderColor: colors.darkGrey,
     backgroundColor: colors.white,
   },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
   placeholderStyle: {
     color: colors.darkGrey,
     fontSize: fontSize(16),
@@ -488,14 +594,6 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontSize: fontSize(16),
     fontFamily: font.semiBold,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
   },
   labelText: {
     lineHeight: hp(18),
@@ -509,5 +607,22 @@ const styles = StyleSheet.create({
     color: colors.red,
     alignSelf: 'flex-end',
     fontSize: fontSize(10),
+  },
+  checkBoxStyle: {
+    width: wp(20),
+    height: wp(20),
+    borderRadius: wp(2),
+    alignItems: 'center',
+    borderWidth: wp(0.5),
+    justifyContent: 'center',
+    borderColor: colors.black,
+  },
+  termsText: {
+    flex: 1,
+    marginLeft: wp(7),
+    lineHeight: hp(21),
+    fontSize: fontSize(13),
+    color: colors.mediumGrey,
+    fontFamily: font.semiBold,
   },
 });

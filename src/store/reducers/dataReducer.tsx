@@ -5,7 +5,6 @@ import {
 } from '../types';
 
 const INITIAL_STATE = {
-  adminCreatedData: {},
   walletProfileData: [],
   propertyList: [],
   myTransactionsList: [],

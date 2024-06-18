@@ -11,6 +11,11 @@ export const isValidEmail = (email: string) => {
   return emailPattern.test(email);
 };
 
+export const isValidPan = (email: string) => {
+  const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  return panPattern.test(email);
+};
+
 export const setAsyncStorage = async (key: string, value: string) => {
   const item = await AsyncStorage.setItem(key, JSON.stringify(value));
   return item;

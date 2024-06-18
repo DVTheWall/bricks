@@ -1,7 +1,6 @@
 import axios from 'axios';
 // import {createNavigationContainerRef} from '@react-navigation/native';
 import {localStore} from './constants';
-// import {getAsyncStorage, removeAsyncStorage} from './globalFunction';
 import {getEnvVars} from './config';
 import {getAsyncStorage, removeAsyncStorage} from '../helpers/globalFunctions';
 
@@ -19,7 +18,7 @@ export const makeAPIRequest = ({
   params?: any;
 }) =>
   new Promise(async (resolve, reject) => {
-    // const userData = await getAsyncStorage(localStore.userData);
+    const token = await getAsyncStorage(localStore.token);
     const BASE_URL = getEnvVars()?.base_url;
 
     const option = {
@@ -27,14 +26,13 @@ export const makeAPIRequest = ({
       baseURL: BASE_URL,
       url,
       headers: {
-        Authorization: 'Token c7ea9fdfdf7bb23:16c5ca8dfea6003',
-        // Authorization: userData?.token || null,
+        Authorization: `Token ${token}` || null,
         'Content-Type': 'application/json',
       },
       params,
     };
 
-    if (Object.keys(data).length != 0) {
+    if (Object.keys(data).length !== 0) {
       option.data = data;
     }
 
