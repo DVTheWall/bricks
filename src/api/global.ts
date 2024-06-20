@@ -26,8 +26,8 @@ export const makeAPIRequest = ({
       baseURL: BASE_URL,
       url,
       headers: {
-        Authorization: `Token ${token}` || null,
         'Content-Type': 'application/json',
+        Authorization: token ? `Token ${token}` : null,
       },
       params,
     };
