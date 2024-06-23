@@ -10,6 +10,7 @@ import {
   Text,
   View,
   Image,
+  Linking,
   FlatList,
   Dimensions,
   StyleSheet,
@@ -18,6 +19,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {useDispatch} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import {LineChart} from 'react-native-gifted-charts';
 import Carousel from 'react-native-reanimated-carousel';
@@ -28,12 +30,12 @@ import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
 import {SCREEN} from '../../utils/screenConstants';
 import Button from '../../components/common/Button';
+import Loader from '../../components/common/Loader';
+import ToastAlert from '../../components/common/Alert';
 import {colors, fontSize, hp, isIos, wp} from '../../utils';
 import BackButtonBlur from '../../components/common/BackButtonBlur';
-import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
-import Loader from '../../components/common/Loader';
 import {getPropertyDetails} from '../../store/action/propertyActions';
-import {useDispatch} from 'react-redux';
+import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
 
 const {width} = Dimensions.get('window');
 
@@ -98,6 +100,7 @@ const PropertyDetails = ({navigation, route}: any) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyDetailsData, setPropertyDetailsData] = useState<any>([]);
+  const [imageList, setImageList] = useState<any>([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -106,6 +109,8 @@ const PropertyDetails = ({navigation, route}: any) => {
         name: item?.name,
       },
       onSuccess: (res: any | []) => {
+        // console.log('res?.data?.data=======', res?.data?.data);
+        setImageList(res?.data?.data?.multiple_gallery);
         setPropertyDetailsData(res?.data?.data?.properties_details_data[0]);
         setIsLoading(false);
       },
@@ -135,7 +140,10 @@ const PropertyDetails = ({navigation, route}: any) => {
 
   const renderItem = ({item}: any) => (
     <View>
-      <FastImage source={{uri: item.uri}} style={styles.image} />
+      <FastImage
+        source={{uri: `https://bricks-dev.katsamsoft.com${item?.image}`}}
+        style={styles.image}
+      />
       <LinearGradient
         colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']}
         style={styles.linearGradient}
@@ -210,7 +218,7 @@ const PropertyDetails = ({navigation, route}: any) => {
         <Carousel
           loop={true}
           ref={carouselRef}
-          data={carouselData}
+          data={imageList}
           renderItem={renderItem}
           width={width}
           height={width * 0.75}
@@ -218,13 +226,15 @@ const PropertyDetails = ({navigation, route}: any) => {
         />
         <FlatList
           ref={flatListRef}
-          data={carouselData}
+          data={imageList}
           horizontal
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item, index}) => (
             <TouchableOpacity onPress={() => handleFlatListPress(index)}>
               <FastImage
-                source={{uri: item.uri}}
+                source={{
+                  uri: `https://bricks-dev.katsamsoft.com${item?.image}`,
+                }}
                 style={[
                   styles.previewImage,
                   {
@@ -286,10 +296,7 @@ const PropertyDetails = ({navigation, route}: any) => {
           <View style={styles.boxContainer}>
             <View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image
-                  source={icons.location}
-                  style={{width: wp(16), height: hp(16), resizeMode: 'contain'}}
-                />
+                <Image source={icons.location} style={commonStyles.icon16} />
                 <Text
                   style={{
                     marginLeft: wp(4),
@@ -312,7 +319,20 @@ const PropertyDetails = ({navigation, route}: any) => {
                 {propertyDetailsData?.complete_address}
               </Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                const url = item?.google_location;
+                const supported = await Linking.canOpenURL(url);
+                if (supported) {
+                  await Linking.openURL(url);
+                } else {
+                  ToastAlert({
+                    toastType: 'error',
+                    title: 'Oops!',
+                    description: 'Map url is not available!',
+                  });
+                }
+              }}>
               <Image
                 source={icons.mapBtn}
                 style={{width: wp(83), height: hp(40), resizeMode: 'contain'}}

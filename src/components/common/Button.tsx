@@ -21,10 +21,12 @@ const Button: React.FC<CustomButtonProps> = ({
   buttonStyle,
   shadowStyle,
   loader,
+  disable,
 }) => {
   return (
     <Shadow shadowStyle={shadowStyle}>
       <TouchableOpacity
+        disabled={disable}
         activeOpacity={0.8}
         style={[styles.button, buttonStyle]}
         onPress={onPress}>

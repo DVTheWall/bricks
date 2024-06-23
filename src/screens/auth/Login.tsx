@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -23,12 +24,21 @@ import ToastAlert from '../../components/common/Alert';
 import TextInputComp from '../../components/common/TextInput';
 import {login, sendOtp} from '../../store/action/authActions';
 
-const Login = ({navigation}: any) => {
+const Login = ({navigation, route}: any) => {
   const dispatch = useDispatch();
+
+  const isFromSignUp = route?.params?.isFromSignUp || false;
+  const mobile_number = route?.params?.data?.mobile_number || '';
 
   const [isLoading, setIsLoading] = useState(false);
   const [mobileNumber, setMobileNumber] = useState('');
   const [isSignupError, setIsSignupError] = useState(false);
+
+  useLayoutEffect(() => {
+    if (isFromSignUp) {
+      setMobileNumber(mobile_number);
+    }
+  }, []);
 
   const onContinuePress = () => {
     if (mobileNumber?.length !== 10) {
@@ -101,21 +111,24 @@ const Login = ({navigation}: any) => {
             error={isSignupError ? `You're not register please sign up` : ''}
           />
           <Button
+            disable={isLoading}
             loader={isLoading}
             title="CONTINUE"
             buttonStyle={styles.btnStyle}
             onPress={onContinuePress}
           />
-          <Text style={styles.accText}>
-            {`Don't Have an Account?`}
-            <Text
-              style={{color: colors.blue}}
-              onPress={() => {
-                navigation.navigate(SCREEN.SIGNUP);
-              }}>
-              {' Sign-up'}
+          {!isFromSignUp && (
+            <Text style={styles.accText}>
+              {`Don't Have an Account?`}
+              <Text
+                style={{color: colors.blue}}
+                onPress={() => {
+                  navigation.navigate(SCREEN.SIGNUP);
+                }}>
+                {' Sign-up'}
+              </Text>
             </Text>
-          </Text>
+          )}
         </View>
       </KeyboardAwareScrollView>
     </View>
@@ -152,9 +165,9 @@ const styles = StyleSheet.create({
   },
   btnStyle: {
     marginTop: hp(7),
+    marginBottom: hp(12),
   },
   accText: {
-    marginTop: hp(12),
     lineHeight: hp(18),
     textAlign: 'center',
     color: colors.black,

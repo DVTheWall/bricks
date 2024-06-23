@@ -89,8 +89,6 @@ export const signUpUser =
     data: {} | any;
   }) =>
   async () => {
-    console.log('request.data==', request.data);
-
     return makeAPIRequest({
       method: POST,
       url: api.signUp,
@@ -104,13 +102,19 @@ export const signUpUser =
         });
       })
       .catch(error => {
-        console.log('error main------------', error);
-
         if (request.onFail) request.onFail(error);
-        ToastAlert({
-          toastType: 'error',
-          title: 'Oops!',
-          description: 'Something went wrong',
-        });
+        if (error?.message?.includes('409')) {
+          ToastAlert({
+            toastType: 'error',
+            title: 'Oops!',
+            description: `Customer with mobile number ${request?.data?.mobile_number} already exists`,
+          });
+        } else {
+          ToastAlert({
+            toastType: 'error',
+            title: 'Oops!',
+            description: 'Something went wrong',
+          });
+        }
       });
   };

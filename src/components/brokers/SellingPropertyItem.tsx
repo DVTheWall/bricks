@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 
 import Button from '../common/Button';
@@ -54,7 +55,9 @@ const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
         <View style={{justifyContent: 'space-between'}}>
           <Text style={styles.priceText}>{`₹52.15 Lac`}</Text>
           {/* <Text style={styles.priceText}>{`₹${item?.price}`}</Text> */}
-          <Text style={styles.dateText}>{`03 May`}</Text>
+          <Text style={styles.dateText}>
+            {moment(item?.creation)?.format('DD MMM')}
+          </Text>
           {/* <Text style={styles.dateText}>{`${item?.date}`}</Text> */}
         </View>
       </View>
@@ -71,8 +74,7 @@ const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
               ellipsizeMode="tail"
               numberOfLines={1}
               style={styles.detailText}>
-              {`966 SQ.FT.`}
-              {/* {`${item?.buildUpArea} SQ.FT.`} */}
+              {`${item?.total_no_of_square_feet} SQ.FT.`}
               <Text style={styles.subDetailText}>{'(Built Up)'}</Text>
             </Text>
             <View style={styles.verticalSeperator} />

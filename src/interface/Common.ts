@@ -21,6 +21,7 @@ export interface ShadowProps {
 
 export interface CustomButtonProps {
   loader?: boolean;
+  disable?: boolean;
   title: string;
   isIcon?: boolean;
   onPress: () => void;

@@ -1,10 +1,8 @@
 import axios from 'axios';
-// import {createNavigationContainerRef} from '@react-navigation/native';
-import {localStore} from './constants';
-import {getEnvVars} from './config';
-import {getAsyncStorage, removeAsyncStorage} from '../helpers/globalFunctions';
 
-// export const navigationRef = createNavigationContainerRef();
+import {getEnvVars} from './config';
+import {localStore} from './constants';
+import {getAsyncStorage, removeAsyncStorage} from '../helpers/globalFunctions';
 
 export const makeAPIRequest = ({
   method,
@@ -33,6 +31,7 @@ export const makeAPIRequest = ({
     };
 
     if (Object.keys(data).length !== 0) {
+      //@ts-ignore
       option.data = data;
     }
 

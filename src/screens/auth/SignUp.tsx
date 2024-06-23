@@ -219,7 +219,7 @@ const SignUp = ({navigation}: any) => {
       }
     } else {
       if (step3Validation()) {
-        let signUpData = {
+        const signUpData = {
           full_name: fullName,
           mobile_number: mobileNumber,
           is_terms_agreed: isTermsChecked ? '1' : '0',
@@ -239,13 +239,14 @@ const SignUp = ({navigation}: any) => {
           // need to make it dynamic
           data: signUpData,
           onSuccess: (res: any | []) => {
-            // console.log('res============', res);
             setIsLoading(false);
-            resetStack(SCREEN.LOGIN);
+            resetStack(SCREEN.LOGIN, {
+              isFromSignUp: true,
+              data: signUpData,
+            });
             clearStates();
           },
           onFail: (err: any) => {
-            // console.log('ERR=====', err);
             setIsLoading(false);
           },
         };
@@ -521,6 +522,7 @@ const SignUp = ({navigation}: any) => {
 
       <Button
         loader={isLoading}
+        disable={isLoading}
         title={stepCount === 3 ? 'VERIFY' : 'NEXT'}
         buttonStyle={styles.btnStyle}
         onPress={onVerifyPress}
