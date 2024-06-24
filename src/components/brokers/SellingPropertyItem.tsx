@@ -42,7 +42,7 @@ const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
           <View style={{...commonStyles.flexRow, marginVertical: hp(8)}}>
             <Image source={icons.buildings} style={commonStyles.icon16} />
             <Text style={styles.propertyTypeText}>
-              {item?.property_categorization}
+              {item?.developer_information}
             </Text>
           </View>
           <View style={commonStyles.flexRow}>
@@ -82,7 +82,7 @@ const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
               ellipsizeMode="tail"
               numberOfLines={1}
               style={styles.detailText}>
-              {'16000'}
+              {item?.sq_feet_available_for_sale}
               {/* {item?.longTermRate} */}
               <Text style={styles.subDetailText}>{' (Long Term Rate)'}</Text>
             </Text>

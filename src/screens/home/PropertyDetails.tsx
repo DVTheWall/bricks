@@ -19,6 +19,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import Modal from 'react-native-modal';
 import {useDispatch} from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import {LineChart} from 'react-native-gifted-charts';
@@ -35,7 +36,7 @@ import ToastAlert from '../../components/common/Alert';
 import {colors, fontSize, hp, isIos, wp} from '../../utils';
 import BackButtonBlur from '../../components/common/BackButtonBlur';
 import {getPropertyDetails} from '../../store/action/propertyActions';
-import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
+// import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
 
 const {width} = Dimensions.get('window');
 
@@ -54,7 +55,8 @@ const HighlightItem = ({item}: any) => {
       }}>
       <Image
         style={{width: wp(20), height: wp(20), resizeMode: 'contain'}}
-        source={item?.icon}
+        // source={item?.relevant_image}
+        source={icons.building}
       />
       <Text
         style={{
@@ -63,7 +65,7 @@ const HighlightItem = ({item}: any) => {
           color: colors.lightBlack,
           marginVertical: hp(8),
         }}>
-        {item?.detail}
+        {item?.associated_numbers}
         {item?.isUnit && (
           <Text
             style={{
@@ -82,7 +84,7 @@ const HighlightItem = ({item}: any) => {
           color: colors.lightBlack,
           lineHeight: hp(13),
         }}>
-        {item?.description}
+        {item?.title}
       </Text>
     </View>
   );
@@ -101,6 +103,10 @@ const PropertyDetails = ({navigation, route}: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [propertyDetailsData, setPropertyDetailsData] = useState<any>([]);
   const [imageList, setImageList] = useState<any>([]);
+  const [propertyHighlightList, setPropertyHighlightList] = useState<any>([]);
+  const [propertyDocuments, setPropertyDocuments] = useState<any>([]);
+  const [isDocumentVisible, setIsDocumentVisible] = useState(false);
+  const [selectedDoc, setSelectedDoc] = useState<any>({});
 
   useEffect(() => {
     setIsLoading(true);
@@ -109,9 +115,10 @@ const PropertyDetails = ({navigation, route}: any) => {
         name: item?.name,
       },
       onSuccess: (res: any | []) => {
-        // console.log('res?.data?.data=======', res?.data?.data);
         setImageList(res?.data?.data?.multiple_gallery);
         setPropertyDetailsData(res?.data?.data?.properties_details_data[0]);
+        setPropertyHighlightList(res?.data?.data?.properties_highlights);
+        setPropertyDocuments(res?.data?.data?.properties_document);
         setIsLoading(false);
       },
       onFail: (err: any) => {
@@ -124,7 +131,7 @@ const PropertyDetails = ({navigation, route}: any) => {
   useEffect(() => {
     const interval = setInterval(() => {
       let nextIndex = highlightIndex + 1;
-      if (nextIndex >= propertyHighlightData.length - 2) {
+      if (nextIndex >= propertyHighlightList?.length - 2) {
         nextIndex = 0;
       }
       //@ts-ignore
@@ -189,6 +196,8 @@ const PropertyDetails = ({navigation, route}: any) => {
       carouselRef.current.scrollTo({index, animated: true});
     }
   };
+
+  console.log('selectedDocselectedDoc------', selectedDoc);
 
   return (
     <View style={commonStyles.container}>
@@ -372,7 +381,7 @@ const PropertyDetails = ({navigation, route}: any) => {
               <FlatList
                 horizontal
                 ref={highlightFlatListRef}
-                data={propertyHighlightData}
+                data={propertyHighlightList}
                 renderItem={renderPropertyHighlight}
                 showsHorizontalScrollIndicator={false}
                 onScrollToIndexFailed={() => {
@@ -431,66 +440,58 @@ const PropertyDetails = ({navigation, route}: any) => {
 
           <View style={{...styles.boxView, paddingBottom: hp(16)}}>
             <Text style={styles.boxTitleText}>{'Property Documentation'}</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: wp(16),
-                paddingVertical: hp(12),
-              }}>
-              <Text
-                style={{
-                  fontFamily: font.semiBold,
-                  fontSize: fontSize(14),
-                  color: colors.xDarkGrey,
-                }}>
-                {'Registration Document'}
-              </Text>
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontFamily: font.semiBold,
-                    fontSize: fontSize(12),
-                    color: colors.blue,
-                  }}>
-                  {'Preview'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                borderBottomWidth: wp(0.5),
-                borderColor: colors.borderColor,
+            <FlatList
+              data={propertyDocuments}
+              ItemSeparatorComponent={() => {
+                return (
+                  <View
+                    style={{
+                      borderBottomWidth: wp(0.5),
+                      borderColor: colors.borderColor,
+                    }}
+                  />
+                );
+              }}
+              renderItem={({item}) => {
+                console.log('item=========', item);
+
+                return (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: wp(16),
+                      paddingVertical: hp(12),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: font.semiBold,
+                        fontSize: fontSize(14),
+                        color: colors.xDarkGrey,
+                      }}>
+                      {item?.specific_document_name}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectedDoc(item);
+                        setTimeout(() => {
+                          setIsDocumentVisible(true);
+                        }, 200);
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: font.semiBold,
+                          fontSize: fontSize(12),
+                          color: colors.blue,
+                        }}>
+                        {'Preview'}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                );
               }}
             />
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: wp(16),
-                paddingVertical: hp(12),
-              }}>
-              <Text
-                style={{
-                  fontFamily: font.semiBold,
-                  fontSize: fontSize(14),
-                  color: colors.xDarkGrey,
-                }}>
-                {'Privacy Policy Document'}
-              </Text>
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontFamily: font.semiBold,
-                    fontSize: fontSize(12),
-                    color: colors.blue,
-                  }}>
-                  {'Preview'}
-                </Text>
-              </TouchableOpacity>
-            </View>
           </View>
           <View style={{height: hp(40)}} />
         </View>
@@ -505,6 +506,46 @@ const PropertyDetails = ({navigation, route}: any) => {
         />
       </View>
       <SafeAreaView />
+      <Modal
+        isVisible={isDocumentVisible}
+        onBackdropPress={() => setIsDocumentVisible(false)}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalTitle}>
+            {selectedDoc?.specific_document_name}
+          </Text>
+          <Text style={styles.modalContentText}>
+            {'Document Number:  '}
+            <Text style={{color: colors.black}}>
+              {selectedDoc?.document_number}
+            </Text>
+          </Text>
+          <Text style={styles.modalContentText}>
+            {'date of Allotment:  '}
+            <Text style={{color: colors.black}}>
+              {selectedDoc?.date_of_allotment}
+            </Text>
+          </Text>
+          <Text style={styles.modalContentText}>
+            {'Provision for Data:  '}
+            <Text style={{color: colors.black}}>
+              {selectedDoc?.provision_for_data}
+            </Text>
+          </Text>
+          <Text style={styles.modalContentText}>
+            {'Additional Information:  '}
+            <Text style={{color: colors.black}}>
+              {selectedDoc?.additional_information}
+            </Text>
+          </Text>
+          <TouchableOpacity
+            style={{padding: wp(8), alignSelf: 'center'}}
+            onPress={() => setIsDocumentVisible(false)}>
+            <Text style={{...styles.modalContentText, color: colors.primary}}>
+              {'Close'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -583,6 +624,7 @@ const styles = StyleSheet.create({
     bottom: hp(14),
     position: 'absolute',
     paddingHorizontal: wp(20),
+    alignSelf: 'flex-start',
   },
   linearGradient: {
     left: 0,
@@ -591,5 +633,32 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '30%',
     position: 'absolute',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    // alignItems: 'center',
+    borderRadius: wp(12),
+    // paddingVertical: hp(10),
+    padding: hp(16),
+    backgroundColor: colors.white,
+  },
+  modalTitle: {
+    textAlign: 'center',
+    color: colors.black,
+    fontSize: fontSize(16),
+    fontFamily: font.semiBold,
+    marginBottom: hp(10),
+    textDecorationLine: 'underline',
+  },
+  modalContentText: {
+    fontSize: fontSize(14),
+    fontFamily: font.regular,
+    color: colors.otpInputBorder,
+    paddingVertical: hp(3),
   },
 });

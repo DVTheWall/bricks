@@ -93,6 +93,7 @@ const Login = ({navigation, route}: any) => {
       </View>
       <KeyboardAwareScrollView
         bounces={false}
+        enableOnAndroid
         extraScrollHeight={hp(40)}
         keyboardShouldPersistTaps={'handled'}
         showsVerticalScrollIndicator={false}>
