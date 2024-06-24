@@ -3,6 +3,8 @@ import {CommonActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {localStore} from '../api/constants';
+import {icons} from '../utils/icons';
+import {colors} from '../utils';
 
 export const navigationRef = createRef();
 
@@ -46,3 +48,20 @@ export const resetStack = (name: string, params?: any) =>
   );
 
 export const currentTime = new Date();
+
+export const getCatogoryItemData = (category_name: string) => {
+  switch (category_name) {
+    case 'Hotel':
+      return {icon: icons.office, bgColor: colors.greenNeon};
+    case 'School':
+      return {icon: icons.school, bgColor: colors.darkYellow};
+    case 'Villa':
+      return {icon: icons.office, bgColor: colors.blueNeon};
+    case 'Office':
+      return {icon: icons.office, bgColor: colors.greenNeon};
+    case 'Hospital':
+      return {icon: icons.hospital, bgColor: colors.blueNeon};
+    default:
+      return {icon: icons.office, bgColor: colors.greenNeon};
+  }
+};

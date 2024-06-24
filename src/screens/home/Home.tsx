@@ -1,7 +1,10 @@
+/* eslint-disable handle-callback-err */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -23,8 +26,47 @@ import {colors, fontSize, hp, wp} from '../../utils';
 import CategoryListItem from '../../components/home/CategoryListItem';
 import PropertyItemList from '../../components/home/PropertyItemList';
 import {categoryListData, hotPropertiesData} from '../../utils/dataConstants';
+import {useDispatch, useSelector} from 'react-redux';
+import {getHomePageData} from '../../store/action/homeActions';
+import Loader from '../../components/common/Loader';
+import FastImage from 'react-native-fast-image';
 
 const Home = ({navigation}: any) => {
+  const {homePageData} = useSelector((state: any) => state.data);
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [categoryList, setCategoryList] = useState([]);
+  const [hotSellingPropertyList, setHotSellingPropertyList] = useState([]);
+  const [bannerList, setBannerList] = useState([]);
+
+  useEffect(() => {
+    if (homePageData?.length > 0) {
+      homePageData.forEach((item: any) => {
+        if (item?.type === 'Category') {
+          setCategoryList(item?.child_data);
+        } else if (item?.type === 'Property') {
+          setHotSellingPropertyList(item?.child_data);
+        } else if (item?.type === 'Banner') {
+          setBannerList(item?.child_data);
+        }
+      });
+    }
+  }, [homePageData]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const request = {
+      data: {},
+      onSuccess: (res: any | []) => {
+        setIsLoading(false);
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+      },
+    };
+    dispatch(getHomePageData(request) as never);
+  }, []);
+
   const renderCategoryItem = ({item}: any) => {
     return <CategoryListItem item={item} onPress={() => {}} />;
   };
@@ -43,6 +85,7 @@ const Home = ({navigation}: any) => {
   return (
     <View style={{flex: 1, backgroundColor: colors.homeBg}}>
       <SafeAreaView />
+      <Loader visible={isLoading} />
       <Header
         title={'Hello, '}
         name={`Quaid!`}
@@ -110,10 +153,16 @@ const Home = ({navigation}: any) => {
             </Text>
           </View>
           <View style={commonStyles.flexRow}>
-            <View style={styles.gradientBorderView}>
+            {/* <View style={styles.gradientBorderView}>
               <Image source={icons.gradientBorder} style={styles.platImage} />
-            </View>
-            <Image source={icons.ploting} style={styles.platImage} />
+            </View> */}
+            {/* <Image source={icons.ploting} style={styles.platImage} /> */}
+            <FastImage
+              source={{
+                uri: `https://bricks-dev.katsamsoft.com${bannerList[0]?.banner_image}`,
+              }}
+              style={styles.platImage}
+            />
           </View>
         </View>
 
@@ -125,7 +174,7 @@ const Home = ({navigation}: any) => {
         </View>
         <FlatList
           horizontal
-          data={categoryListData}
+          data={categoryList}
           renderItem={renderCategoryItem}
           style={styles.categoryListStyle}
           showsHorizontalScrollIndicator={false}
@@ -146,7 +195,7 @@ const Home = ({navigation}: any) => {
         <FlatList
           key={1}
           numColumns={2}
-          data={hotPropertiesData}
+          data={hotSellingPropertyList}
           renderItem={renderHotPropertiesItem}
           style={styles.propertyListStyle}
           showsVerticalScrollIndicator={false}

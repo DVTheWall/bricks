@@ -94,7 +94,7 @@ const Login = ({navigation, route}: any) => {
       <KeyboardAwareScrollView
         bounces={false}
         enableOnAndroid
-        extraScrollHeight={hp(40)}
+        extraScrollHeight={hp(50)}
         keyboardShouldPersistTaps={'handled'}
         showsVerticalScrollIndicator={false}>
         <View style={styles.loginImgContainer}>

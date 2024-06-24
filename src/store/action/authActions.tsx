@@ -109,6 +109,12 @@ export const signUpUser =
             title: 'Oops!',
             description: `Customer with mobile number ${request?.data?.mobile_number} already exists`,
           });
+        } else if (error?.message?.includes('417')) {
+          ToastAlert({
+            toastType: 'error',
+            title: 'Oops!',
+            description: `Customer with this email ${request?.data?.email} already exists`,
+          });
         } else {
           ToastAlert({
             toastType: 'error',

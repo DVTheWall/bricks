@@ -12,21 +12,30 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
   return (
     <View style={styles.container} key={item?.id}>
       <View>
-        <ImageBackground source={icons.tag} style={styles.tagIcon}>
-          <Text style={styles.tagText}>{`${item?.discount}% OFF`}</Text>
-        </ImageBackground>
-        <FastImage source={{uri: item?.imageURL}} style={styles.propertyImg} />
+        {item?.discount && (
+          <ImageBackground source={icons.tag} style={styles.tagIcon}>
+            <Text style={styles.tagText}>{`${item?.discount}% OFF`}</Text>
+          </ImageBackground>
+        )}
+        <FastImage
+          source={{
+            uri: `https://bricks-dev.katsamsoft.com${item?.property_cover_image}`,
+          }}
+          style={styles.propertyImg}
+        />
       </View>
       <View style={styles.bottomView}>
-        <Text style={styles.propertyNameText}>{item?.name}</Text>
-        <Text style={styles.addressText}>{item?.address}</Text>
+        <Text style={styles.propertyNameText}>{item?.property}</Text>
+        <Text style={styles.addressText}>{item?.complete_address}</Text>
         <View style={{...commonStyles.flexRow, marginTop: hp(6)}}>
           <Text style={styles.rateText}>
-            {`₹${item?.rate}`}
+            {`₹${item?.minimum_rate}`}
             <Text style={styles.sqftText}>{'  sqft'}</Text>
           </Text>
           <View style={styles.growView}>
-            <Text style={styles.growPercText}>{`${item?.growthPerc}% `}</Text>
+            <Text style={styles.growPercText}>
+              {item?.growthPerc ? `${item?.growthPerc}% ` : '0%'}
+            </Text>
             <Image source={icons.growArrow} style={styles.growArrow} />
           </View>
         </View>
@@ -36,11 +45,11 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
             <Text style={styles.longTermText}>{'long term rate '}</Text>
             <View style={commonStyles.flexRow}>
               <Text style={styles.longTermRateText}>
-                {`${item?.longTermRate}`}
+                {`${item?.sq_feet_available_for_sale}`}
               </Text>
               <View style={styles.growView}>
                 <Text style={styles.growPercText}>
-                  {`${item?.longTermPerc}% `}
+                  {item?.longTermPerc ? `${item?.longTermPerc}% ` : '0%'}
                 </Text>
               </View>
             </View>

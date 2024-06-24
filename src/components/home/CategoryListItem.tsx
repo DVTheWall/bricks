@@ -3,6 +3,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {font} from '../../utils/fonts';
 import {colors, fontSize, wp} from '../../utils';
+import {getCatogoryItemData} from '../../helpers/globalFunctions';
 
 const CategoryListItem = ({item, onPress}: any) => {
   return (
@@ -10,12 +11,22 @@ const CategoryListItem = ({item, onPress}: any) => {
       onPress={onPress}
       activeOpacity={0.7}
       style={styles.container}>
-      <View style={{...styles.iconContainer, backgroundColor: item?.bgColor}}>
-        <Image source={item?.icon} style={styles.iconStyle} />
+      <View
+        style={{
+          ...styles.iconContainer,
+          backgroundColor: getCatogoryItemData(item?.category_name)?.bgColor,
+        }}>
+        <Image
+          source={getCatogoryItemData(item?.category_name)?.icon}
+          style={styles.iconStyle}
+        />
       </View>
       <View style={styles.textView}>
-        <Text style={styles.categoryText}>{item?.category}</Text>
-        <Text style={styles.projectText}>{`${item?.projects} Projects`}</Text>
+        <Text style={styles.categoryText}>{item?.category_name}</Text>
+        <Text
+          style={
+            styles.projectText
+          }>{`${item?.number_of_project} Projects`}</Text>
       </View>
     </TouchableOpacity>
   );

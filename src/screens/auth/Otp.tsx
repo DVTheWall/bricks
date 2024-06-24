@@ -124,7 +124,11 @@ const Otp = ({navigation, route}: any) => {
           <Text style={{color: colors.green}}>{`+91 ${mobile}`}</Text>
         </Text>
       </View>
-      <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'}>
+      <KeyboardAwareScrollView
+        enableOnAndroid
+        extraScrollHeight={hp(50)}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps={'handled'}>
         <Image
           source={icons.otpImg}
           style={{
@@ -163,6 +167,7 @@ const Otp = ({navigation, route}: any) => {
         </Shadow>
         <Button
           loader={isLoading}
+          disable={isLoading}
           title="VERIFY"
           buttonStyle={{marginTop: hp(40)}}
           onPress={onVerifyPress}
@@ -189,6 +194,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: wp(10),
     borderColor: colors.otpInputBorder,
+    fontSize: fontSize(22),
+    color: colors.black,
+    fontFamily: font.medium,
   },
   underlineStyleHighLighted: {
     // borderColor: '#03DAC6',

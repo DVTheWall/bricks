@@ -1,4 +1,5 @@
 import {
+  GET_HOME_PAGE_DATA,
   GET_PROPERTY_LIST,
   GET_WALLET_PROFILE_DATA,
   MY_TRANSACTIONS_LIST,
@@ -8,6 +9,7 @@ const INITIAL_STATE = {
   walletProfileData: [],
   propertyList: [],
   myTransactionsList: [],
+  homePageData: [],
 };
 
 export default (
@@ -21,6 +23,8 @@ export default (
       return {...state, propertyList: action?.payload};
     case MY_TRANSACTIONS_LIST:
       return {...state, myTransactionsList: action?.payload};
+    case GET_HOME_PAGE_DATA:
+      return {...state, homePageData: action?.payload};
     default:
       return state;
   }

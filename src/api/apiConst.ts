@@ -18,4 +18,7 @@ export const api = {
 
   // transactions
   myTransactions: 'bricks.api.wallet.my_transactions',
+
+  // homepage
+  getHomePageData: 'bricks.api.home_page_config.home_page_config',
 };
