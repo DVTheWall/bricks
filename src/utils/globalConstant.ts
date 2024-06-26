@@ -5,8 +5,8 @@ import {
 } from 'react-native-responsive-screen';
 import {RFValue} from 'react-native-responsive-fontsize';
 
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
+export const screenHeight = Dimensions.get('window').height;
+export const screenWidth = Dimensions.get('window').width;
 
 export const wp = (val: number) => {
   return widthPercentageToDP((val * 100) / screenWidth);

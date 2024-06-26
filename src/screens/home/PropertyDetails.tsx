@@ -19,8 +19,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import RNFS from 'react-native-fs';
+
 import Modal from 'react-native-modal';
 import {useDispatch} from 'react-redux';
+import FileViewer from 'react-native-file-viewer';
 import FastImage from 'react-native-fast-image';
 import {LineChart} from 'react-native-gifted-charts';
 import Carousel from 'react-native-reanimated-carousel';
@@ -54,9 +57,16 @@ const HighlightItem = ({item}: any) => {
         width: wp(110),
       }}>
       <Image
-        style={{width: wp(20), height: wp(20), resizeMode: 'contain'}}
-        // source={item?.relevant_image}
-        source={icons.building}
+        style={{
+          width: wp(20),
+          height: wp(20),
+          resizeMode: 'contain',
+          tintColor: colors.primary,
+        }}
+        source={{
+          uri: `https://bricks-dev.katsamsoft.com${item?.relevant_image}`,
+        }}
+        // source={icons.building}
       />
       <Text
         style={{
@@ -106,13 +116,16 @@ const PropertyDetails = ({navigation, route}: any) => {
   const [propertyHighlightList, setPropertyHighlightList] = useState<any>([]);
   const [propertyDocuments, setPropertyDocuments] = useState<any>([]);
   const [isDocumentVisible, setIsDocumentVisible] = useState(false);
+  const [pdfView, setPdfView] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<any>({});
+
+  // console.log('selectedDoc=====', selectedDoc);
 
   useEffect(() => {
     setIsLoading(true);
     const request = {
       data: {
-        name: item?.name,
+        name: item?.property || item?.name,
       },
       onSuccess: (res: any | []) => {
         setImageList(res?.data?.data?.multiple_gallery);
@@ -158,6 +171,10 @@ const PropertyDetails = ({navigation, route}: any) => {
     </View>
   );
 
+  function getUrlExtension(url: any) {
+    return url.split(/[#?]/)[0].split('.').pop().trim();
+  }
+
   const renderPropertyHighlight = ({item}: any) => {
     return <HighlightItem item={item} />;
   };
@@ -197,7 +214,7 @@ const PropertyDetails = ({navigation, route}: any) => {
     }
   };
 
-  console.log('selectedDocselectedDoc------', selectedDoc);
+  // console.log('selectedDocselectedDoc------', selectedDoc);
 
   return (
     <View style={commonStyles.container}>
@@ -453,8 +470,6 @@ const PropertyDetails = ({navigation, route}: any) => {
                 );
               }}
               renderItem={({item}) => {
-                console.log('item=========', item);
-
                 return (
                   <View
                     style={{
@@ -470,7 +485,7 @@ const PropertyDetails = ({navigation, route}: any) => {
                         fontSize: fontSize(14),
                         color: colors.xDarkGrey,
                       }}>
-                      {item?.specific_document_name}
+                      {item?.specific_document_name || 'Document'}
                     </Text>
                     <TouchableOpacity
                       onPress={() => {
@@ -511,16 +526,18 @@ const PropertyDetails = ({navigation, route}: any) => {
         onBackdropPress={() => setIsDocumentVisible(false)}>
         <View style={styles.modalView}>
           <Text style={styles.modalTitle}>
-            {selectedDoc?.specific_document_name}
+            {selectedDoc?.specific_document_name || 'Document'}
           </Text>
-          <Text style={styles.modalContentText}>
-            {'Document Number:  '}
-            <Text style={{color: colors.black}}>
-              {selectedDoc?.document_number}
+          {selectedDoc?.document_number && (
+            <Text style={styles.modalContentText}>
+              {'Document Number:  '}
+              <Text style={{color: colors.black}}>
+                {selectedDoc?.document_number}
+              </Text>
             </Text>
-          </Text>
+          )}
           <Text style={styles.modalContentText}>
-            {'date of Allotment:  '}
+            {'Date of Allotment:  '}
             <Text style={{color: colors.black}}>
               {selectedDoc?.date_of_allotment}
             </Text>
@@ -531,16 +548,50 @@ const PropertyDetails = ({navigation, route}: any) => {
               {selectedDoc?.provision_for_data}
             </Text>
           </Text>
-          <Text style={styles.modalContentText}>
-            {'Additional Information:  '}
-            <Text style={{color: colors.black}}>
-              {selectedDoc?.additional_information}
+          {selectedDoc?.additional_information && (
+            <Text style={styles.modalContentText}>
+              {'Additional Information:  '}
+              <Text style={{color: colors.black}}>
+                {selectedDoc?.additional_information}
+              </Text>
             </Text>
-          </Text>
+          )}
+          {selectedDoc?.attachment && (
+            <TouchableOpacity
+              style={{padding: wp(8), alignSelf: 'center'}}
+              onPress={async () => {
+                const url = `https://bricks-dev.katsamsoft.com${selectedDoc?.attachment}`;
+
+                const extension = getUrlExtension(url);
+
+                const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
+
+                const options = {
+                  fromUrl: url,
+                  toFile: localFile,
+                };
+                RNFS.downloadFile(options)
+                  .promise.then(() => FileViewer.open(localFile))
+                  .then(() => {
+                    // success
+                  })
+                  .catch(error => {
+                    // error
+                  });
+                // setIsDocumentVisible(false);
+                // await FileViewer.open(
+                //   `https://bricks-dev.katsamsoft.com${selectedDoc?.attachment}`,
+                // );
+              }}>
+              <Text style={{...styles.modalContentText, color: colors.primary}}>
+                {'View Attachment'}
+              </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={{padding: wp(8), alignSelf: 'center'}}
             onPress={() => setIsDocumentVisible(false)}>
-            <Text style={{...styles.modalContentText, color: colors.primary}}>
+            <Text style={{...styles.modalContentText, color: colors.black}}>
               {'Close'}
             </Text>
           </TouchableOpacity>

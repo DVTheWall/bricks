@@ -1,7 +1,7 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -10,6 +10,7 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 
 import {font} from '../../utils/fonts';
@@ -40,7 +41,7 @@ const Profile = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
+  const getWalletProfileData = () => {
     setIsLoading(true);
     const request = {
       // need to make it dynamic
@@ -53,6 +54,20 @@ const Profile = () => {
       },
     };
     dispatch(walletProfile(request) as never);
+  };
+
+  useEffect(() => {
+    getWalletProfileData();
+  }, []);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getWalletProfileData();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
   }, []);
 
   return (
@@ -70,7 +85,12 @@ const Profile = () => {
         </Text>
       </View>
 
-      <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        // bounces={false}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={styles.boxView}>
           <Text style={styles.boxTitleText}>{'Wallet'}</Text>
           <View style={styles.walletBoxView}>

@@ -36,6 +36,7 @@ export type RootStackParamList = {
   OrderDetails: undefined;
   AddOrders: undefined;
   Home: undefined;
+  PdfViewer: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

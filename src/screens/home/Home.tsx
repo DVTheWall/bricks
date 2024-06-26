@@ -30,8 +30,16 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getHomePageData} from '../../store/action/homeActions';
 import Loader from '../../components/common/Loader';
 import FastImage from 'react-native-fast-image';
+import Carousel from 'react-native-reanimated-carousel';
+import {screenWidth} from '../../utils/globalConstant';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 
 const Home = ({navigation}: any) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const animatedValue = useSharedValue(0);
   const {homePageData} = useSelector((state: any) => state.data);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +90,30 @@ const Home = ({navigation}: any) => {
     );
   };
 
+  const handleCarouselSnap = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      opacity: animatedValue.value === currentIndex ? 1 : 0.5,
+      transform: [
+        {
+          scale: animatedValue.value === currentIndex ? 1.2 : 1,
+        },
+      ],
+    };
+  });
+
+  const renderBannerItem = ({item}: any) => (
+    <View>
+      <FastImage
+        source={{uri: `https://bricks-dev.katsamsoft.com${item?.banner_image}`}}
+        style={{height: '100%', width: '100%'}}
+      />
+    </View>
+  );
+
   return (
     <View style={{flex: 1, backgroundColor: colors.homeBg}}>
       <SafeAreaView />
@@ -131,7 +163,35 @@ const Home = ({navigation}: any) => {
           </View>
         </View>
 
-        <View style={styles.blackCardContainer}>
+        {bannerList?.length > 0 && (
+          <View style={{marginVertical: hp(20)}}>
+            <Carousel
+              loop={true}
+              autoPlay={true}
+              autoPlayInterval={3000}
+              data={bannerList}
+              renderItem={renderBannerItem}
+              width={screenWidth}
+              height={158}
+              onSnapToItem={handleCarouselSnap}
+              onProgressChange={(_, absoluteProgress) => {
+                animatedValue.value = absoluteProgress;
+              }}
+              // onSnapToItem={handleCarouselSnap}
+            />
+          </View>
+        )}
+        {/* <View style={styles.paginationContainer}>
+          {bannerList.map((_, index) => {
+            return (
+              <Animated.View
+                key={index}
+                style={[styles.paginationDot, animatedStyles]}
+              />
+            );
+          })}
+        </View> */}
+        {/* <View style={styles.blackCardContainer}>
           <View style={{padding: wp(16)}}>
             <Text style={styles.blackCardTitleText}>
               {'Indore-Ujjain Road Plot'}
@@ -156,50 +216,64 @@ const Home = ({navigation}: any) => {
             {/* <View style={styles.gradientBorderView}>
               <Image source={icons.gradientBorder} style={styles.platImage} />
             </View> */}
-            {/* <Image source={icons.ploting} style={styles.platImage} /> */}
-            <FastImage
+        {/* <Image source={icons.ploting} style={styles.platImage} /> */}
+        {/* <FastImage
               source={{
+                //@ts-ignore
                 uri: `https://bricks-dev.katsamsoft.com${bannerList[0]?.banner_image}`,
               }}
               style={styles.platImage}
             />
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.subTitleContainer}>
-          <Text style={styles.subTitleText}>{'Invest By Category'}</Text>
-          <TouchableOpacity>
-            <Text style={styles.viewAllText}>{'View all'}</Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          horizontal
-          data={categoryList}
-          renderItem={renderCategoryItem}
-          style={styles.categoryListStyle}
-          showsHorizontalScrollIndicator={false}
-          ListFooterComponent={() => <View style={{width: wp(40)}} />}
-          ItemSeparatorComponent={() => <View style={{width: wp(12)}} />}
-        />
-        <View style={styles.subTitleContainer}>
-          <Text style={styles.subTitleText}>{'Hot Selling Properties'}</Text>
-          <TouchableOpacity
-            style={commonStyles.flexRow}
-            onPress={() => {
-              navigation.navigate(SCREEN.PROPERTYLIST, {isFromCustomer: true});
-            }}>
-            <Text style={styles.viewAllText}>{'More'}</Text>
-            {/* <Image source={icons.downChevron} style={styles.downChevron} /> */}
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          key={1}
-          numColumns={2}
-          data={hotSellingPropertyList}
-          renderItem={renderHotPropertiesItem}
-          style={styles.propertyListStyle}
-          showsVerticalScrollIndicator={false}
-        />
+        {categoryList?.length > 0 && (
+          <>
+            <View style={styles.subTitleContainer}>
+              <Text style={styles.subTitleText}>{'Invest By Category'}</Text>
+              <TouchableOpacity>
+                <Text style={styles.viewAllText}>{'View all'}</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              horizontal
+              data={categoryList}
+              renderItem={renderCategoryItem}
+              style={styles.categoryListStyle}
+              showsHorizontalScrollIndicator={false}
+              ListFooterComponent={() => <View style={{width: wp(40)}} />}
+              ItemSeparatorComponent={() => <View style={{width: wp(12)}} />}
+            />
+          </>
+        )}
+
+        {hotSellingPropertyList?.length > 0 && (
+          <>
+            <View style={styles.subTitleContainer}>
+              <Text style={styles.subTitleText}>
+                {'Hot Selling Properties'}
+              </Text>
+              <TouchableOpacity
+                style={commonStyles.flexRow}
+                onPress={() => {
+                  navigation.navigate(SCREEN.PROPERTYLIST, {
+                    isFromCustomer: true,
+                  });
+                }}>
+                <Text style={styles.viewAllText}>{'More'}</Text>
+                {/* <Image source={icons.downChevron} style={styles.downChevron} /> */}
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              key={1}
+              numColumns={2}
+              data={hotSellingPropertyList}
+              renderItem={renderHotPropertiesItem}
+              style={styles.propertyListStyle}
+              showsVerticalScrollIndicator={false}
+            />
+          </>
+        )}
 
         <View style={styles.howWorksContainer}>
           <Image source={icons.howWorksImg} style={styles.howWorksImg} />
@@ -468,5 +542,18 @@ const styles = StyleSheet.create({
     marginLeft: wp(10),
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  paginationDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: 'blue',
+    marginHorizontal: 5,
   },
 });
