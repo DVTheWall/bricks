@@ -38,6 +38,7 @@ import PropertyComponent from '../../components/home/PropertyComponent';
 const Home = ({navigation}: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const {homePageData} = useSelector((state: any) => state.data);
+  const {userData} = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
@@ -106,7 +107,7 @@ const Home = ({navigation}: any) => {
       <Loader visible={isLoading} />
       <Header
         title={'Hello, '}
-        name={`Quaid!`}
+        name={`${userData?.first_name}!`}
         // onLeftIconPress={() => {}}
         onRightIconPress1={() => navigation.navigate(SCREEN.PAYMENT)}
         onRightIconPress2={() => navigation.navigate(SCREEN.NOTIFICATION)}

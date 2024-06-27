@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 import Carousel from 'react-native-reanimated-carousel';
 
 import {hp} from '../../utils';
-import {screenWidth} from '../../utils/globalConstant';
+import {screenWidth, wp} from '../../utils/globalConstant';
 
 const BannerComponent = ({data}: any) => {
   const renderBannerItem = ({item}: any) => (
@@ -27,6 +27,13 @@ const BannerComponent = ({data}: any) => {
         renderItem={renderBannerItem}
         width={screenWidth}
         height={158}
+        pagingEnabled={true}
+        snapEnabled={true}
+        mode="parallax"
+        modeConfig={{
+          parallaxScrollingScale: 0.9,
+          parallaxScrollingOffset: 45,
+        }}
         //   onSnapToItem={handleCarouselSnap}
       />
     </View>
@@ -42,5 +49,7 @@ const styles = StyleSheet.create({
   image: {
     height: '100%',
     width: '100%',
+    borderRadius: wp(10),
+    resizeMode: 'contain',
   },
 });

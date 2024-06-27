@@ -113,9 +113,6 @@ const PropertyDetails = ({navigation, route}: any) => {
   const [propertyDocuments, setPropertyDocuments] = useState<any>([]);
   const [isDocumentVisible, setIsDocumentVisible] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<any>({});
-  const [coverImg, setCoverImg] = useState<any>({});
-
-  // console.log('selectedDoc=====', selectedDoc);
 
   useEffect(() => {
     setIsLoading(true);
@@ -124,9 +121,6 @@ const PropertyDetails = ({navigation, route}: any) => {
         name: item?.property || item?.name,
       },
       onSuccess: (res: any | []) => {
-        console.log('res?.data?.data====', res?.data?.data);
-        setCoverImg(res?.data?.data?.property_cover_image);
-
         setImageList(res?.data?.data?.multiple_gallery);
         setPropertyDetailsData(res?.data?.data?.properties_details_data[0]);
         setPropertyHighlightList(res?.data?.data?.properties_highlights);
@@ -157,18 +151,18 @@ const PropertyDetails = ({navigation, route}: any) => {
   //   return () => clearInterval(interval);
   // }, [highlightIndex]);
 
-  const renderItem = ({item}: any) => (
-    <View>
-      <FastImage
-        source={{uri: `https://bricks-dev.katsamsoft.com${item?.image}`}}
-        style={styles.image}
-      />
-      <LinearGradient
-        colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']}
-        style={styles.linearGradient}
-      />
-    </View>
-  );
+  const renderItem = ({item, index}: any) => {
+    const imagePath = `https://bricks-dev.katsamsoft.com${item?.image}`;
+    return (
+      <View>
+        <FastImage source={{uri: imagePath}} style={styles.image} />
+        <LinearGradient
+          colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']}
+          style={styles.linearGradient}
+        />
+      </View>
+    );
+  };
 
   function getUrlExtension(url: any) {
     return url.split(/[#?]/)[0].split('.').pop().trim();
@@ -265,7 +259,7 @@ const PropertyDetails = ({navigation, route}: any) => {
         <Carousel
           loop={true}
           ref={carouselRef}
-          data={[{image: coverImg}, ...imageList]}
+          data={[{image: item?.property_cover_image}, ...imageList]}
           renderItem={renderItem}
           width={width}
           height={width * 0.75}
