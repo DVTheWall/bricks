@@ -1,7 +1,6 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
@@ -32,14 +31,12 @@ import Loader from '../../components/common/Loader';
 import FastImage from 'react-native-fast-image';
 import Carousel from 'react-native-reanimated-carousel';
 import {screenWidth} from '../../utils/globalConstant';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+import BannerComponent from '../../components/home/BannerComponent';
+import CategoryComponent from '../../components/home/CategoryComponent';
+import PropertyComponent from '../../components/home/PropertyComponent';
 
 const Home = ({navigation}: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const animatedValue = useSharedValue(0);
   const {homePageData} = useSelector((state: any) => state.data);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -93,17 +90,6 @@ const Home = ({navigation}: any) => {
   const handleCarouselSnap = (index: number) => {
     setCurrentIndex(index);
   };
-
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      opacity: animatedValue.value === currentIndex ? 1 : 0.5,
-      transform: [
-        {
-          scale: animatedValue.value === currentIndex ? 1.2 : 1,
-        },
-      ],
-    };
-  });
 
   const renderBannerItem = ({item}: any) => (
     <View>
@@ -163,7 +149,20 @@ const Home = ({navigation}: any) => {
           </View>
         </View>
 
-        {bannerList?.length > 0 && (
+        {homePageData.map((item: any, index: number) => {
+          switch (item.type) {
+            case 'Banner':
+              return <BannerComponent key={index} data={item} />;
+            case 'Category':
+              return <CategoryComponent key={index} data={item} />;
+            case 'Property':
+              return <PropertyComponent key={index} data={item} />;
+            default:
+              return null;
+          }
+        })}
+
+        {/* {bannerList?.length > 0 && (
           <View style={{marginVertical: hp(20)}}>
             <Carousel
               loop={true}
@@ -174,13 +173,10 @@ const Home = ({navigation}: any) => {
               width={screenWidth}
               height={158}
               onSnapToItem={handleCarouselSnap}
-              onProgressChange={(_, absoluteProgress) => {
-                animatedValue.value = absoluteProgress;
-              }}
-              // onSnapToItem={handleCarouselSnap}
             />
           </View>
-        )}
+        )} */}
+
         {/* <View style={styles.paginationContainer}>
           {bannerList.map((_, index) => {
             return (
@@ -227,7 +223,7 @@ const Home = ({navigation}: any) => {
           </View>
         </View> */}
 
-        {categoryList?.length > 0 && (
+        {/* {categoryList?.length > 0 && (
           <>
             <View style={styles.subTitleContainer}>
               <Text style={styles.subTitleText}>{'Invest By Category'}</Text>
@@ -245,9 +241,9 @@ const Home = ({navigation}: any) => {
               ItemSeparatorComponent={() => <View style={{width: wp(12)}} />}
             />
           </>
-        )}
+        )} */}
 
-        {hotSellingPropertyList?.length > 0 && (
+        {/* {hotSellingPropertyList?.length > 0 && (
           <>
             <View style={styles.subTitleContainer}>
               <Text style={styles.subTitleText}>
@@ -261,7 +257,7 @@ const Home = ({navigation}: any) => {
                   });
                 }}>
                 <Text style={styles.viewAllText}>{'More'}</Text>
-                {/* <Image source={icons.downChevron} style={styles.downChevron} /> */}
+                <Image source={icons.downChevron} style={styles.downChevron} />
               </TouchableOpacity>
             </View>
             <FlatList
@@ -273,9 +269,9 @@ const Home = ({navigation}: any) => {
               showsVerticalScrollIndicator={false}
             />
           </>
-        )}
+        )} */}
 
-        <View style={styles.howWorksContainer}>
+        {/* <View style={styles.howWorksContainer}>
           <Image source={icons.howWorksImg} style={styles.howWorksImg} />
           <View style={styles.howWorksTextView}>
             <Text style={styles.howWorksTitleText}>{'How it works?'}</Text>
@@ -286,9 +282,9 @@ const Home = ({navigation}: any) => {
               <Image source={icons.youtubeIcon} style={styles.youtubeIcon} />
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.kycCardContainer}>
+        {/* <View style={styles.kycCardContainer}>
           <Image source={icons.blueTick} style={styles.blueTickIcon} />
           <View style={styles.kycCardTextView}>
             <Text style={styles.kycCardTitle}>{'Complete E-KYXC'}</Text>
@@ -299,7 +295,7 @@ const Home = ({navigation}: any) => {
           <TouchableOpacity style={styles.completeNowBtn}>
             <Text style={styles.completeNowText}>{'Complete Now'}</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View style={styles.listFooter} />
       </ScrollView>
     </View>

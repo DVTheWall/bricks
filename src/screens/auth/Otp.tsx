@@ -37,8 +37,10 @@ const Otp = ({navigation, route}: any) => {
 
   useEffect(() => {
     if (otpInputRef.current) {
-      //@ts-ignore
-      otpInputRef?.current?.focusField(0);
+      setTimeout(() => {
+        //@ts-ignore
+        otpInputRef?.current?.focusField(0);
+      }, 500);
     }
   }, []);
 

@@ -25,8 +25,12 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
         />
       </View>
       <View style={styles.bottomView}>
-        <Text style={styles.propertyNameText}>{item?.property}</Text>
-        <Text style={styles.addressText}>{item?.complete_address}</Text>
+        <Text numberOfLines={1} style={styles.propertyNameText}>
+          {item?.property}
+        </Text>
+        <Text numberOfLines={1} style={styles.addressText}>
+          {item?.complete_address}
+        </Text>
         <View style={{...commonStyles.flexRow, marginTop: hp(6)}}>
           <Text style={styles.rateText}>
             {`₹${item?.minimum_rate}`}

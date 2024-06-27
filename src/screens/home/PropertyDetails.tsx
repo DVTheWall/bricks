@@ -39,6 +39,7 @@ import ToastAlert from '../../components/common/Alert';
 import {colors, fontSize, hp, isIos, wp} from '../../utils';
 import BackButtonBlur from '../../components/common/BackButtonBlur';
 import {getPropertyDetails} from '../../store/action/propertyActions';
+import {screenWidth} from '../../utils/globalConstant';
 // import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
 
 const {width} = Dimensions.get('window');
@@ -51,10 +52,12 @@ const HighlightItem = ({item}: any) => {
         borderRadius: wp(8),
         borderWidth: wp(1),
         borderColor: colors.borderColor,
-        padding: wp(8),
         backgroundColor: 'rgba(245, 246, 248, 1)',
-        marginRight: wp(16),
+        // marginRight: wp(8),
         width: wp(110),
+        height: hp(83),
+        paddingVertical: hp(8),
+        justifyContent: 'space-between',
       }}>
       <Image
         style={{
@@ -63,33 +66,25 @@ const HighlightItem = ({item}: any) => {
           resizeMode: 'contain',
           tintColor: colors.primary,
         }}
-        source={{
-          uri: `https://bricks-dev.katsamsoft.com${item?.relevant_image}`,
-        }}
-        // source={icons.building}
+        source={
+          item?.relevant_image
+            ? {
+                uri: `https://bricks-dev.katsamsoft.com${item?.relevant_image}`,
+              }
+            : icons.building
+        }
       />
       <Text
         style={{
           fontFamily: font.semiBold,
           fontSize: fontSize(14),
           color: colors.lightBlack,
-          marginVertical: hp(8),
         }}>
         {item?.associated_numbers}
-        {item?.isUnit && (
-          <Text
-            style={{
-              fontFamily: font.regular,
-              fontSize: fontSize(10),
-              color: colors.lightBlack,
-            }}>
-            {' sqft'}
-          </Text>
-        )}
       </Text>
       <Text
         style={{
-          fontFamily: font.regular,
+          fontFamily: font.light,
           fontSize: fontSize(10),
           color: colors.lightBlack,
           lineHeight: hp(13),
@@ -108,6 +103,7 @@ const PropertyDetails = ({navigation, route}: any) => {
   const carouselRef = useRef(null);
   const flatListRef = useRef(null);
   const highlightFlatListRef = useRef(null);
+
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -116,8 +112,8 @@ const PropertyDetails = ({navigation, route}: any) => {
   const [propertyHighlightList, setPropertyHighlightList] = useState<any>([]);
   const [propertyDocuments, setPropertyDocuments] = useState<any>([]);
   const [isDocumentVisible, setIsDocumentVisible] = useState(false);
-  const [pdfView, setPdfView] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<any>({});
+  const [coverImg, setCoverImg] = useState<any>({});
 
   // console.log('selectedDoc=====', selectedDoc);
 
@@ -128,6 +124,9 @@ const PropertyDetails = ({navigation, route}: any) => {
         name: item?.property || item?.name,
       },
       onSuccess: (res: any | []) => {
+        console.log('res?.data?.data====', res?.data?.data);
+        setCoverImg(res?.data?.data?.property_cover_image);
+
         setImageList(res?.data?.data?.multiple_gallery);
         setPropertyDetailsData(res?.data?.data?.properties_details_data[0]);
         setPropertyHighlightList(res?.data?.data?.properties_highlights);
@@ -141,22 +140,22 @@ const PropertyDetails = ({navigation, route}: any) => {
     dispatch(getPropertyDetails(request) as never);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      let nextIndex = highlightIndex + 1;
-      if (nextIndex >= propertyHighlightList?.length - 2) {
-        nextIndex = 0;
-      }
-      //@ts-ignore
-      highlightFlatListRef.current?.scrollToIndex({
-        index: nextIndex,
-        animated: true,
-      });
-      setHighlightIndex(nextIndex);
-    }, 3000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     let nextIndex = highlightIndex + 1;
+  //     if (nextIndex >= propertyHighlightList?.length - 2) {
+  //       nextIndex = 0;
+  //     }
+  //     //@ts-ignore
+  //     highlightFlatListRef.current?.scrollToIndex({
+  //       index: nextIndex,
+  //       animated: true,
+  //     });
+  //     setHighlightIndex(nextIndex);
+  //   }, 3000);
 
-    return () => clearInterval(interval);
-  }, [highlightIndex]);
+  //   return () => clearInterval(interval);
+  // }, [highlightIndex]);
 
   const renderItem = ({item}: any) => (
     <View>
@@ -200,21 +199,43 @@ const PropertyDetails = ({navigation, route}: any) => {
 
   const handleCarouselSnap = (index: number) => {
     setActiveIndex(index);
-    if (flatListRef.current) {
+    if (flatListRef.current && index > 0) {
       //@ts-ignore
-      flatListRef.current.scrollToIndex({index, animated: true});
+      flatListRef.current.scrollToIndex({index: index - 1, animated: true});
     }
   };
 
   const handleFlatListPress = (index: number) => {
-    setActiveIndex(index);
+    setActiveIndex(index + 1);
     if (carouselRef.current) {
       //@ts-ignore
-      carouselRef.current.scrollTo({index, animated: true});
+      carouselRef.current.scrollTo({index: index + 1, animated: true});
     }
   };
 
-  // console.log('selectedDocselectedDoc------', selectedDoc);
+  // const handleCarouselSnap = (index: number) => {
+  //   setActiveIndex(index);
+  //   if (flatListRef.current) {
+  //     //@ts-ignore
+  //     flatListRef.current.scrollToIndex({index, animated: true});
+  //   }
+  // };
+
+  // const handleFlatListPress = (index: number) => {
+  //   setActiveIndex(index);
+  //   if (carouselRef.current) {
+  //     //@ts-ignore
+  //     carouselRef.current.scrollTo({index, animated: true});
+  //   }
+  // };
+  const baseOptions = {
+    vertical: false,
+    width: wp(126),
+    height: hp(85),
+    style: {
+      width: screenWidth,
+    },
+  } as const;
 
   return (
     <View style={commonStyles.container}>
@@ -244,7 +265,7 @@ const PropertyDetails = ({navigation, route}: any) => {
         <Carousel
           loop={true}
           ref={carouselRef}
-          data={imageList}
+          data={[{image: coverImg}, ...imageList]}
           renderItem={renderItem}
           width={width}
           height={width * 0.75}
@@ -265,10 +286,10 @@ const PropertyDetails = ({navigation, route}: any) => {
                   styles.previewImage,
                   {
                     borderColor:
-                      index === activeIndex
+                      index === activeIndex - 1
                         ? colors.primary
                         : colors.mediumGrey,
-                    borderWidth: index === activeIndex ? wp(2) : wp(1),
+                    borderWidth: index === activeIndex - 1 ? wp(2) : wp(1),
                   },
                 ]}
               />
@@ -388,14 +409,17 @@ const PropertyDetails = ({navigation, route}: any) => {
               </Text>
             </View>
 
-            <View
-              style={{
-                // flexDirection: 'row',
-                // alignItems: 'center',
-                // justifyContent: 'space-between',
-                marginTop: hp(14),
-              }}>
-              <FlatList
+            <View style={{marginTop: hp(14)}}>
+              <Carousel
+                {...baseOptions}
+                loop={true}
+                ref={highlightFlatListRef}
+                data={propertyHighlightList}
+                renderItem={renderPropertyHighlight}
+                autoPlay={propertyHighlightList?.length > 3 ? true : false}
+                autoPlayInterval={2000}
+              />
+              {/* <FlatList
                 horizontal
                 ref={highlightFlatListRef}
                 data={propertyHighlightList}
@@ -404,24 +428,6 @@ const PropertyDetails = ({navigation, route}: any) => {
                 onScrollToIndexFailed={() => {
                   setHighlightIndex(0);
                 }}
-              />
-              {/* <HighlightItem
-                icon={icons.building}
-                detail={'Hotel'}
-                description={'Property Type'}
-                isUnit={false}
-              />
-              <HighlightItem
-                icon={icons.threeSquare}
-                detail={'25,000'}
-                description={'Total Sqft'}
-                isUnit={true}
-              />
-              <HighlightItem
-                icon={icons.money}
-                detail={'₹9000'}
-                description={'Minimum Purchase'}
-                isUnit={true}
               /> */}
             </View>
           </View>
@@ -560,6 +566,7 @@ const PropertyDetails = ({navigation, route}: any) => {
             <TouchableOpacity
               style={{padding: wp(8), alignSelf: 'center'}}
               onPress={async () => {
+                setIsLoading(true);
                 const url = `https://bricks-dev.katsamsoft.com${selectedDoc?.attachment}`;
 
                 const extension = getUrlExtension(url);
@@ -571,12 +578,20 @@ const PropertyDetails = ({navigation, route}: any) => {
                   toFile: localFile,
                 };
                 RNFS.downloadFile(options)
-                  .promise.then(() => FileViewer.open(localFile))
+                  .promise.then(() => {
+                    setIsLoading(false);
+                    setIsDocumentVisible(false);
+                    setTimeout(() => {
+                      FileViewer.open(localFile);
+                    }, 500);
+                  })
                   .then(() => {
+                    setIsLoading(false);
                     // success
                   })
                   .catch(error => {
                     // error
+                    setIsLoading(false);
                   });
                 // setIsDocumentVisible(false);
                 // await FileViewer.open(
