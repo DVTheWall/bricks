@@ -40,7 +40,7 @@ const Otp = ({navigation, route}: any) => {
       setTimeout(() => {
         //@ts-ignore
         otpInputRef?.current?.focusField(0);
-      }, 500);
+      }, 1000);
     }
   }, []);
 
@@ -97,12 +97,12 @@ const Otp = ({navigation, route}: any) => {
           style={{
             alignSelf: 'flex-start',
             position: 'absolute',
-            top: 10,
+            top: 3,
             zIndex: 999,
           }}>
           <SvgIcons iconName={'backArrow'} />
         </TouchableOpacity>
-        <Text
+        {/* <Text
           style={{
             color: colors.black,
             fontFamily: font.semiBold,
@@ -112,7 +112,7 @@ const Otp = ({navigation, route}: any) => {
             letterSpacing: -0.5,
           }}>
           Hi, Quaid Johar
-        </Text>
+        </Text> */}
         <Text
           style={{
             color: colors.black,

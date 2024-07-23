@@ -25,7 +25,12 @@ import Shadow from '../../components/common/Shadow';
 import Button from '../../components/common/Button';
 import {colors, fontSize, hp, wp} from '../../utils';
 import ToastAlert from '../../components/common/Alert';
-import {signUpUser} from '../../store/action/authActions';
+import {
+  verifyAdhar,
+  verifyAdharOtp,
+  verifyNewMobileNumber,
+  verifyPAN,
+} from '../../store/action/authActions';
 import TextInputComp from '../../components/common/TextInput';
 import StepIndicator from '../../components/other/StepIndicator';
 import {
@@ -33,6 +38,8 @@ import {
   resetStack,
   isValidEmail,
 } from '../../helpers/globalFunctions';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
 
 const SignUp = ({navigation}: any) => {
   const dispatch = useDispatch();
@@ -48,15 +55,20 @@ const SignUp = ({navigation}: any) => {
   const [state, setState] = useState('');
 
   const [pan, setPan] = useState('');
+  const [dob, setDob] = useState(new Date());
   const [panName, setPanName] = useState('');
   const [adhar, setAdhar] = useState('');
+  const [otp, setOtp] = useState('');
 
   const [stepCount, setStepCount] = useState(1);
 
   const [isDescChecked, setIsDescChecked] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [isDatePicker, setIsDatePicker] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [panLoader, setPanLoader] = useState(false);
+  const [adharLoader, setAdharLoader] = useState(false);
 
   const [nameErr, setNameErr] = useState('');
   const [numberErr, setNumberErr] = useState('');
@@ -69,6 +81,10 @@ const SignUp = ({navigation}: any) => {
   const [panNumErr, setPanNumErr] = useState('');
   const [panNameErr, setPanNameErr] = useState('');
   const [adharErr, setAdharErr] = useState('');
+  const [otpErr, setOtpErr] = useState('');
+
+  const [isPanVerified, setIsPanVerified] = useState(false);
+  const [isAdharVerified, setIsAdharVerified] = useState(false);
 
   const clearStates = () => {
     setFullName('');
@@ -151,20 +167,52 @@ const SignUp = ({navigation}: any) => {
   };
 
   const step3Validation = () => {
+    if (!isPanVerified) {
+      ToastAlert({
+        toastType: 'error',
+        title: 'Oops!',
+        description: 'Please, Complete PAN Verification!',
+      });
+      return false;
+    }
+    if (!isAdharVerified) {
+      ToastAlert({
+        toastType: 'error',
+        title: 'Oops!',
+        description: 'Please, Complete Adhar Verification!',
+      });
+      return false;
+    }
+    if (otp === '') {
+      setOtpErr('Please, Enter OTP for verification');
+      return false;
+    }
+    if (otp?.length !== 6) {
+      setOtpErr('Please, Enter correct OTP');
+      return false;
+    }
+    return true;
+  };
+
+  const validatePanDetails = () => {
+    if (panName === '') {
+      setPanNameErr('Please, Enter name on PAN');
+      return false;
+    }
     if (pan === '') {
-      setPanNumErr('Please enter your PAN number');
+      setPanNumErr('Please, Enter your PAN number');
       return false;
     }
     if (!isValidPan(pan)) {
-      setPanNumErr('Please enter valid PAN number');
+      setPanNumErr('Please, Enter valid PAN number');
       return false;
     }
-    if (panName === '') {
-      setPanNameErr('Please enter name on PAN');
-      return false;
-    }
+    return true;
+  };
+
+  const validateAdharDetails = () => {
     if (adhar === '') {
-      setAdharErr('Please enter your Adhar number');
+      setAdharErr('Please, Enter your Adhar number');
       return false;
     }
     if (adhar?.length !== 12) {
@@ -208,10 +256,71 @@ const SignUp = ({navigation}: any) => {
     }
   };
 
+  const onVerifyPANPress = () => {
+    if (validatePanDetails()) {
+      const panData = {
+        name_on_pan: panName,
+        dob: moment(dob).format('DD-MM-YYYY'),
+        pan_card: pan,
+        // name_on_pan: 'Pan Testing',
+        // dob: '03-02-1981',
+        // pan_card: 'ABCPV1234Q',
+      };
+      setPanLoader(true);
+      const checkRequest = {
+        data: panData,
+        onSuccess: (res: any | []) => {
+          setIsPanVerified(true);
+          setPanLoader(false);
+        },
+        onFail: (err: any) => {
+          setPanLoader(false);
+        },
+      };
+      dispatch(verifyPAN(checkRequest) as never);
+    }
+  };
+
+  const onVerifyAdharPress = () => {
+    if (validateAdharDetails()) {
+      const adharData = {
+        aadhaar_number: adhar,
+        // aadhaar_number: '655675523712',
+      };
+      setAdharLoader(true);
+      const checkRequest = {
+        data: adharData,
+        onSuccess: (res: any | []) => {
+          setIsAdharVerified(true);
+          setAdharLoader(false);
+        },
+        onFail: (err: any) => {
+          setAdharLoader(false);
+        },
+      };
+      dispatch(verifyAdhar(checkRequest) as never);
+    }
+  };
+
   const onVerifyPress = () => {
     if (stepCount === 1) {
       if (step1Validation()) {
-        setStepCount(stepCount + 1);
+        const mobileCheck = {
+          full_name: fullName,
+          mobile_number: mobileNumber,
+        };
+        setIsLoading(true);
+        const checkRequest = {
+          data: mobileCheck,
+          onSuccess: (res: any | []) => {
+            setIsLoading(false);
+            setStepCount(stepCount + 1);
+          },
+          onFail: (err: any) => {
+            setIsLoading(false);
+          },
+        };
+        dispatch(verifyNewMobileNumber(checkRequest) as never);
       }
     } else if (stepCount === 2) {
       if (step2Validation()) {
@@ -223,20 +332,20 @@ const SignUp = ({navigation}: any) => {
           full_name: fullName,
           mobile_number: mobileNumber,
           is_terms_agreed: isTermsChecked ? '1' : '0',
-          dob: '03-02-1995',
           email: email,
           gender: gender,
           marital_status: maritalStatus,
           address: address,
           city: city,
           state: state,
-          pan_card: pan,
           name_on_pan: panName,
-          aadhar_card_number: adhar,
+          dob: moment(dob).format('DD-MM-YYYY'),
+          pan_card: pan,
+          aadhaar_number: adhar,
+          otp: otp,
         };
         setIsLoading(true);
         const request = {
-          // need to make it dynamic
           data: signUpData,
           onSuccess: (res: any | []) => {
             setIsLoading(false);
@@ -248,9 +357,11 @@ const SignUp = ({navigation}: any) => {
           },
           onFail: (err: any) => {
             setIsLoading(false);
+            setIsAdharVerified(false);
+            setOtp('');
           },
         };
-        dispatch(signUpUser(request) as never);
+        dispatch(verifyAdharOtp(request) as never);
       }
     }
   };
@@ -340,7 +451,7 @@ const SignUp = ({navigation}: any) => {
                 error={numberErr}
                 maxLength={10}
                 onBlur={() => handleBlur('mobileNumber')}
-                keyboardType={'numeric'}
+                keyboardType={'number-pad'}
               />
             </View>
           </KeyboardAwareScrollView>
@@ -491,32 +602,82 @@ const SignUp = ({navigation}: any) => {
           style={styles.inputContainer}>
           <TextInputComp
             isMandetory
-            label={`PAN Number`}
-            placeholder={`PAN Number`}
-            value={pan}
-            onChangeText={text => setPan(text)}
-            error={panNumErr}
-            onBlur={() => handleBlur('pan')}
-          />
-          <TextInputComp
-            isMandetory
             label={`Name on PAN`}
             placeholder={`Name on PAN`}
             value={panName}
             onChangeText={text => setPanName(text)}
             error={panNameErr}
+            editable={!isPanVerified}
             onBlur={() => handleBlur('panName')}
           />
           <TextInputComp
-            isMandetory
-            label={`Aadhaar Number`}
-            placeholder={`Aadhaar Number`}
-            value={adhar}
-            onChangeText={text => setAdhar(text)}
-            error={adharErr}
-            maxLength={12}
-            onBlur={() => handleBlur('adhar')}
+            label={`DOB`}
+            value={moment(dob)?.format('DD/MM/YYYY')}
+            isRightIcon
+            rightIconSource={icons.calendar}
+            editable={false}
+            rightIconTintColor={colors.darkGrey}
+            // onChangeText={text => setDob(text)}
+            // onFocus={() => setIsDatePicker(true)}
+            rightIconDisable={isPanVerified}
+            onRightIconPress={() => setIsDatePicker(true)}
+            // customLabelStyle={styles.customLabelStyle}
+            // customTextBoxStyle={styles.customTextBoxStyle}
+            // customShadowStyle={styles.customShadowStyle}
+            // customInputStyle={styles.customInputStyle}
+            // error={otpErr}
           />
+          <TextInputComp
+            isMandetory
+            isRightText={!isPanVerified && !panLoader}
+            isRightIcon={isPanVerified && !panLoader}
+            rightIconTintColor={colors.green}
+            rightIconSource={icons.checkRing}
+            onRightTextPress={onVerifyPANPress}
+            loading={panLoader}
+            rightText="Verify"
+            label={`PAN Number`}
+            placeholder={`PAN Number`}
+            value={pan}
+            editable={!isPanVerified}
+            onChangeText={text => setPan(text)}
+            error={!isPanVerified ? panNumErr : ''}
+            onBlur={() => handleBlur('pan')}
+          />
+          {isPanVerified && (
+            <TextInputComp
+              isMandetory
+              rightText="Verify"
+              loading={adharLoader}
+              rightIconTintColor={colors.green}
+              rightIconSource={icons.checkRing}
+              isRightText={!isAdharVerified && !adharLoader}
+              isRightIcon={isAdharVerified && !adharLoader}
+              onRightTextPress={onVerifyAdharPress}
+              label={`Aadhaar Number`}
+              placeholder={`Aadhaar Number`}
+              value={adhar}
+              editable={!isAdharVerified}
+              keyboardType={'number-pad'}
+              onChangeText={text => setAdhar(text)}
+              error={!isAdharVerified ? adharErr : ''}
+              maxLength={12}
+              onBlur={() => handleBlur('adhar')}
+            />
+          )}
+          {isPanVerified && isAdharVerified && (
+            <TextInputComp
+              isMandetory
+              label={`OTP`}
+              placeholder={`Enter OTP`}
+              value={otp}
+              keyboardType={'number-pad'}
+              onChangeText={text => setOtp(text)}
+              // error={adharErr}
+              maxLength={6}
+              // onBlur={() => handleBlur('adhar')}
+            />
+          )}
         </KeyboardAwareScrollView>
       )}
 
@@ -528,6 +689,25 @@ const SignUp = ({navigation}: any) => {
         onPress={onVerifyPress}
       />
       <SafeAreaView />
+      {isDatePicker && (
+        <DatePicker
+          modal
+          open={isDatePicker}
+          date={dob}
+          onConfirm={date => {
+            setIsDatePicker(false);
+            setDob(date);
+          }}
+          onCancel={() => {
+            setIsDatePicker(false);
+          }}
+          buttonColor={colors.primary}
+          mode="date"
+          maximumDate={new Date()}
+          dividerColor={colors.primary}
+          title={'Select Date of Birth'}
+        />
+      )}
     </View>
   );
 };

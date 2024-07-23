@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
@@ -20,11 +22,84 @@ import Shadow from '../../components/common/Shadow';
 import Button from '../../components/common/Button';
 import {colors, fontSize, hp, wp} from '../../utils';
 import TextInputComp from '../../components/common/TextInput';
+import {Dropdown} from 'react-native-element-dropdown';
+import moment from 'moment';
+import DatePicker from 'react-native-date-picker';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useDispatch, useSelector} from 'react-redux';
+import {investNowAction} from '../../store/action/ordersActions';
+import {useNavigation} from '@react-navigation/native';
+import {SCREEN} from '../../utils/screenConstants';
 
-const InvestScreen = () => {
+const InvestScreen = ({route, navigation}: any) => {
+  const dispatch = useDispatch();
+
+  const {userData} = useSelector((state: any) => state.auth);
+
+  const {propertyData} = route?.params;
+
   const [sqft, setSqft] = useState('');
+  const [sqftErr, setSqftErr] = useState('');
   const [amount, setAmount] = useState('');
+  const [amountErr, setAmountErr] = useState('');
+  const [orderType, setOrderType] = useState('');
+  const [orderTypeErr, setOrderTypeErr] = useState('');
+  const [repeatDate, setRepeatDate] = useState(new Date());
+  const [isDatePicker, setIsDatePicker] = useState(false);
   const [isMonthlyActive, setIsMonthlyActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const orderTypeData = [
+    {label: 'Buy', value: 'Buy'},
+    {label: 'Sell', value: 'Sell'},
+  ];
+
+  const isValidated = () => {
+    if (sqft === '') {
+      setSqftErr('Please enter Sqft');
+      return false;
+    }
+    if (orderType === '') {
+      setAmountErr('Please Select Order Type');
+      return false;
+    }
+    return true;
+  };
+
+  const onOneTimeOrderPress = () => {
+    console.log('onOneTimeOrderPress');
+
+    const data = {
+      customer_name: userData?.mobile_no,
+      date: moment(repeatDate)?.format('YYYY-MM-DD'),
+      property_id: propertyData?.property_name,
+      order_type: orderType,
+      number_of_sqft: Number(sqft),
+      total_amount: Number(amount),
+    };
+    console.log('data-', isValidated() && !isMonthlyActive);
+
+    if (isValidated() && !isMonthlyActive) {
+      setIsLoading(true);
+      const request = {
+        data: data,
+        onSuccess: (res: any | []) => {
+          console.log('res====', res);
+          setIsLoading(false);
+          navigation.navigate(SCREEN.PROPERTYLIST);
+        },
+        onFail: (err: any) => {
+          console.log('EERRR====', err);
+          setIsLoading(false);
+        },
+      };
+      dispatch(investNowAction(request) as never);
+    }
+  };
+
+  const onInvestNowMonthlyPress = () => {
+    console.log('onInvestNowMonthlyPress');
+  };
 
   return (
     <View style={commonStyles.container}>
@@ -97,24 +172,29 @@ const InvestScreen = () => {
       </View>
 
       <View style={styles.tabContainerMonthlyActive}>
-        {isMonthlyActive && (
-          <ScrollView>
+        {!isMonthlyActive ? (
+          <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'}>
             <View style={styles.inputContainer}>
               <TextInputComp
                 label="Enter the Number of Sqft"
                 value={sqft}
+                keyboardType="number-pad"
                 onChangeText={text => setSqft(text)}
                 customLabelStyle={styles.textInputLabel}
                 customShadowStyle={{shadowOpacity: 0}}
                 customTextBoxStyle={styles.customTextBox}
+                error={sqftErr}
               />
               <TextInputComp
-                label="Total Amount"
-                value={amount}
-                onChangeText={text => setAmount(text)}
+                label="Total Amount (₹)"
+                value={`${Number(propertyData?.rate) * Number(sqft)}`}
+                editable={false}
+                // keyboardType="number-pad"
+                // onChangeText={text => setAmount(text)}
                 customLabelStyle={styles.textInputLabel}
                 customShadowStyle={{shadowOpacity: 0}}
                 customTextBoxStyle={[styles.customTextBox, {marginBottom: 0}]}
+                // error={amountErr}
               />
               <View style={[commonStyles.flexRow, {marginBottom: hp(32)}]}>
                 <Image source={icons.info} style={commonStyles.icon16} />
@@ -122,28 +202,100 @@ const InvestScreen = () => {
                   {'Total amount updates based on square footage selected.'}
                 </Text>
               </View>
+              <Text
+                style={{
+                  ...styles.textInputLabel,
+                  marginBottom: hp(5),
+                  fontFamily: font.semiBold,
+                }}>
+                {'Order Type'}
+              </Text>
+              <Dropdown
+                style={styles.dropdown}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={commonStyles.icon20}
+                data={orderTypeData}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={'Select Order Type'}
+                value={orderType}
+                onChange={(item: any) => {
+                  setOrderType(item.value);
+                }}
+                itemTextStyle={styles.selectedTextStyle}
+                containerStyle={{
+                  backgroundColor: colors.white,
+                  borderBottomLeftRadius: wp(10),
+                  borderBottomRightRadius: wp(10),
+                }}
+              />
+              <Text style={styles.errText}>
+                {orderType === '' ? orderTypeErr : ''}
+              </Text>
               <TextInputComp
-                label="This event will repeat every month on:"
-                value="11/12/2023"
-                onChangeText={() => {}}
+                label={`This event will repeat every month on:`}
+                value={moment(repeatDate)?.format('DD/MM/YYYY')}
+                isRightIcon
                 customLabelStyle={styles.textInputLabel}
                 customShadowStyle={{shadowOpacity: 0}}
                 customTextBoxStyle={styles.customTextBox}
+                rightIconSource={icons.calendar}
+                editable={false}
+                rightIconTintColor={colors.darkGrey}
+                onRightIconPress={() => setIsDatePicker(true)}
               />
             </View>
             <Text style={styles.paywithText}>{'Pay with'}</Text>
             <Wallet />
-          </ScrollView>
+          </KeyboardAwareScrollView>
+        ) : (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text
+              style={{
+                fontSize: fontSize(20),
+                fontFamily: font.semiBold,
+                color: colors.darkGrey,
+                marginBottom: hp(40),
+              }}>
+              {'Coming soon...'}
+            </Text>
+          </View>
         )}
       </View>
       <View style={styles.btnContainer}>
         <Button
           title="Invest Now"
-          onPress={() => {}}
+          loader={isLoading}
+          disable={isLoading}
+          onPress={
+            !isMonthlyActive ? onOneTimeOrderPress : onInvestNowMonthlyPress
+          }
           buttonStyle={styles.btn}
           shadowStyle={{shadowOpacity: 0}}
         />
       </View>
+      {isDatePicker && (
+        <DatePicker
+          modal
+          open={isDatePicker}
+          date={repeatDate}
+          onConfirm={date => {
+            setIsDatePicker(false);
+            setRepeatDate(date);
+          }}
+          onCancel={() => {
+            setIsDatePicker(false);
+          }}
+          buttonColor={colors.primary}
+          mode="date"
+          // maximumDate={new Date()}
+          dividerColor={colors.primary}
+          title={'Select Date'}
+        />
+      )}
       <SafeAreaView />
     </View>
   );
@@ -208,7 +360,7 @@ const styles = StyleSheet.create({
   },
   customTextBox: {
     borderRadius: wp(4),
-    marginBottom: hp(12),
+    // marginBottom: hp(12),
     borderColor: colors.borderColor,
   },
   inputContainer: {
@@ -234,5 +386,39 @@ const styles = StyleSheet.create({
   tabContainerMonthlyActive: {
     flex: 1,
     marginTop: hp(30),
+  },
+  labelText: {
+    lineHeight: hp(18),
+    color: colors.black,
+    marginBottom: hp(5),
+    fontSize: fontSize(14),
+    fontFamily: font.semiBold,
+  },
+  errText: {
+    marginTop: hp(2),
+    color: colors.red,
+    alignSelf: 'flex-end',
+    fontSize: fontSize(10),
+  },
+  dropdown: {
+    height: hp(48),
+    // borderRadius: wp(10),
+    borderWidth: wp(0.5),
+    justifyContent: 'center',
+    paddingHorizontal: wp(16),
+    // borderColor: colors.darkGrey,
+    // backgroundColor: colors.white,
+    borderRadius: wp(4),
+    borderColor: colors.borderColor,
+  },
+  placeholderStyle: {
+    color: colors.darkGrey,
+    fontSize: fontSize(16),
+    fontFamily: font.semiBold,
+  },
+  selectedTextStyle: {
+    color: colors.black,
+    fontSize: fontSize(16),
+    fontFamily: font.semiBold,
   },
 });

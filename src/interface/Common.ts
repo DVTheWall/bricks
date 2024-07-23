@@ -1,5 +1,6 @@
 import {AnimationObject} from 'lottie-react-native';
 import {
+  ImageSourcePropType,
   KeyboardTypeOptions,
   StyleProp,
   TextStyle,
@@ -57,6 +58,9 @@ export interface TextInputProps {
   value: string;
   label?: string;
   error?: string;
+  autoFocus?: boolean;
+  loading?: boolean;
+  rightText?: string;
   maxLength?: number;
   editable?: boolean;
   onBlur?: () => void;
@@ -64,14 +68,19 @@ export interface TextInputProps {
   onFocus?: () => void;
   placeholder?: string;
   isMandetory?: boolean;
+  isRightText?: boolean;
   isRightIcon?: boolean;
+  rightIconDisable?: boolean;
   onRightIconPress?: () => void;
+  onRightTextPress?: () => void;
   keyboardType?: KeyboardTypeOptions;
   onChangeText?: (text: string) => void;
   customLabelStyle?: StyleProp<TextStyle>;
   customInputStyle?: StyleProp<TextStyle>;
   customShadowStyle?: StyleProp<ViewStyle>;
   customTextBoxStyle?: StyleProp<ViewStyle>;
+  rightIconSource?: ImageSourcePropType;
+  rightIconTintColor?: string;
 }
 
 export interface StepIndicatorProps {
@@ -81,8 +90,7 @@ export interface StepIndicatorProps {
 }
 
 export interface LottieViewerProps {
-  children: any;
   loop?: boolean;
-  lottieStyle: StyleProp<ViewStyle>;
+  lottieStyle?: StyleProp<ViewStyle>;
   source: string | AnimationObject | {uri: string};
 }

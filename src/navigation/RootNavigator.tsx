@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Welcome from '../screens/auth/Welcome';
@@ -17,6 +18,11 @@ import AddCustomer from '../screens/brokers/customers/AddCustomer';
 import PropertyList from '../screens/brokers/property/PropertyList';
 import OrderDetails from '../screens/brokers/orders/OrderDetails';
 import AddOrders from '../screens/brokers/orders/AddOrders';
+import {useSelector} from 'react-redux';
+import {resetStack} from '../helpers/globalFunctions';
+import {SCREEN} from '../utils/screenConstants';
+import SplashScreen from 'react-native-splash-screen';
+import PaymentSuccess from '../screens/success/PaymentSuccess';
 
 export type RootStackParamList = {
   Welcome: undefined;
@@ -36,12 +42,26 @@ export type RootStackParamList = {
   OrderDetails: undefined;
   AddOrders: undefined;
   Home: undefined;
-  PdfViewer: undefined;
+  PaymentSuccess: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
+  const {authToken} = useSelector((state: any) => state.auth);
+  const getToken = () => {
+    if (authToken !== '') {
+      resetStack(SCREEN.BOTTOMTABS);
+    }
+  };
+
+  useEffect(() => {
+    getToken();
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 3000);
+  }, []);
+
   return (
     <Stack.Navigator
       initialRouteName={'Welcome'}
@@ -64,6 +84,7 @@ const RootNavigator = () => {
       <Stack.Screen name={'PropertyList'} component={PropertyList} />
       <Stack.Screen name={'OrderDetails'} component={OrderDetails} />
       <Stack.Screen name={'AddOrders'} component={AddOrders} />
+      <Stack.Screen name={'PaymentSuccess'} component={PaymentSuccess} />
       <Stack.Screen
         name={'PropertyDetailsBroker'}
         component={PropertyDetailsBroker}

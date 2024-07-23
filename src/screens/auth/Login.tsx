@@ -106,7 +106,7 @@ const Login = ({navigation, route}: any) => {
             label={`Mobile Number`}
             placeholder={`Mobile Number`}
             value={mobileNumber}
-            keyboardType={'numeric'}
+            keyboardType={'number-pad'}
             maxLength={10}
             onChangeText={text => setMobileNumber(text)}
             error={isSignupError ? `You're not register please sign up` : ''}

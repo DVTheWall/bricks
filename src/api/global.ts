@@ -23,10 +23,10 @@ export const makeAPIRequest = ({
       method,
       baseURL: BASE_URL,
       url,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? `Token ${token}` : null,
-      },
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   // Authorization: token ? `Token ${token}` : null,
+      // },
       params,
     };
 
@@ -44,6 +44,8 @@ export const makeAPIRequest = ({
         }
       })
       .catch(error => {
+        console.log('errorMAIN:::::::', JSON.stringify(error));
+
         if (error?.response?.status === 401) {
           removeAsyncStorage();
           //   resetStack(navigationRef as never, routeNames.Landing);

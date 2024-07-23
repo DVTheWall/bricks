@@ -8,11 +8,9 @@ import {
   Text,
   View,
   Image,
-  FlatList,
   ScrollView,
   StyleSheet,
   SafeAreaView,
-  TouchableOpacity,
 } from 'react-native';
 
 import {font} from '../../utils/fonts';
@@ -24,20 +22,20 @@ import Shadow from '../../components/common/Shadow';
 import {colors, fontSize, hp, wp} from '../../utils';
 import CategoryListItem from '../../components/home/CategoryListItem';
 import PropertyItemList from '../../components/home/PropertyItemList';
-import {categoryListData, hotPropertiesData} from '../../utils/dataConstants';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHomePageData} from '../../store/action/homeActions';
 import Loader from '../../components/common/Loader';
 import FastImage from 'react-native-fast-image';
-import Carousel from 'react-native-reanimated-carousel';
-import {screenWidth} from '../../utils/globalConstant';
 import BannerComponent from '../../components/home/BannerComponent';
 import CategoryComponent from '../../components/home/CategoryComponent';
 import PropertyComponent from '../../components/home/PropertyComponent';
+import {walletProfile} from '../../store/action/profileActions';
 
 const Home = ({navigation}: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const {homePageData} = useSelector((state: any) => state.data);
+  const {homePageData, homeProfileData} = useSelector(
+    (state: any) => state.data,
+  );
   const {userData} = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +57,22 @@ const Home = ({navigation}: any) => {
     }
   }, [homePageData]);
 
+  const getWalletProfileData = () => {
+    setIsLoading(true);
+    const request = {
+      data: {},
+      onSuccess: (res: any | []) => {
+        setIsLoading(false);
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+      },
+    };
+    dispatch(walletProfile(request) as never);
+  };
+
   useEffect(() => {
+    getWalletProfileData();
     setIsLoading(true);
     const request = {
       data: {},
@@ -115,7 +128,6 @@ const Home = ({navigation}: any) => {
         customNameStyle={{fontFamily: font.semiBold}}
       />
       <ScrollView
-        bounces={false}
         style={commonStyles.flex}
         showsVerticalScrollIndicator={false}>
         <View style={styles.amountCardContainer}>
@@ -126,7 +138,11 @@ const Home = ({navigation}: any) => {
                   style={
                     styles.cardTitleText
                   }>{`Total SQFT you're owned`}</Text>
-                <Text style={styles.amountText}>{`10`}</Text>
+                <Text style={styles.amountText}>
+                  {homeProfileData[0]?.total_sqft
+                    ? homeProfileData[0]?.total_sqft
+                    : `0`}
+                </Text>
               </View>
             </Shadow>
           </View>
@@ -139,7 +155,11 @@ const Home = ({navigation}: any) => {
                 }}>
                 <Text style={styles.cardTitleText}>{`Holding Amount`}</Text>
                 <View style={commonStyles.flexRow}>
-                  <Text style={styles.amountText}>{`1,20,000`}</Text>
+                  <Text style={styles.amountText}>
+                    {homeProfileData[0]?.hold_amount
+                      ? homeProfileData[0]?.hold_amount
+                      : `0`}
+                  </Text>
                   <View style={styles.growAmountText}>
                     <Text style={styles.growPercText}>{`10% `}</Text>
                     <Image source={icons.growArrow} style={styles.growArrow} />

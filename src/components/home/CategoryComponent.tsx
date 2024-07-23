@@ -5,13 +5,22 @@ import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {font} from '../../utils/fonts';
 import CategoryListItem from './CategoryListItem';
 import {colors, fontSize, hp, wp} from '../../utils';
-// import {useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {SCREEN} from '../../utils/screenConstants';
 
 const CategoryComponent = ({data}: any) => {
-  // const {navigate} = useNavigation();
+  const {navigate} = useNavigation();
 
   const renderCategoryItem = ({item}: any) => {
-    return <CategoryListItem item={item} onPress={() => {}} />;
+    return (
+      <CategoryListItem
+        item={item}
+        onPress={() => {
+          //@ts-ignore
+          navigate(SCREEN.PROPERTYLIST, {category: item?.category_name});
+        }}
+      />
+    );
   };
 
   return (

@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable handle-callback-err */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -28,6 +27,7 @@ import FastImage from 'react-native-fast-image';
 import {LineChart} from 'react-native-gifted-charts';
 import Carousel from 'react-native-reanimated-carousel';
 import LinearGradient from 'react-native-linear-gradient';
+import RenderHtml from 'react-native-render-html';
 
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
@@ -40,6 +40,8 @@ import {colors, fontSize, hp, isIos, wp} from '../../utils';
 import BackButtonBlur from '../../components/common/BackButtonBlur';
 import {getPropertyDetails} from '../../store/action/propertyActions';
 import {screenWidth} from '../../utils/globalConstant';
+import CollapsibleView from '../../components/common/CollapsibleView';
+import PropertyItemList from '../../components/home/PropertyItemList';
 // import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
 
 const {width} = Dimensions.get('window');
@@ -97,8 +99,10 @@ const HighlightItem = ({item}: any) => {
 
 const PropertyDetails = ({navigation, route}: any) => {
   const {item} = route?.params;
+  console.log('itemitemitem===========', item?.property);
 
   const dispatch = useDispatch();
+  const scrollRef = useRef<ScrollView>(null);
 
   const carouselRef = useRef(null);
   const flatListRef = useRef(null);
@@ -113,6 +117,7 @@ const PropertyDetails = ({navigation, route}: any) => {
   const [propertyDocuments, setPropertyDocuments] = useState<any>([]);
   const [isDocumentVisible, setIsDocumentVisible] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<any>({});
+  const [relatedProperty, setRelatedProperty] = useState<any>([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -125,6 +130,7 @@ const PropertyDetails = ({navigation, route}: any) => {
         setPropertyDetailsData(res?.data?.data?.properties_details_data[0]);
         setPropertyHighlightList(res?.data?.data?.properties_highlights);
         setPropertyDocuments(res?.data?.data?.properties_document);
+        setRelatedProperty(res?.data?.data?.related_property);
         setIsLoading(false);
       },
       onFail: (err: any) => {
@@ -132,7 +138,7 @@ const PropertyDetails = ({navigation, route}: any) => {
       },
     };
     dispatch(getPropertyDetails(request) as never);
-  }, []);
+  }, [item]);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -205,6 +211,18 @@ const PropertyDetails = ({navigation, route}: any) => {
       //@ts-ignore
       carouselRef.current.scrollTo({index: index + 1, animated: true});
     }
+  };
+
+  const renderRelatedProperty = ({item}: any) => {
+    return (
+      <PropertyItemList
+        item={item}
+        onBuyNowPress={() => {
+          navigation.navigate(SCREEN.PROPERTYDETAILS, {item: item});
+          scrollRef?.current?.scrollTo({y: 0, animated: true});
+        }}
+      />
+    );
   };
 
   // const handleCarouselSnap = (index: number) => {
@@ -296,7 +314,10 @@ const PropertyDetails = ({navigation, route}: any) => {
           showsHorizontalScrollIndicator={false}
         />
       </View>
-      <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        ref={scrollRef}
+        bounces={false}
+        showsVerticalScrollIndicator={false}>
         <View>
           <View style={styles.boxContainer}>
             <View>
@@ -317,7 +338,7 @@ const PropertyDetails = ({navigation, route}: any) => {
                   letterSpacing: -0.5,
                   color: colors.greenNeon,
                 }}>
-                {`₹9,000`}
+                {`₹${propertyDetailsData?.rate}`}
                 {/* {`₹${item?.rate}`} */}
                 <Text
                   style={{
@@ -455,8 +476,26 @@ const PropertyDetails = ({navigation, route}: any) => {
             </View>
           </View>
 
-          <View style={{...styles.boxView, paddingBottom: hp(16)}}>
-            <Text style={styles.boxTitleText}>{'Property Documentation'}</Text>
+          {propertyDetailsData?.description && (
+            <CollapsibleView title={'Property Description'}>
+              <View style={{padding: wp(16)}}>
+                <RenderHtml
+                  contentWidth={width}
+                  source={{html: propertyDetailsData?.description}}
+                />
+              </View>
+            </CollapsibleView>
+          )}
+
+          {propertyDetailsData?.builder_details && (
+            <CollapsibleView title={'Builder Information'}>
+              <View style={{padding: wp(16)}}>
+                <Text>{propertyDetailsData?.builder_details}</Text>
+              </View>
+            </CollapsibleView>
+          )}
+
+          <CollapsibleView title={'Property Documentation'}>
             <FlatList
               data={propertyDocuments}
               ItemSeparatorComponent={() => {
@@ -469,6 +508,11 @@ const PropertyDetails = ({navigation, route}: any) => {
                   />
                 );
               }}
+              style={{
+                borderTopWidth: wp(1),
+                borderColor: colors.mediumGrey,
+                marginHorizontal: wp(16),
+              }}
               renderItem={({item}) => {
                 return (
                   <View
@@ -476,7 +520,6 @@ const PropertyDetails = ({navigation, route}: any) => {
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      paddingHorizontal: wp(16),
                       paddingVertical: hp(12),
                     }}>
                     <Text
@@ -507,7 +550,29 @@ const PropertyDetails = ({navigation, route}: any) => {
                 );
               }}
             />
-          </View>
+          </CollapsibleView>
+          {relatedProperty[0]?.property !== null && (
+            <View>
+              <Text
+                style={{
+                  marginLeft: wp(16),
+                  marginTop: hp(20),
+                  fontSize: fontSize(14),
+                  fontFamily: font.semiBold,
+                  color: colors.grey,
+                }}>
+                {'Related Properties'}
+              </Text>
+              <FlatList
+                key={1}
+                numColumns={2}
+                data={relatedProperty}
+                renderItem={renderRelatedProperty}
+                style={styles.propertyListStyle}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+          )}
           <View style={{height: hp(40)}} />
         </View>
       </ScrollView>
@@ -515,7 +580,11 @@ const PropertyDetails = ({navigation, route}: any) => {
       <View style={styles.btnContainer}>
         <Button
           title="Invest Now"
-          onPress={() => navigation.navigate(SCREEN.INVESTSCREEN)}
+          onPress={() =>
+            navigation.navigate(SCREEN.INVESTSCREEN, {
+              propertyData: propertyDetailsData,
+            })
+          }
           buttonStyle={styles.btn}
           shadowStyle={{shadowOpacity: 0}}
         />
@@ -720,5 +789,9 @@ const styles = StyleSheet.create({
     fontFamily: font.regular,
     color: colors.otpInputBorder,
     paddingVertical: hp(3),
+  },
+  propertyListStyle: {
+    marginTop: hp(16),
+    marginHorizontal: wp(10),
   },
 });

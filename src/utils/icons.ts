@@ -75,8 +75,14 @@ export const icons = {
   clock: require('../../assets/icons/clock.png'),
   timer: require('../../assets/icons/timer.png'),
   orderBg: require('../../assets/icons/orderBg.png'),
+  checkRing: require('../../assets/icons/checkRing.png'),
+  add: require('../../assets/icons/add.png'),
+  minus: require('../../assets/icons/minus.png'),
+  close: require('../../assets/icons/close.png'),
 };
 
 export const lotties = {
   loader: require('../../assets/lotties/loader.json'),
+  success: require('../../assets/lotties/success.json'),
+  fail: require('../../assets/lotties/fail.json'),
 };

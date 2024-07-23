@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable handle-callback-err */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -9,8 +10,8 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 
 import {font} from '../../utils/fonts';
@@ -24,28 +25,41 @@ import {useDispatch, useSelector} from 'react-redux';
 import {walletProfile} from '../../store/action/profileActions';
 import Loader from '../../components/common/Loader';
 import {SCREEN} from '../../utils/screenConstants';
+import {LOGOUT} from '../../store/types';
+import ProfileListItem from '../../components/profile/ProfileListItem';
+import Modal from 'react-native-modal';
+import TextInputComp from '../../components/common/TextInput';
+import {
+  addMoney,
+  addMoneyReject,
+  withdrawMoney,
+} from '../../store/action/transactionActions';
+import axios from 'axios';
+import {CFPaymentGatewayService} from 'react-native-cashfree-pg-sdk';
+import {CFEnvironment, CFSession} from 'cashfree-pg-api-contract';
 
-const ListItem = ({onPress, title, iconName}: any) => {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.listItemContainer}>
-      <Image source={iconName} style={styles.upChevronStyle} />
-      <Text style={styles.listItemTitle}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
-
-const Profile = () => {
+const Profile = ({navigation}: any) => {
   const {walletProfileData} = useSelector((state: any) => state.data);
+  const {userData} = useSelector((state: any) => state.auth);
 
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isContactUsVisible, setIsContactUsVisible] = useState(false);
+  const [moneyInputSheet, setMoneyInputSheet] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [isNotificationON, setIsNotificationON] = useState(false);
+  const [amount, setAmount] = useState('');
+  const [transactionType, setTransactionType] = useState('Add');
+
+  useEffect(() => {
+    getWalletProfileData();
+  }, []);
 
   const getWalletProfileData = () => {
     setIsLoading(true);
     const request = {
-      // need to make it dynamic
-      data: {customer: '9548456788'},
+      data: {},
       onSuccess: (res: any | []) => {
         setIsLoading(false);
       },
@@ -56,19 +70,184 @@ const Profile = () => {
     dispatch(walletProfile(request) as never);
   };
 
-  useEffect(() => {
-    getWalletProfileData();
-  }, []);
-
-  const [refreshing, setRefreshing] = useState(false);
-
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getWalletProfileData();
     setTimeout(() => {
       setRefreshing(false);
-    }, 2000);
+    }, 1000);
   }, []);
+
+  useEffect(() => {
+    CFPaymentGatewayService.setCallback({
+      onVerify(orderID: string): void {
+        //@ts-ignore
+        navigation.navigate(SCREEN.PAYMENTSUCCESS, {
+          orderID: orderID,
+          isSucceed: true,
+        });
+        // setIsLoading(true);
+        const request = {
+          data: {
+            amount: Number(amount),
+            payment_reference_id: orderID,
+          },
+          onSuccess: (res: any | []) => {
+            getWalletProfileData();
+            // setIsLoading(false);
+            setAmount('');
+          },
+          onFail: (err: any) => {
+            // setIsLoading(false);
+            setAmount('');
+          },
+        };
+        dispatch(addMoney(request) as never);
+      },
+      //@ts-ignore
+      onError(error: CFErrorResponse, orderID: string): void {
+        // console.log(
+        //   'exception is :============' +
+        //     JSON.stringify(error) +
+        //     '\norderId is :==????' +
+        //     orderID,
+        // );
+        navigation.navigate(SCREEN.PAYMENTSUCCESS, {
+          orderID: orderID,
+          isSucceed: false,
+        });
+        const request = {
+          data: {
+            amount: Number(amount),
+            payment_reference_id: orderID,
+          },
+          onSuccess: (res: any | []) => {
+            getWalletProfileData();
+            // setIsLoading(false);
+            setAmount('');
+          },
+          onFail: (err: any) => {
+            // setIsLoading(false);
+            setAmount('');
+          },
+        };
+        dispatch(addMoneyReject(request) as never);
+      },
+    });
+    return () => {
+      CFPaymentGatewayService.removeCallback();
+    };
+  }, [amount]);
+
+  const onAddMoneyPress = async () => {
+    setIsLoading(true);
+    let data = JSON.stringify({
+      order_amount: amount,
+      order_currency: 'INR',
+      customer_details: {
+        customer_id: 'USER123',
+        customer_name: userData?.full_name,
+        customer_email: userData?.email,
+        customer_phone: `+91${userData?.mobile_no}`,
+      },
+      order_meta: {
+        return_url: 'https://b8af79f41056.eu.ngrok.io?order_id=order_123',
+      },
+    });
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://sandbox.cashfree.com/pg/orders',
+      headers: {
+        'x-api-version': '2023-08-01',
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      data: data,
+    };
+
+    let payment_session_id: any;
+    let order_id: any;
+
+    await axios
+      .request(config)
+      .then(response => {
+        payment_session_id = response?.data?.payment_session_id;
+        order_id = response?.data?.order_id;
+        setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+        console.log(error);
+      });
+
+    if (payment_session_id) {
+      setMoneyInputSheet(false);
+      try {
+        const session = new CFSession(
+          payment_session_id,
+          order_id,
+          CFEnvironment.SANDBOX,
+        );
+        // console.log('Session', JSON.stringify(session));
+        setTimeout(() => {
+          //@ts-ignore
+          CFPaymentGatewayService.doWebPayment(JSON.stringify(session));
+        }, 500);
+      } catch (e: any) {
+        console.log(e.message);
+      }
+    }
+  };
+
+  const onWithdrawPress = () => {
+    setIsLoading(true);
+    const request = {
+      data: {
+        amount: Number(amount),
+        payment_reference_id: '#28189165',
+      },
+      onSuccess: (res: any | []) => {
+        setIsLoading(false);
+        getWalletProfileData();
+        setMoneyInputSheet(false);
+        setAmount('');
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+        setMoneyInputSheet(false);
+        setAmount('');
+      },
+    };
+    dispatch(withdrawMoney(request) as never);
+  };
+
+  // const onMoneyTrasfferPress = () => {
+  //   setIsLoading(true);
+  //   const request = {
+  //     data: {
+  //       amount: Number(amount),
+  //       payment_reference_id: '#28189165',
+  //     },
+  //     onSuccess: (res: any | []) => {
+  //       setIsLoading(false);
+  //       getWalletProfileData();
+  //       setMoneyInputSheet(false);
+  //       setAmount('');
+  //     },
+  //     onFail: (err: any) => {
+  //       setIsLoading(false);
+  //       setMoneyInputSheet(false);
+  //       setAmount('');
+  //     },
+  //   };
+  //   dispatch(
+  //     transactionType === 'Add'
+  //       ? (addMoney(request) as never)
+  //       : (withdrawMoney(request) as never),
+  //   );
+  // };
 
   return (
     <View style={commonStyles.container}>
@@ -86,7 +265,6 @@ const Profile = () => {
       </View>
 
       <ScrollView
-        // bounces={false}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -95,12 +273,26 @@ const Profile = () => {
           <Text style={styles.boxTitleText}>{'Wallet'}</Text>
           <View style={styles.walletBoxView}>
             <View style={commonStyles.flexRow}>
-              <Text style={styles.amountText}>
+              <Text
+                style={{
+                  ...styles.amountText,
+                  color: walletProfileData[0]?.wallet_amount
+                    ? colors.green
+                    : colors.red,
+                }}>
                 {walletProfileData[0]?.wallet_amount
                   ? `₹${walletProfileData[0]?.wallet_amount}`
                   : '₹0.0'}
               </Text>
-              <Image source={icons.arrowUp} style={styles.upChevronStyle} />
+              <Image
+                source={icons.arrowUp}
+                style={{
+                  ...styles.upChevronStyle,
+                  tintColor: walletProfileData[0]?.wallet_amount
+                    ? colors.green
+                    : colors.red,
+                }}
+              />
             </View>
             <Text style={styles.walletDescText}>
               {'Added 0.0% more last week'}
@@ -108,14 +300,20 @@ const Profile = () => {
             <View style={styles.walletBtnContainer}>
               <Button
                 title="Add money"
-                onPress={() => {}}
+                onPress={() => {
+                  setTransactionType('Add');
+                  setMoneyInputSheet(true);
+                }}
                 buttonStyle={styles.addMoneyBtn}
                 textStyle={styles.addMoneyText}
               />
               <View style={styles.spaceBtwnBtn} />
               <Button
                 title="Withdraw"
-                onPress={() => {}}
+                onPress={() => {
+                  setTransactionType('Withdraw');
+                  setMoneyInputSheet(true);
+                }}
                 buttonStyle={{
                   ...styles.addMoneyBtn,
                   backgroundColor: colors.mediumDarkBorder,
@@ -128,30 +326,31 @@ const Profile = () => {
 
         <View style={styles.boxView}>
           <Text style={styles.boxTitleText}>{'Account'}</Text>
-          <ListItem
+          <ProfileListItem
             title={'Personal Details'}
             iconName={icons.userSquare}
             onPress={() => {}}
           />
-          <ListItem
+          <ProfileListItem
             title={'Accounts'}
             iconName={icons.user}
             onPress={() => {}}
           />
-          <ListItem
+          <ProfileListItem
             title={'Manage KYC'}
             iconName={icons.cardTick}
             onPress={() => {}}
           />
-          <ListItem
+          {/* <ProfileListItem
             title={'Security'}
             iconName={icons.shieldTick}
             onPress={() => {}}
-          />
-          <ListItem
+          /> */}
+          <ProfileListItem
             title={'Sign Out'}
             iconName={icons.logout}
             onPress={() => {
+              dispatch({type: LOGOUT});
               removeAsyncStorage();
               resetStack(SCREEN.WELCOME);
             }}
@@ -160,23 +359,70 @@ const Profile = () => {
 
         <View style={styles.boxView}>
           <Text style={styles.boxTitleText}>{'Preferences'}</Text>
-          <ListItem
+          <ProfileListItem
             title={'Notifications'}
             iconName={icons.notificationBing}
             onPress={() => {}}
+            switchValue={isNotificationON}
+            onSwitchToggle={() => setIsNotificationON(!isNotificationON)}
           />
         </View>
 
         <View style={styles.boxView}>
           <Text style={styles.boxTitleText}>{'Help'}</Text>
-          <ListItem
+          <ProfileListItem
             title={'Contact Us'}
             iconName={icons.headphone}
-            onPress={() => {}}
+            onPress={() => setIsContactUsVisible(true)}
           />
         </View>
         <View style={styles.footerStyle} />
       </ScrollView>
+      <Modal
+        isVisible={moneyInputSheet}
+        style={styles.modalAmount}
+        onBackdropPress={() => setMoneyInputSheet(false)}
+        avoidKeyboard>
+        <View style={styles.containerAmountSheet}>
+          <TextInputComp
+            value={amount}
+            autoFocus
+            onChangeText={text => setAmount(text)}
+            label={`Enter amount you want to ${transactionType}`}
+            maxLength={8}
+            keyboardType="number-pad"
+          />
+          <Button
+            title={`${transactionType} Money`}
+            onPress={
+              transactionType === 'Add' ? onAddMoneyPress : onWithdrawPress
+            }
+            loader={isLoading}
+          />
+        </View>
+      </Modal>
+      <Modal
+        isVisible={isContactUsVisible}
+        onBackdropPress={() => setIsContactUsVisible(false)}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalTitle}>{'Contact Us'}</Text>
+          <Text style={styles.modalContentText}>
+            {'Email us on:  '}
+            <Text style={{color: colors.blue}}>{'abcd@email.com'}</Text>
+          </Text>
+          <Text style={styles.modalContentText}>
+            {'Call us on:  '}
+            <Text style={{color: colors.blue}}>{'9898875465'}</Text>
+          </Text>
+          <TouchableOpacity
+            style={{padding: wp(8), alignSelf: 'center'}}
+            onPress={() => setIsContactUsVisible(false)}>
+            <Text style={{...styles.modalContentText, color: colors.primary}}>
+              {'Close'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -255,20 +501,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  listItemContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingVertical: hp(16),
-    paddingHorizontal: wp(24),
-  },
-  listItemTitle: {
-    paddingLeft: wp(24),
-    color: colors.black,
-    letterSpacing: -0.5,
-    fontSize: fontSize(13),
-    fontFamily: font.semiBold,
-  },
   footerStyle: {
     height: hp(40),
+  },
+  modalView: {
+    // alignItems: 'center',
+    borderRadius: wp(12),
+    // paddingVertical: hp(10),
+    padding: hp(16),
+    backgroundColor: colors.white,
+  },
+  modalTitle: {
+    textAlign: 'center',
+    color: colors.black,
+    fontSize: fontSize(16),
+    fontFamily: font.semiBold,
+    marginBottom: hp(10),
+    textDecorationLine: 'underline',
+  },
+  modalContentText: {
+    fontSize: fontSize(14),
+    fontFamily: font.regular,
+    color: colors.otpInputBorder,
+    paddingVertical: hp(3),
+  },
+  modalAmount: {
+    margin: 0,
+    justifyContent: 'flex-end',
+  },
+  containerAmountSheet: {
+    backgroundColor: colors.white,
+    padding: wp(20),
+    borderTopLeftRadius: wp(20),
+    borderTopRightRadius: wp(20),
   },
 });

@@ -21,6 +21,8 @@ import {commonStyles} from '../../styles/styles';
 import {colors, fontSize, hp, wp} from '../../utils';
 
 const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
+  console.log('item:::::::', item);
+
   return (
     <Pressable style={styles.container}>
       <FastImage
@@ -53,7 +55,7 @@ const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
           </View>
         </View>
         <View style={{justifyContent: 'space-between'}}>
-          <Text style={styles.priceText}>{`₹52.15 Lac`}</Text>
+          <Text style={styles.priceText}>{`₹${item?.rate}`}</Text>
           {/* <Text style={styles.priceText}>{`₹${item?.price}`}</Text> */}
           <Text style={styles.dateText}>
             {moment(item?.creation)?.format('DD MMM')}
@@ -62,13 +64,15 @@ const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
         </View>
       </View>
       <View style={styles.bottomContainer}>
-        <View>
+        <View style={{flex: 1, marginRight: wp(12)}}>
           <Text style={styles.subTypeText}>{'2 bhk+2t'}</Text>
           {/* <Text style={styles.subTypeText}>{item?.subType}</Text> */}
           <View
             style={{
               ...commonStyles.flexRow,
               marginTop: hp(6),
+              // width: '100%',
+              flex: 1,
             }}>
             <Text
               ellipsizeMode="tail"
@@ -179,7 +183,8 @@ const styles = StyleSheet.create({
     fontSize: fontSize(12),
     fontFamily: font.qMedium,
     color: colors.lightBlack,
-    width: wp(110),
+    // width: wp(110),
+    flex: 1,
   },
   subDetailText: {
     fontSize: fontSize(10),

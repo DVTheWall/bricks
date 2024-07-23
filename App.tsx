@@ -8,7 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-import store from './src/store';
+import storage from './src/store';
 import {colors} from './src/utils';
 import RootNavigator from './src/navigation/RootNavigator';
 import {
@@ -18,6 +18,9 @@ import {
 } from './src/helpers/globalFunctions';
 import {localStore} from './src/api/constants';
 import {SCREEN} from './src/utils/screenConstants';
+import {PersistGate} from 'redux-persist/integration/react';
+
+const {persistor, store} = storage();
 
 const App = () => {
   const getToken = async () => {
@@ -37,10 +40,12 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
-        <NavigationContainer ref={navigationRef}>
-          <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
-          <RootNavigator />
-        </NavigationContainer>
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer ref={navigationRef}>
+            <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+            <RootNavigator />
+          </NavigationContainer>
+        </PersistGate>
         <Toast />
       </Provider>
     </GestureHandlerRootView>

@@ -57,6 +57,8 @@ export const getCatogoryItemData = (category_name: string) => {
       return {icon: icons.school, bgColor: colors.darkYellow};
     case 'Villa':
       return {icon: icons.office, bgColor: colors.blueNeon};
+    case 'House':
+      return {icon: icons.office, bgColor: colors.blueNeon};
     case 'Office':
       return {icon: icons.office, bgColor: colors.greenNeon};
     case 'Hospital':

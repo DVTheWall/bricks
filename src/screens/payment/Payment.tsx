@@ -19,8 +19,6 @@ import {icons} from '../../utils/icons';
 import {savedCardList} from '../../utils/dataConstants';
 import Button from '../../components/common/Button';
 
-type Props = {};
-
 const Payment = ({navigation}: any) => {
   const [cardList, setCardList] = useState(savedCardList);
 

@@ -24,8 +24,8 @@ const LottieViewer: React.FC<LottieViewerProps> = ({
 
 const styles = StyleSheet.create({
   lottieStyle: {
-    width: wp(16),
-    height: hp(7.38),
+    width: wp(24),
+    height: hp(24),
   },
 });
 

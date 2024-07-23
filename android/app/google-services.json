@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "66123144555",
+    "project_id": "notifictions-bricks",
+    "storage_bucket": "notifictions-bricks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66123144555:android:d2dc1f1b57065a56f0402e",
+        "android_client_info": {
+          "package_name": "com.bricksapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTMzUcUKC2CSQAxFjNT7NFOGndJG7sUlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

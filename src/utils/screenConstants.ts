@@ -24,4 +24,5 @@ export const SCREEN = {
   ADDCUSTOMER: 'AddCustomer',
   ORDERDETAILS: 'OrderDetails',
   ADDORDERS: 'AddOrders',
+  PAYMENTSUCCESS: 'PaymentSuccess',
 };

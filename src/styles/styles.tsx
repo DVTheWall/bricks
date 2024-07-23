@@ -29,6 +29,11 @@ export const commonStyles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  flexRowJustify: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   icon12: {
     width: wp(12),
     height: wp(12),

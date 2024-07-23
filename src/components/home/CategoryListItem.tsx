@@ -4,6 +4,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {font} from '../../utils/fonts';
 import {colors, fontSize, wp} from '../../utils';
 import {getCatogoryItemData} from '../../helpers/globalFunctions';
+import FastImage from 'react-native-fast-image';
 
 const CategoryListItem = ({item, onPress}: any) => {
   return (
@@ -16,10 +17,17 @@ const CategoryListItem = ({item, onPress}: any) => {
           ...styles.iconContainer,
           backgroundColor: getCatogoryItemData(item?.category_name)?.bgColor,
         }}>
-        <Image
-          source={getCatogoryItemData(item?.category_name)?.icon}
-          style={styles.iconStyle}
-        />
+        {item?.image ? (
+          <FastImage
+            source={{uri: `https://bricks-dev.katsamsoft.com${item?.image}`}}
+            style={styles.iconStyle}
+          />
+        ) : (
+          <Image
+            source={getCatogoryItemData(item?.category_name)?.icon}
+            style={styles.iconStyle}
+          />
+        )}
       </View>
       <View style={styles.textView}>
         <Text style={styles.categoryText}>{item?.category_name}</Text>

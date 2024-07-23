@@ -6,26 +6,59 @@ import moment from 'moment';
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {colors, fontSize, hp, wp} from '../../utils';
+import {commonStyles} from '../../styles/styles';
 
 const TransactionListItem = ({item}: any) => {
   const isCredited = item?.transaction_type === 'Credit';
+  const title =
+    item?.property_id !== null ? item?.property_id : 'Added to Wallet';
+  const icon = item?.property_id !== null ? icons.hotel : icons.rupeeCircle;
+
+  const getTagColor = (status: string) => {
+    switch (status) {
+      case 'Approved':
+        return {light: '#E9F8F0', dark: '#54A77B'};
+      case 'Pending':
+        return {light: '#E1E1E1', dark: '#636363'};
+      case 'Pending at Bank':
+        return {light: '#C9D2FF', dark: '#000080'};
+      case 'Rejected':
+        return {light: '#FAEAEA', dark: '#E16032'};
+      default:
+        return {light: '#E9F8F0', dark: '#54A77B'};
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.timeText}>
-        {moment(item?.creation)?.format('dddd Do MMM')}
-      </Text>
-      {/* <Text style={styles.timeText}>{item?.time}</Text> */}
+      <View style={commonStyles.flexRowJustify}>
+        <Text style={styles.timeText}>
+          {moment(item?.date)?.format('dddd Do MMM')}
+        </Text>
+        <View
+          style={{
+            ...styles.tagView,
+            backgroundColor: getTagColor(item?.status)?.light,
+          }}>
+          <Text
+            style={{
+              ...styles.tagText,
+              color: getTagColor(item?.status)?.dark,
+            }}>
+            {item?.status}
+          </Text>
+        </View>
+      </View>
       <View style={styles.titleContainer}>
         <View style={styles.titleBox}>
-          {/* <Image source={item?.icon} style={styles.iconStyle} /> */}
-          <Image source={icons.rupeeCircle} style={styles.iconStyle} />
+          <Image source={icon} style={styles.iconStyle} />
           <View>
-            <Text style={styles.titleText}>{item?.name}</Text>
-            {item?.investedIn && (
+            <Text style={styles.titleText}>{title}</Text>
+            {item?.sqft_purchased && (
               <Text
                 style={
                   styles.investText
-                }>{`Invested in ${item?.investedIn}`}</Text>
+                }>{`Invested in ${item?.sqft_purchased}`}</Text>
             )}
           </View>
         </View>
@@ -45,7 +78,7 @@ export default TransactionListItem;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: wp(16),
+    paddingVertical: wp(12),
     paddingLeft: wp(16),
     paddingRight: wp(25),
   },
@@ -86,5 +119,14 @@ const styles = StyleSheet.create({
     fontSize: fontSize(13),
     color: colors.semiGrey,
     fontFamily: font.regular,
+  },
+  tagView: {
+    paddingVertical: hp(3),
+    paddingHorizontal: wp(8),
+    borderRadius: wp(100),
+  },
+  tagText: {
+    fontSize: fontSize(12),
+    fontFamily: font.semiBold,
   },
 });

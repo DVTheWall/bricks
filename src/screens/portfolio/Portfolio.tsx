@@ -1,4 +1,9 @@
-import React, {useState} from 'react';
+/* eslint-disable handle-callback-err */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -17,6 +22,9 @@ import Header from '../../components/common/Header';
 import Shadow from '../../components/common/Shadow';
 import {colors, fontSize, hp, wp} from '../../utils';
 import {indicatorListData, periodDataList} from '../../utils/dataConstants';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../components/common/Loader';
+import {getPortfolioDataApi} from '../../store/action/portfolioActions';
 
 const Portfolio = () => {
   const data = [
@@ -47,15 +55,51 @@ const Portfolio = () => {
     {value: 19, label: 'Line 2'},
   ];
 
-  const pointerComponent = () => {
-    return <View style={{height: 5, width: 5, backgroundColor: 'red'}} />;
+  const dispatch = useDispatch();
+
+  const {portfolioData} = useSelector((state: any) => state.data);
+
+  console.log('portfolioData::::', portfolioData);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [profileData] = useState(portfolioData?.profile_data[0]);
+  const isProfit = profileData?.profit > 0;
+  const profitLoss =
+    profileData?.profit < 0
+      ? `-₹${Math.abs(profileData?.profit)}`
+      : `₹${Math.abs(profileData?.profit)}`;
+  const profit = profileData?.profit ?? 0;
+  const invested = profileData?.invested ?? 1;
+  const profitLossPercentage = (profit / invested) * 100;
+  const profitLossPerc = Math.abs(profitLossPercentage).toFixed(2) + '%';
+
+  useEffect(() => {
+    getPortfolioData();
+  }, []);
+
+  const getPortfolioData = () => {
+    setIsLoading(true);
+    const request = {
+      data: {},
+      onSuccess: (res: any | []) => {
+        setIsLoading(false);
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+      },
+    };
+    dispatch(getPortfolioDataApi(request) as never);
   };
 
-  const pointerConfig = {
-    height: 5,
-    width: 5,
-    pointerComponent: pointerComponent,
-  };
+  // const pointerComponent = () => {
+  //   return <View style={{height: 5, width: 5, backgroundColor: 'red'}} />;
+  // };
+
+  // const pointerConfig = {
+  //   height: 5,
+  //   width: 5,
+  //   pointerComponent: pointerComponent,
+  // };
 
   const [periodData, setPeriodData] = useState(periodDataList);
 
@@ -111,6 +155,7 @@ const Portfolio = () => {
         customTitleStyle={styles.customTitleStyle}
         customHeaderStyle={styles.customHeaderStyle}
       />
+      <Loader visible={isLoading} />
       <ScrollView style={{paddingTop: hp(12)}}>
         <Shadow shadowStyle={styles.boxShadow}>
           <View style={styles.boxContainer}>
@@ -120,23 +165,43 @@ const Portfolio = () => {
                   <View style={styles.orangeIndicator} />
                   <Text style={styles.boxTitleText}>{'Invested'}</Text>
                 </View>
-                <Text style={styles.amountText}>{'₹2,28,000'}</Text>
+                <Text
+                  style={styles.amountText}>{`₹${profileData?.invested}`}</Text>
               </View>
               <View style={commonStyles.flex}>
                 <View style={commonStyles.flexRow}>
                   <View style={styles.orangeIndicator} />
                   <Text style={styles.boxTitleText}>{'Current'}</Text>
                 </View>
-                <Text style={styles.amountText}>{'₹2,28,000'}</Text>
+                <Text
+                  style={styles.amountText}>{`₹${profileData?.current}`}</Text>
               </View>
             </View>
             <View style={styles.boxSeperator} />
             <View style={styles.boxBottomView}>
               <Text style={styles.boxTitleText}>{'P&L'}</Text>
               <View style={commonStyles.flexRow}>
-                <Text style={styles.diffAmountText}>{'+₹2,28,000'}</Text>
-                <View style={styles.boxPercView}>
-                  <Text style={styles.boxPercText}>{'+22%'}</Text>
+                <Text
+                  style={{
+                    ...styles.diffAmountText,
+                    color: isProfit ? colors.greenNeon : colors.redNeon,
+                  }}>
+                  {profitLoss}
+                </Text>
+                <View
+                  style={{
+                    ...styles.boxPercView,
+                    backgroundColor: isProfit
+                      ? colors.lightGreen
+                      : colors.xLightPrimary,
+                  }}>
+                  <Text
+                    style={{
+                      ...styles.boxPercText,
+                      color: isProfit ? colors.greenNeon : colors.redNeon,
+                    }}>
+                    {profitLossPerc}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -361,24 +426,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   diffAmountText: {
-    color: colors.greenNeon,
     fontSize: fontSize(18),
     fontFamily: font.semiBold,
   },
   boxPercView: {
-    backgroundColor: colors.lightGreen,
     borderRadius: wp(100),
     paddingHorizontal: wp(6),
     paddingVertical: hp(2),
     marginLeft: wp(6),
   },
   boxPercText: {
-    color: colors.greenNeon,
     fontSize: fontSize(12),
     fontFamily: font.mMedium,
   },
   chartContainer: {
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.white,

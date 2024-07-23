@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Text, StyleSheet, TouchableOpacity, Image, View} from 'react-native';
 
@@ -7,8 +8,15 @@ import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
 import {colors, fontSize, hp, wp} from '../../utils';
+import {useSelector} from 'react-redux';
 
 const Wallet = ({onPress}: any) => {
+  const {walletProfileData} = useSelector((state: any) => state.data);
+
+  const walletAmount = walletProfileData[0]?.wallet_amount
+    ? walletProfileData[0]?.wallet_amount
+    : 0;
+
   return (
     <LinearGradient
       colors={['rgba(243, 102, 103, 1)', 'rgba(243, 102, 103, 0.05)']}
@@ -85,7 +93,7 @@ const Wallet = ({onPress}: any) => {
                     fontSize: fontSize(20),
                     fontFamily: font.semiBold,
                   }}>
-                  {'₹9000'}
+                  {`₹${walletAmount}`}
                 </Text>
               </View>
             </View>

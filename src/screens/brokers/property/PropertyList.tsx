@@ -1,8 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
 import {font} from '../../../utils/fonts';
@@ -16,22 +17,40 @@ import {SCREEN} from '../../../utils/screenConstants';
 import {useDispatch, useSelector} from 'react-redux';
 import {getPropertyList} from '../../../store/action/propertyActions';
 import Loader from '../../../components/common/Loader';
+import {debounce} from 'lodash';
+import PropertyFilterSheet from '../../../components/properties/PropertyFilterSheet';
 
-const PropertyList = ({navigation}: any) => {
+const PropertyList = ({navigation, route}: any) => {
   const {propertyList} = useSelector((state: any) => state.data);
+  const selectedCategory = route?.params?.category ?? '';
 
   const dispatch = useDispatch();
 
   const [searchText, setSerachText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    selectedCategories: [],
+    minRate: '',
+    maxRate: '',
+  });
+
+  const toggleFilter = () => setIsFilterOpen(!isFilterOpen);
 
   useEffect(() => {
+    getPropertyListData(searchText);
+  }, [filters]);
+
+  const getPropertyListData = (searchQuery: string) => {
     setIsLoading(true);
     const request = {
-      // need to make it dynamic
       data: {
-        name: '',
-        property_categorization: '',
+        name: searchQuery,
+        property_categorization: selectedCategory
+          ? [selectedCategory]
+          : filters.selectedCategories,
+        minimum_rate: filters.minRate,
+        maximum_rate: filters.maxRate,
       },
       onSuccess: (res: any | []) => {
         setIsLoading(false);
@@ -41,7 +60,11 @@ const PropertyList = ({navigation}: any) => {
       },
     };
     dispatch(getPropertyList(request) as never);
-  }, []);
+  };
+
+  const applyFilters = (selectedFilters: any) => {
+    setFilters(selectedFilters);
+  };
 
   const renderSellingProperty = ({item}: any) => {
     return (
@@ -53,6 +76,19 @@ const PropertyList = ({navigation}: any) => {
       />
     );
   };
+
+  const debouncedSearch = useCallback(
+    debounce((searchQuery: string) => {
+      getPropertyListData(searchQuery);
+    }, 700),
+    [],
+  );
+
+  const handleSearchChange = (text: string) => {
+    setSerachText(text);
+    debouncedSearch(text);
+  };
+
   return (
     <View style={commonStyles.container}>
       <SafeAreaView />
@@ -65,16 +101,34 @@ const PropertyList = ({navigation}: any) => {
       />
       <SearchBox
         value={searchText}
-        onFilterPress={() => {}}
+        onFilterPress={toggleFilter}
         placeholder={'Search for transaction'}
-        onChangeText={text => setSerachText(text)}
+        onChangeText={handleSearchChange}
       />
-      <Text style={styles.titleText}>{'Hot Selling Properties'}</Text>
+      {/* <Text style={styles.titleText}>{'Hot Selling Properties'}</Text> */}
       <FlatList
         data={propertyList}
         renderItem={renderSellingProperty}
         style={styles.propertyListView}
         ListFooterComponent={() => <View style={{height: hp(150)}} />}
+        ListEmptyComponent={() => (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: hp(50),
+            }}>
+            <Text style={{fontSize: fontSize(20), color: colors.grey}}>
+              {'No Data Found'}
+            </Text>
+          </View>
+        )}
+      />
+      <PropertyFilterSheet
+        isVisible={isFilterOpen}
+        onClose={toggleFilter}
+        onApply={applyFilters}
       />
     </View>
   );
