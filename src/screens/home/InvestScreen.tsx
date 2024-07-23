@@ -75,7 +75,7 @@ const InvestScreen = ({route, navigation}: any) => {
       property_id: propertyData?.property_name,
       order_type: orderType,
       number_of_sqft: Number(sqft),
-      total_amount: Number(amount),
+      total_amount: Number(propertyData?.rate),
     };
     console.log('data-', isValidated() && !isMonthlyActive);
 

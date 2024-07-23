@@ -62,7 +62,10 @@ const Portfolio = () => {
   console.log('portfolioData::::', portfolioData);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [profileData] = useState(portfolioData?.profile_data[0]);
+  const profileData = portfolioData?.profile_data?.[0];
+
+  const {property_percentages} = portfolioData || [];
+
   const isProfit = profileData?.profit > 0;
   const profitLoss =
     profileData?.profit < 0
@@ -325,27 +328,17 @@ const Portfolio = () => {
                 overflow: 'hidden',
                 flexDirection: 'row',
               }}>
-              <View
-                style={{
-                  width: '60%',
-                  backgroundColor: colors.orange1,
-                  height: '100%',
-                }}
-              />
-              <View
-                style={{
-                  width: '20%',
-                  backgroundColor: colors.greenLite,
-                  height: '100%',
-                }}
-              />
-              <View
-                style={{
-                  width: '20%',
-                  backgroundColor: colors.purple,
-                  height: '100%',
-                }}
-              />
+              {property_percentages?.map((person, index) => {
+                return (
+                  <View
+                    style={{
+                      width: person?.percentage,
+                      backgroundColor: person?.color,
+                      height: '100%',
+                    }}
+                  />
+                );
+              })}
             </View>
           </View>
         </View>
@@ -353,7 +346,7 @@ const Portfolio = () => {
         <Shadow shadowStyle={styles.boxShadow}>
           {/* <View style={styles.boxContainer}> */}
           <FlatList
-            data={indicatorListData}
+            data={property_percentages}
             renderItem={renderGraphIndicator}
             ItemSeparatorComponent={() => <View style={{height: hp(6)}} />}
           />
