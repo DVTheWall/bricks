@@ -1,3 +1,4 @@
+/* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
@@ -67,29 +68,23 @@ const InvestScreen = ({route, navigation}: any) => {
   };
 
   const onOneTimeOrderPress = () => {
-    console.log('onOneTimeOrderPress');
-
     const data = {
       customer_name: userData?.mobile_no,
       date: moment(repeatDate)?.format('YYYY-MM-DD'),
       property_id: propertyData?.property_name,
       order_type: orderType,
       number_of_sqft: Number(sqft),
-      total_amount: Number(propertyData?.rate),
+      total_amount: Number(propertyData?.rate) * Number(sqft),
     };
-    console.log('data-', isValidated() && !isMonthlyActive);
-
     if (isValidated() && !isMonthlyActive) {
       setIsLoading(true);
       const request = {
         data: data,
         onSuccess: (res: any | []) => {
-          console.log('res====', res);
           setIsLoading(false);
           navigation.navigate(SCREEN.PROPERTYLIST);
         },
         onFail: (err: any) => {
-          console.log('EERRR====', err);
           setIsLoading(false);
         },
       };
@@ -97,9 +92,7 @@ const InvestScreen = ({route, navigation}: any) => {
     }
   };
 
-  const onInvestNowMonthlyPress = () => {
-    console.log('onInvestNowMonthlyPress');
-  };
+  const onInvestNowMonthlyPress = () => {};
 
   return (
     <View style={commonStyles.container}>

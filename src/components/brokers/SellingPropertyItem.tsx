@@ -21,8 +21,6 @@ import {commonStyles} from '../../styles/styles';
 import {colors, fontSize, hp, wp} from '../../utils';
 
 const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
-  console.log('item:::::::', item);
-
   return (
     <Pressable style={styles.container}>
       <FastImage

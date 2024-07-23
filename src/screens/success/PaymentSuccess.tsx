@@ -15,7 +15,6 @@ import {resetStack} from '../../helpers/globalFunctions';
 
 const PaymentSuccess = ({route, navigation}: any) => {
   const {orderID, isSucceed} = route?.params ?? '';
-  console.log('orderIDorderID======', orderID, '----', isSucceed);
 
   return (
     <View style={styles.container}>

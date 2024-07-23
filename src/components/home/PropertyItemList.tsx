@@ -33,7 +33,7 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
         </Text>
         <View style={{...commonStyles.flexRow, marginTop: hp(6)}}>
           <Text style={styles.rateText}>
-            {`₹${item?.minimum_rate}`}
+            {item?.rate ? `₹${item?.rate}` : '---'}
             <Text style={styles.sqftText}>{'  sqft'}</Text>
           </Text>
           <View style={styles.growView}>

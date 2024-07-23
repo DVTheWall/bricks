@@ -11,8 +11,6 @@ export const investNowAction =
     data: {};
   }) =>
   async () => {
-    console.log('request.data====', request.data);
-
     return makeAPIRequest({
       method: POST,
       url: api.investNowOrder,

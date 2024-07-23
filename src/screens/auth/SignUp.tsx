@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable quotes */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -37,9 +37,11 @@ import {
   isValidPan,
   resetStack,
   isValidEmail,
+  getAsyncStorage,
 } from '../../helpers/globalFunctions';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
+import {localStore} from '../../api/constants';
 
 const SignUp = ({navigation}: any) => {
   const dispatch = useDispatch();
@@ -85,6 +87,16 @@ const SignUp = ({navigation}: any) => {
 
   const [isPanVerified, setIsPanVerified] = useState(false);
   const [isAdharVerified, setIsAdharVerified] = useState(false);
+  const [fcmToken, setFcmToken] = useState('');
+
+  const retriveFcmToken = async () => {
+    const tokenFcm = await getAsyncStorage(localStore.fcmToken);
+    setFcmToken(tokenFcm);
+  };
+
+  useEffect(() => {
+    retriveFcmToken();
+  }, []);
 
   const clearStates = () => {
     setFullName('');
@@ -343,6 +355,7 @@ const SignUp = ({navigation}: any) => {
           pan_card: pan,
           aadhaar_number: adhar,
           otp: otp,
+          fcm_token: fcmToken,
         };
         setIsLoading(true);
         const request = {

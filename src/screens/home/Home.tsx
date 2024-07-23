@@ -122,7 +122,7 @@ const Home = ({navigation}: any) => {
         title={'Hello, '}
         name={`${userData?.first_name}!`}
         // onLeftIconPress={() => {}}
-        onRightIconPress1={() => navigation.navigate(SCREEN.PAYMENT)}
+        onRightIconPress1={() => navigation.navigate(SCREEN.PROFILE)}
         onRightIconPress2={() => navigation.navigate(SCREEN.NOTIFICATION)}
         customHeaderStyle={{backgroundColor: colors.homeBg}}
         customNameStyle={{fontFamily: font.semiBold}}

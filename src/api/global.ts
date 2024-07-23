@@ -44,8 +44,6 @@ export const makeAPIRequest = ({
         }
       })
       .catch(error => {
-        console.log('errorMAIN:::::::', JSON.stringify(error));
-
         if (error?.response?.status === 401) {
           removeAsyncStorage();
           //   resetStack(navigationRef as never, routeNames.Landing);

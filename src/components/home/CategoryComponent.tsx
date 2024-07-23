@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 
 import {font} from '../../utils/fonts';
 import CategoryListItem from './CategoryListItem';
@@ -27,9 +27,9 @@ const CategoryComponent = ({data}: any) => {
     <View>
       <View style={styles.subTitleContainer}>
         <Text style={styles.subTitleText}>{data?.section_name}</Text>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text style={styles.viewAllText}>{'View all'}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <FlatList
         horizontal

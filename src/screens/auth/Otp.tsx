@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
@@ -24,17 +25,26 @@ import Button from '../../components/common/Button';
 import Shadow from '../../components/common/Shadow';
 import {colors, fontSize, hp, wp} from '../../utils';
 import ToastAlert from '../../components/common/Alert';
-import {resetStack} from '../../helpers/globalFunctions';
-import {verifyOtp} from '../../store/action/authActions';
+import {getAsyncStorage, resetStack} from '../../helpers/globalFunctions';
+import {putFcmToken, verifyOtp} from '../../store/action/authActions';
+import {localStore} from '../../api/constants';
 
 const Otp = ({navigation, route}: any) => {
   const {mobile} = route?.params;
   const dispatch = useDispatch();
+  const otpInputRef = useRef(null);
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [fcmToken, setFcmToken] = useState('');
 
-  const otpInputRef = useRef(null);
+  const retriveFcmToken = async () => {
+    const tokenFcm = await getAsyncStorage(localStore.fcmToken);
+    setFcmToken(tokenFcm);
+  };
 
+  useEffect(() => {
+    retriveFcmToken();
+  }, []);
   useEffect(() => {
     if (otpInputRef.current) {
       setTimeout(() => {
@@ -48,9 +58,7 @@ const Otp = ({navigation, route}: any) => {
     setOtp(code);
   };
 
-  const handleOtpComplete = (code: string) => {
-    console.log(`OTP is ${code}`);
-  };
+  const handleOtpComplete = (code: string) => {};
 
   const onVerifyPress = () => {
     if (otp?.length !== 4) {
@@ -71,7 +79,18 @@ const Otp = ({navigation, route}: any) => {
       onSuccess: (res: any | []) => {
         setIsLoading(false);
         if (res?.status === 200) {
+          // const fcmReq = {
+          //   data: {
+          //     fcm_token: fcmToken?.toString(),
+          //   },
+          //   onSuccess: (res: any | []) => {
+          //     console.log('resresresresresresres::', res?.data);
+
           resetStack(SCREEN.BOTTOMTABS);
+          //   },
+          //   onFail: (err: any) => {},
+          // };
+          // dispatch(putFcmToken(fcmReq) as never);
         } else {
           ToastAlert({
             toastType: 'error',

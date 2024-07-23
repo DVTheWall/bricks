@@ -5,4 +5,5 @@ export const routeNames = {
 export const localStore = {
   token: 'token',
   userData: 'userData',
+  fcmToken: 'fcmToken',
 };

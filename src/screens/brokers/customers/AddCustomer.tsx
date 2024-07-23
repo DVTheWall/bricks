@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable quotes */
 import React, {useState} from 'react';
@@ -74,9 +75,7 @@ const AddCustomer = () => {
               </TouchableOpacity>
             </View>
             <Text style={styles.customLabelStyle}>{'Enter OTP'}</Text>
-            <OTPInput
-              onOTPComplete={(otp: string) => console.log('OTP-----', otp)}
-            />
+            <OTPInput onOTPComplete={(otp: string) => {}} />
           </View>
           <View style={{height: hp(16)}} />
           <TextInputComp

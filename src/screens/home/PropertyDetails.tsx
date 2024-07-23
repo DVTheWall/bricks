@@ -99,8 +99,6 @@ const HighlightItem = ({item}: any) => {
 
 const PropertyDetails = ({navigation, route}: any) => {
   const {item} = route?.params;
-  console.log('itemitemitem===========', item?.property);
-
   const dispatch = useDispatch();
   const scrollRef = useRef<ScrollView>(null);
 
@@ -249,6 +247,13 @@ const PropertyDetails = ({navigation, route}: any) => {
     },
   } as const;
 
+  const customStyles = StyleSheet.create({
+    h3: {
+      color: colors.black, // Change to your desired text color
+      fontSize: fontSize(16),
+    },
+  });
+
   return (
     <View style={commonStyles.container}>
       <Loader visible={isLoading} />
@@ -338,8 +343,9 @@ const PropertyDetails = ({navigation, route}: any) => {
                   letterSpacing: -0.5,
                   color: colors.greenNeon,
                 }}>
-                {`₹${propertyDetailsData?.rate}`}
-                {/* {`₹${item?.rate}`} */}
+                {propertyDetailsData?.rate
+                  ? `₹${propertyDetailsData?.rate}`
+                  : '-'}
                 <Text
                   style={{
                     fontFamily: font.semiBold,
@@ -383,7 +389,7 @@ const PropertyDetails = ({navigation, route}: any) => {
             </View>
             <TouchableOpacity
               onPress={async () => {
-                const url = item?.google_location;
+                const url = propertyDetailsData?.google_location;
                 const supported = await Linking.canOpenURL(url);
                 if (supported) {
                   await Linking.openURL(url);
@@ -482,6 +488,7 @@ const PropertyDetails = ({navigation, route}: any) => {
                 <RenderHtml
                   contentWidth={width}
                   source={{html: propertyDetailsData?.description}}
+                  tagsStyles={customStyles}
                 />
               </View>
             </CollapsibleView>
@@ -490,7 +497,14 @@ const PropertyDetails = ({navigation, route}: any) => {
           {propertyDetailsData?.builder_details && (
             <CollapsibleView title={'Builder Information'}>
               <View style={{padding: wp(16)}}>
-                <Text>{propertyDetailsData?.builder_details}</Text>
+                <Text
+                  style={{
+                    fontSize: fontSize(14),
+                    fontFamily: font.regular,
+                    color: colors.black,
+                  }}>
+                  {propertyDetailsData?.builder_details}
+                </Text>
               </View>
             </CollapsibleView>
           )}
@@ -551,6 +565,7 @@ const PropertyDetails = ({navigation, route}: any) => {
               }}
             />
           </CollapsibleView>
+
           {relatedProperty[0]?.property !== null && (
             <View>
               <Text

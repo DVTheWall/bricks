@@ -1,6 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
@@ -21,7 +21,11 @@ import {commonStyles} from '../../styles/styles';
 import Header from '../../components/common/Header';
 import Shadow from '../../components/common/Shadow';
 import {colors, fontSize, hp, wp} from '../../utils';
-import {indicatorListData, periodDataList} from '../../utils/dataConstants';
+import {
+  dummyData,
+  indicatorListData,
+  periodDataList,
+} from '../../utils/dataConstants';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/common/Loader';
 import {getPortfolioDataApi} from '../../store/action/portfolioActions';
@@ -59,12 +63,12 @@ const Portfolio = () => {
 
   const {portfolioData} = useSelector((state: any) => state.data);
 
-  console.log('portfolioData::::', portfolioData);
-
   const [isLoading, setIsLoading] = useState(false);
   const profileData = portfolioData?.profile_data?.[0];
 
-  const {property_percentages} = portfolioData || [];
+  // const {property_percentages} = portfolioData || [];
+
+  // console.log('portfolioData====', portfolioData);
 
   const isProfit = profileData?.profit > 0;
   const profitLoss =
@@ -215,16 +219,18 @@ const Portfolio = () => {
           <LineChart
             // areaChart
             data={data}
+            data2={data2}
+            data3={data3}
+            zIndex1={1}
+            zIndex2={2}
+            zIndex3={3}
+            color1={colors.orange}
+            color2={colors.purple}
+            color3={colors.greenLite}
             // dataPointsColor1="transparent"
             // dataPointsColor2="transparent"
             // dataPointsColor3="transparent"
             showDataPointOnFocus
-            color1={colors.orange}
-            color2={colors.purple}
-            color3={colors.greenLite}
-            zIndex1={1}
-            zIndex2={2}
-            zIndex3={3}
             // isAnimated={true}
             // animateOnDataChange={true}
             thickness={2}
@@ -237,8 +243,6 @@ const Portfolio = () => {
             curved
             curvature={0.25}
             // curveType={''}
-            data2={data2}
-            data3={data3}
             // noOfSections={4}
             spacing={70}
             showVerticalLines={false}
@@ -322,23 +326,48 @@ const Portfolio = () => {
               style={{
                 marginVertical: wp(16),
                 height: hp(24),
-                backgroundColor: 'red',
                 borderRadius: wp(100),
                 width: '100%',
                 overflow: 'hidden',
                 flexDirection: 'row',
               }}>
-              {property_percentages?.map((person, index) => {
-                return (
-                  <View
-                    style={{
-                      width: person?.percentage,
-                      backgroundColor: person?.color,
-                      height: '100%',
-                    }}
-                  />
-                );
-              })}
+              <View
+                style={{
+                  position: 'absolute',
+                  zIndex: 999,
+                  top: 10,
+                  flexDirection: 'row',
+                  paddingHorizontal: wp(20),
+                  width: '100%',
+                  justifyContent: 'space-between',
+                }}>
+                {dummyData?.map(item => {
+                  return (
+                    <View
+                      style={{
+                        height: wp(4),
+                        width: wp(4),
+                        borderRadius: wp(4),
+                        backgroundColor: 'rgba(255,255,255,0.3)',
+                      }}
+                    />
+                  );
+                })}
+              </View>
+              {portfolioData?.property_percentages?.map(
+                (person: any, index: number) => {
+                  return (
+                    <View
+                      key={index.toString()}
+                      style={{
+                        width: person?.percentage,
+                        backgroundColor: person?.color,
+                        height: '100%',
+                      }}
+                    />
+                  );
+                },
+              )}
             </View>
           </View>
         </View>
@@ -346,8 +375,9 @@ const Portfolio = () => {
         <Shadow shadowStyle={styles.boxShadow}>
           {/* <View style={styles.boxContainer}> */}
           <FlatList
-            data={property_percentages}
+            data={portfolioData?.property_percentages}
             renderItem={renderGraphIndicator}
+            // keyExtractor={(_, index) => index?.toString()}
             ItemSeparatorComponent={() => <View style={{height: hp(6)}} />}
           />
           {/* </View> */}

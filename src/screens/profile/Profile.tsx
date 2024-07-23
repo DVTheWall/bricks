@@ -106,12 +106,6 @@ const Profile = ({navigation}: any) => {
       },
       //@ts-ignore
       onError(error: CFErrorResponse, orderID: string): void {
-        // console.log(
-        //   'exception is :============' +
-        //     JSON.stringify(error) +
-        //     '\norderId is :==????' +
-        //     orderID,
-        // );
         navigation.navigate(SCREEN.PAYMENTSUCCESS, {
           orderID: orderID,
           isSucceed: false,
@@ -179,7 +173,6 @@ const Profile = ({navigation}: any) => {
       })
       .catch(error => {
         setIsLoading(false);
-        console.log(error);
       });
 
     if (payment_session_id) {
@@ -190,7 +183,6 @@ const Profile = ({navigation}: any) => {
           order_id,
           CFEnvironment.SANDBOX,
         );
-        // console.log('Session', JSON.stringify(session));
         setTimeout(() => {
           //@ts-ignore
           CFPaymentGatewayService.doWebPayment(JSON.stringify(session));
