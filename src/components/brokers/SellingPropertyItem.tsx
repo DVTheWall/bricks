@@ -22,7 +22,7 @@ import {colors, fontSize, hp, wp} from '../../utils';
 
 const SellingPropertyItem = ({item, onBuyNowPress}: any) => {
   return (
-    <Pressable style={styles.container}>
+    <Pressable onPress={onBuyNowPress} style={styles.container}>
       <FastImage
         source={{
           uri: `https://bricks-dev.katsamsoft.com${item?.property_cover_image}`,

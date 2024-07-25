@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable handle-callback-err */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/no-unstable-nested-components */
@@ -42,6 +42,7 @@ import {getPropertyDetails} from '../../store/action/propertyActions';
 import {screenWidth} from '../../utils/globalConstant';
 import CollapsibleView from '../../components/common/CollapsibleView';
 import PropertyItemList from '../../components/home/PropertyItemList';
+import {isEmpty} from 'lodash';
 // import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
 
 const {width} = Dimensions.get('window');
@@ -116,6 +117,10 @@ const PropertyDetails = ({navigation, route}: any) => {
   const [isDocumentVisible, setIsDocumentVisible] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<any>({});
   const [relatedProperty, setRelatedProperty] = useState<any>([]);
+  const ratePercentage =
+    propertyDetailsData?.rate_percent < 0
+      ? `-${propertyDetailsData?.rate_percent}%`
+      : `+${propertyDetailsData?.rate_percent}%`;
 
   useEffect(() => {
     setIsLoading(true);
@@ -357,9 +362,27 @@ const PropertyDetails = ({navigation, route}: any) => {
                 </Text>
               </Text>
             </View>
-            <View style={styles.boxPercView}>
-              <Text style={styles.boxPercText}>{'+6.00%'}</Text>
-            </View>
+            {!isEmpty(propertyDetailsData) && (
+              <View
+                style={{
+                  ...styles.boxPercView,
+                  backgroundColor:
+                    propertyDetailsData?.rate_percent < 0
+                      ? colors.xLightPrimary
+                      : colors.lightGreen,
+                }}>
+                <Text
+                  style={{
+                    ...styles.boxPercText,
+                    color:
+                      propertyDetailsData?.rate_percent < 0
+                        ? colors.redNeon
+                        : colors.greenNeon,
+                  }}>
+                  {ratePercentage}
+                </Text>
+              </View>
+            )}
           </View>
           <View style={styles.boxContainer}>
             <View>
@@ -484,7 +507,13 @@ const PropertyDetails = ({navigation, route}: any) => {
 
           {propertyDetailsData?.description && (
             <CollapsibleView title={'Property Description'}>
-              <View style={{padding: wp(16)}}>
+              <View
+                style={{
+                  paddingVertical: wp(16),
+                  borderTopWidth: wp(0.5),
+                  borderColor: colors.mediumGrey,
+                  marginHorizontal: wp(16),
+                }}>
                 <RenderHtml
                   contentWidth={width}
                   source={{html: propertyDetailsData?.description}}
@@ -496,7 +525,13 @@ const PropertyDetails = ({navigation, route}: any) => {
 
           {propertyDetailsData?.builder_details && (
             <CollapsibleView title={'Builder Information'}>
-              <View style={{padding: wp(16)}}>
+              <View
+                style={{
+                  paddingVertical: wp(16),
+                  borderTopWidth: wp(0.5),
+                  borderColor: colors.mediumGrey,
+                  marginHorizontal: wp(16),
+                }}>
                 <Text
                   style={{
                     fontSize: fontSize(14),
@@ -523,7 +558,7 @@ const PropertyDetails = ({navigation, route}: any) => {
                 );
               }}
               style={{
-                borderTopWidth: wp(1),
+                borderTopWidth: wp(0.5),
                 borderColor: colors.mediumGrey,
                 marginHorizontal: wp(16),
               }}
@@ -555,7 +590,7 @@ const PropertyDetails = ({navigation, route}: any) => {
                         style={{
                           fontFamily: font.semiBold,
                           fontSize: fontSize(12),
-                          color: colors.blue,
+                          color: colors.primary,
                         }}>
                         {'Preview'}
                       </Text>
@@ -794,10 +829,9 @@ const styles = StyleSheet.create({
   modalTitle: {
     textAlign: 'center',
     color: colors.black,
-    fontSize: fontSize(16),
+    fontSize: fontSize(18),
     fontFamily: font.semiBold,
     marginBottom: hp(10),
-    textDecorationLine: 'underline',
   },
   modalContentText: {
     fontSize: fontSize(14),

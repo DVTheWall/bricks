@@ -8,7 +8,6 @@ import {
   View,
   Image,
   StatusBar,
-  ScrollView,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
@@ -29,7 +28,6 @@ import DatePicker from 'react-native-date-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {investNowAction} from '../../store/action/ordersActions';
-import {useNavigation} from '@react-navigation/native';
 import {SCREEN} from '../../utils/screenConstants';
 
 const InvestScreen = ({route, navigation}: any) => {
@@ -41,8 +39,6 @@ const InvestScreen = ({route, navigation}: any) => {
 
   const [sqft, setSqft] = useState('');
   const [sqftErr, setSqftErr] = useState('');
-  const [amount, setAmount] = useState('');
-  const [amountErr, setAmountErr] = useState('');
   const [orderType, setOrderType] = useState('');
   const [orderTypeErr, setOrderTypeErr] = useState('');
   const [repeatDate, setRepeatDate] = useState(new Date());
@@ -61,7 +57,6 @@ const InvestScreen = ({route, navigation}: any) => {
       return false;
     }
     if (orderType === '') {
-      setAmountErr('Please Select Order Type');
       return false;
     }
     return true;
@@ -82,10 +77,23 @@ const InvestScreen = ({route, navigation}: any) => {
         data: data,
         onSuccess: (res: any | []) => {
           setIsLoading(false);
-          navigation.navigate(SCREEN.PROPERTYLIST);
+          let dataSuccess = {
+            orderID: res?.data?.data?.order,
+            isSucceed: true,
+            title: 'Order Creation Successful',
+            desc: 'Your order has successfully been Completed.',
+          };
+          navigation.navigate(SCREEN.PAYMENTSUCCESS, dataSuccess);
         },
         onFail: (err: any) => {
           setIsLoading(false);
+          let dataFailed = {
+            orderID: undefined,
+            isSucceed: false,
+            title: 'Order Creation Failed',
+            desc: 'Your order has been Failed.',
+          };
+          navigation.navigate(SCREEN.PAYMENTSUCCESS, dataFailed);
         },
       };
       dispatch(investNowAction(request) as never);

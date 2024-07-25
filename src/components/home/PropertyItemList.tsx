@@ -1,16 +1,24 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, ImageBackground} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  Pressable,
+  StyleSheet,
+  ImageBackground,
+} from 'react-native';
+
+import FastImage from 'react-native-fast-image';
 
 import Button from '../common/Button';
 import {font} from '../../utils/fonts';
 import {icons} from '../../utils/icons';
 import {commonStyles} from '../../styles/styles';
 import {colors, fontSize, hp, wp} from '../../utils';
-import FastImage from 'react-native-fast-image';
 
 const PropertyItemList = ({item, onBuyNowPress}: any) => {
   return (
-    <View style={styles.container} key={item?.id}>
+    <Pressable onPress={onBuyNowPress} style={styles.container} key={item?.id}>
       <View>
         {item?.discount && (
           <ImageBackground source={icons.tag} style={styles.tagIcon}>
@@ -36,11 +44,26 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
             {item?.rate ? `₹${item?.rate}` : '---'}
             <Text style={styles.sqftText}>{'  sqft'}</Text>
           </Text>
-          <View style={styles.growView}>
-            <Text style={styles.growPercText}>
-              {item?.growthPerc ? `${item?.growthPerc}% ` : '0%'}
+          <View
+            style={{
+              ...styles.growView,
+              backgroundColor:
+                item?.rate_percent < 0
+                  ? colors.xLightPrimary
+                  : colors.lightGreen,
+            }}>
+            <Text
+              style={{
+                ...styles.growPercText,
+                color:
+                  item?.rate_percent < 0 ? colors.redNeon : colors.greenNeon,
+              }}>
+              {item?.rate_percent ? `${item?.rate_percent}% ` : '0%'}
             </Text>
-            <Image source={icons.growArrow} style={styles.growArrow} />
+            <View
+              style={{transform: [{scaleY: item?.rate_percent < 0 ? -1 : 1}]}}>
+              <Image source={icons.growArrow} style={styles.growArrow} />
+            </View>
           </View>
         </View>
 
@@ -66,7 +89,7 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
           />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

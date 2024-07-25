@@ -14,7 +14,7 @@ import {SCREEN} from '../../utils/screenConstants';
 import {resetStack} from '../../helpers/globalFunctions';
 
 const PaymentSuccess = ({route, navigation}: any) => {
-  const {orderID, isSucceed} = route?.params ?? '';
+  const {orderID, isSucceed, desc, title} = route?.params ?? '';
 
   return (
     <View style={styles.container}>
@@ -29,16 +29,10 @@ const PaymentSuccess = ({route, navigation}: any) => {
           lottieStyle={styles.lottieStyle}
         />
       </View>
-      <Text style={styles.titleText}>
-        {isSucceed ? 'Payment Successful' : 'Payment Failed'}
-      </Text>
-      <Text style={styles.descText}>
-        {isSucceed
-          ? 'Your transaction has successfully been completed.\nCheck more details of this transaction in your transaction history.'
-          : 'Your transaction has been failed.\nCheck more details of this transaction in your transaction history.'}
-      </Text>
+      <Text style={styles.titleText}>{title}</Text>
+      <Text style={styles.descText}>{desc}</Text>
       <Text style={styles.refText}>{'Reference ID'}</Text>
-      <Text style={styles.idText}>{orderID}</Text>
+      <Text style={styles.idText}>{orderID ? orderID : '---'}</Text>
       <TouchableOpacity
         style={styles.continueBtn}
         onPress={() => navigation.goBack()}>

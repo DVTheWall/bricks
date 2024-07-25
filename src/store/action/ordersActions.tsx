@@ -18,11 +18,11 @@ export const investNowAction =
     })
       .then((response: any) => {
         if (request.onSuccess) request.onSuccess(response);
-        ToastAlert({
-          toastType: 'success',
-          title: 'Success!',
-          description: `Order created Successfully!`,
-        });
+        // ToastAlert({
+        //   toastType: 'success',
+        //   title: 'Success!',
+        //   description: `Order created Successfully!`,
+        // });
       })
       .catch(error => {
         if (request.onFail) request.onFail(error);

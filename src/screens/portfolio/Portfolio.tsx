@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -12,6 +12,7 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 
 import {LineChart} from 'react-native-gifted-charts';
@@ -64,24 +65,31 @@ const Portfolio = () => {
   const {portfolioData} = useSelector((state: any) => state.data);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const profileData = portfolioData?.profile_data?.[0];
 
   // const {property_percentages} = portfolioData || [];
-
-  // console.log('portfolioData====', portfolioData);
 
   const isProfit = profileData?.profit > 0;
   const profitLoss =
     profileData?.profit < 0
       ? `-₹${Math.abs(profileData?.profit)}`
       : `₹${Math.abs(profileData?.profit)}`;
-  const profit = profileData?.profit ?? 0;
-  const invested = profileData?.invested ?? 1;
-  const profitLossPercentage = (profit / invested) * 100;
-  const profitLossPerc = Math.abs(profitLossPercentage).toFixed(2) + '%';
+  // const profit = profileData?.profit ?? 0;
+  // const invested = profileData?.invested ?? 1;
+  // const profitLossPercentage = (profit / invested) * 100;
+  // const profitLossPerc = Math.abs(profitLossPercentage).toFixed(2) + '%';
 
   useEffect(() => {
     getPortfolioData();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getPortfolioData();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   }, []);
 
   const getPortfolioData = () => {
@@ -163,7 +171,11 @@ const Portfolio = () => {
         customHeaderStyle={styles.customHeaderStyle}
       />
       <Loader visible={isLoading} />
-      <ScrollView style={{paddingTop: hp(12)}}>
+      <ScrollView
+        style={{paddingTop: hp(12)}}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <Shadow shadowStyle={styles.boxShadow}>
           <View style={styles.boxContainer}>
             <View style={commonStyles.flexRow}>
@@ -207,7 +219,7 @@ const Portfolio = () => {
                       ...styles.boxPercText,
                       color: isProfit ? colors.greenNeon : colors.redNeon,
                     }}>
-                    {profitLossPerc}
+                    {`${profileData?.profit_per}%`}
                   </Text>
                 </View>
               </View>

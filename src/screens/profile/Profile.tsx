@@ -81,11 +81,14 @@ const Profile = ({navigation}: any) => {
   useEffect(() => {
     CFPaymentGatewayService.setCallback({
       onVerify(orderID: string): void {
-        //@ts-ignore
-        navigation.navigate(SCREEN.PAYMENTSUCCESS, {
+        let dataSuccess = {
           orderID: orderID,
           isSucceed: true,
-        });
+          title: 'Payment Successful',
+          desc: 'Your transaction has successfully been completed.\nCheck more details of this transaction in your transaction history.',
+        };
+        //@ts-ignore
+        navigation.navigate(SCREEN.PAYMENTSUCCESS, dataSuccess);
         // setIsLoading(true);
         const request = {
           data: {
@@ -106,10 +109,13 @@ const Profile = ({navigation}: any) => {
       },
       //@ts-ignore
       onError(error: CFErrorResponse, orderID: string): void {
-        navigation.navigate(SCREEN.PAYMENTSUCCESS, {
+        let dataFailed = {
           orderID: orderID,
           isSucceed: false,
-        });
+          title: 'Payment Failed',
+          desc: 'Your transaction has been failed.\nCheck more details of this transaction in your transaction history.',
+        };
+        navigation.navigate(SCREEN.PAYMENTSUCCESS, dataFailed);
         const request = {
           data: {
             amount: Number(amount),
