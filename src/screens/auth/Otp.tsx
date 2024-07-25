@@ -2,7 +2,7 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Text,
   View,
@@ -12,25 +12,25 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import {font} from '../../utils/fonts';
-import {icons} from '../../utils/icons';
+import { font } from '../../utils/fonts';
+import { icons } from '../../utils/icons';
 import SvgIcons from '../../helpers/SvgIcons';
-import {commonStyles} from '../../styles/styles';
-import {SCREEN} from '../../utils/screenConstants';
+import { commonStyles } from '../../styles/styles';
+import { SCREEN } from '../../utils/screenConstants';
 import Button from '../../components/common/Button';
 import Shadow from '../../components/common/Shadow';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { colors, fontSize, hp, wp } from '../../utils';
 import ToastAlert from '../../components/common/Alert';
-import {getAsyncStorage, resetStack} from '../../helpers/globalFunctions';
-import {putFcmToken, verifyOtp} from '../../store/action/authActions';
-import {localStore} from '../../api/constants';
+import { getAsyncStorage, resetStack } from '../../helpers/globalFunctions';
+import { putFcmToken, verifyOtp } from '../../store/action/authActions';
+import { localStore } from '../../api/constants';
 
-const Otp = ({navigation, route}: any) => {
-  const {mobile} = route?.params;
+const Otp = ({ navigation, route }: any) => {
+  const { mobile } = route?.params;
   const dispatch = useDispatch();
   const otpInputRef = useRef(null);
   const [otp, setOtp] = useState('');
@@ -58,7 +58,7 @@ const Otp = ({navigation, route}: any) => {
     setOtp(code);
   };
 
-  const handleOtpComplete = (code: string) => {};
+  const handleOtpComplete = (code: string) => { };
 
   const onVerifyPress = () => {
     if (otp?.length !== 4) {
@@ -79,18 +79,18 @@ const Otp = ({navigation, route}: any) => {
       onSuccess: (res: any | []) => {
         setIsLoading(false);
         if (res?.status === 200) {
-          // const fcmReq = {
-          //   data: {
-          //     fcm_token: fcmToken?.toString(),
-          //   },
-          //   onSuccess: (res: any | []) => {
-          //     console.log('resresresresresresres::', res?.data);
+          const fcmReq = {
+            data: {
+              fcm_token: fcmToken?.toString(),
+            },
+            onSuccess: (res: any | []) => {
+              console.log('resresresresresresres::', res?.data);
 
-          resetStack(SCREEN.BOTTOMTABS);
-          //   },
-          //   onFail: (err: any) => {},
-          // };
-          // dispatch(putFcmToken(fcmReq) as never);
+              resetStack(SCREEN.BOTTOMTABS);
+            },
+            onFail: (err: any) => { },
+          };
+          dispatch(putFcmToken(fcmReq) as never);
         } else {
           ToastAlert({
             toastType: 'error',
@@ -109,7 +109,7 @@ const Otp = ({navigation, route}: any) => {
   return (
     <View style={commonStyles.root}>
       <SafeAreaView />
-      <View style={{marginTop: hp(42)}}>
+      <View style={{ marginTop: hp(42) }}>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => navigation.goBack()}
@@ -142,7 +142,7 @@ const Otp = ({navigation, route}: any) => {
             letterSpacing: -0.5,
           }}>
           OTP sent to{' '}
-          <Text style={{color: colors.green}}>{`+91 ${mobile}`}</Text>
+          <Text style={{ color: colors.green }}>{`+91 ${mobile}`}</Text>
         </Text>
       </View>
       <KeyboardAwareScrollView
@@ -171,7 +171,7 @@ const Otp = ({navigation, route}: any) => {
           }}>
           Verify 4- digit sincerity PIN
         </Text>
-        <Shadow shadowStyle={{shadowColor: colors.cyan, marginTop: hp(12)}}>
+        <Shadow shadowStyle={{ shadowColor: colors.cyan, marginTop: hp(12) }}>
           <OTPInputView
             ref={otpInputRef}
             style={styles.otpInput}
@@ -190,10 +190,10 @@ const Otp = ({navigation, route}: any) => {
           loader={isLoading}
           disable={isLoading}
           title="VERIFY"
-          buttonStyle={{marginTop: hp(40)}}
+          buttonStyle={{ marginTop: hp(40) }}
           onPress={onVerifyPress}
         />
-        <View style={{height: hp(10)}} />
+        <View style={{ height: hp(10) }} />
       </KeyboardAwareScrollView>
     </View>
   );

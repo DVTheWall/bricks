@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -13,29 +13,29 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {font} from '../../utils/fonts';
-import {icons} from '../../utils/icons';
-import {commonStyles} from '../../styles/styles';
+import { font } from '../../utils/fonts';
+import { icons } from '../../utils/icons';
+import { commonStyles } from '../../styles/styles';
 import Wallet from '../../components/common/Wallet';
 import Header from '../../components/common/Header';
 import Shadow from '../../components/common/Shadow';
 import Button from '../../components/common/Button';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { colors, fontSize, hp, wp } from '../../utils';
 import TextInputComp from '../../components/common/TextInput';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useDispatch, useSelector} from 'react-redux';
-import {investNowAction} from '../../store/action/ordersActions';
-import {SCREEN} from '../../utils/screenConstants';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useDispatch, useSelector } from 'react-redux';
+import { investNowAction } from '../../store/action/ordersActions';
+import { SCREEN } from '../../utils/screenConstants';
 
-const InvestScreen = ({route, navigation}: any) => {
+const InvestScreen = ({ route, navigation }: any) => {
   const dispatch = useDispatch();
 
-  const {userData} = useSelector((state: any) => state.auth);
+  const { userData } = useSelector((state: any) => state.auth);
 
-  const {propertyData} = route?.params;
+  const { propertyData } = route?.params;
 
   const [sqft, setSqft] = useState('');
   const [sqftErr, setSqftErr] = useState('');
@@ -47,8 +47,8 @@ const InvestScreen = ({route, navigation}: any) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const orderTypeData = [
-    {label: 'Buy', value: 'Buy'},
-    {label: 'Sell', value: 'Sell'},
+    { label: 'Buy', value: 'Buy' },
+    { label: 'Sell', value: 'Sell' },
   ];
 
   const isValidated = () => {
@@ -85,13 +85,17 @@ const InvestScreen = ({route, navigation}: any) => {
           };
           navigation.navigate(SCREEN.PAYMENTSUCCESS, dataSuccess);
         },
-        onFail: (err: any) => {
+        onFail: (error: any) => {
+
+          const colonIndex = error?.response?.data?.exception?.indexOf(':')
+          const extractedString = error?.response?.data?.exception?.substring(colonIndex + 1).trim();
+
           setIsLoading(false);
           let dataFailed = {
             orderID: undefined,
             isSucceed: false,
             title: 'Order Creation Failed',
-            desc: 'Your order has been Failed.',
+            desc: extractedString,
           };
           navigation.navigate(SCREEN.PAYMENTSUCCESS, dataFailed);
         },
@@ -100,7 +104,7 @@ const InvestScreen = ({route, navigation}: any) => {
     }
   };
 
-  const onInvestNowMonthlyPress = () => {};
+  const onInvestNowMonthlyPress = () => { };
 
   return (
     <View style={commonStyles.container}>
@@ -120,7 +124,7 @@ const InvestScreen = ({route, navigation}: any) => {
         <Shadow
           shadowStyle={[
             styles.tabShadow,
-            {shadowOpacity: !isMonthlyActive ? 0.1 : 0},
+            { shadowOpacity: !isMonthlyActive ? 0.1 : 0 },
           ]}>
           <TouchableOpacity
             onPress={() => setIsMonthlyActive(false)}
@@ -147,7 +151,7 @@ const InvestScreen = ({route, navigation}: any) => {
         <Shadow
           shadowStyle={[
             styles.tabShadow,
-            {shadowOpacity: isMonthlyActive ? 0.1 : 0},
+            { shadowOpacity: isMonthlyActive ? 0.1 : 0 },
           ]}>
           <TouchableOpacity
             onPress={() => setIsMonthlyActive(true)}
@@ -182,7 +186,7 @@ const InvestScreen = ({route, navigation}: any) => {
                 keyboardType="number-pad"
                 onChangeText={text => setSqft(text)}
                 customLabelStyle={styles.textInputLabel}
-                customShadowStyle={{shadowOpacity: 0}}
+                customShadowStyle={{ shadowOpacity: 0 }}
                 customTextBoxStyle={styles.customTextBox}
                 error={sqftErr}
               />
@@ -193,11 +197,11 @@ const InvestScreen = ({route, navigation}: any) => {
                 // keyboardType="number-pad"
                 // onChangeText={text => setAmount(text)}
                 customLabelStyle={styles.textInputLabel}
-                customShadowStyle={{shadowOpacity: 0}}
-                customTextBoxStyle={[styles.customTextBox, {marginBottom: 0}]}
-                // error={amountErr}
+                customShadowStyle={{ shadowOpacity: 0 }}
+                customTextBoxStyle={[styles.customTextBox, { marginBottom: 0 }]}
+              // error={amountErr}
               />
-              <View style={[commonStyles.flexRow, {marginBottom: hp(32)}]}>
+              <View style={[commonStyles.flexRow, { marginBottom: hp(32) }]}>
                 <Image source={icons.info} style={commonStyles.icon16} />
                 <Text style={styles.totalAmountText}>
                   {'Total amount updates based on square footage selected.'}
@@ -240,7 +244,7 @@ const InvestScreen = ({route, navigation}: any) => {
                 value={moment(repeatDate)?.format('DD/MM/YYYY')}
                 isRightIcon
                 customLabelStyle={styles.textInputLabel}
-                customShadowStyle={{shadowOpacity: 0}}
+                customShadowStyle={{ shadowOpacity: 0 }}
                 customTextBoxStyle={styles.customTextBox}
                 rightIconSource={icons.calendar}
                 editable={false}
@@ -253,7 +257,7 @@ const InvestScreen = ({route, navigation}: any) => {
           </KeyboardAwareScrollView>
         ) : (
           <View
-            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text
               style={{
                 fontSize: fontSize(20),
@@ -275,7 +279,7 @@ const InvestScreen = ({route, navigation}: any) => {
             !isMonthlyActive ? onOneTimeOrderPress : onInvestNowMonthlyPress
           }
           buttonStyle={styles.btn}
-          shadowStyle={{shadowOpacity: 0}}
+          shadowStyle={{ shadowOpacity: 0 }}
         />
       </View>
       {isDatePicker && (

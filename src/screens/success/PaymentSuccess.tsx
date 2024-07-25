@@ -6,15 +6,17 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {colors, fontSize, hp, wp} from '../../utils';
-import {font} from '../../utils/fonts';
+import { colors, fontSize, hp, wp } from '../../utils';
+import { font } from '../../utils/fonts';
 import LottieViewer from '../../components/common/LottieViewer';
-import {lotties} from '../../utils/icons';
-import {SCREEN} from '../../utils/screenConstants';
-import {resetStack} from '../../helpers/globalFunctions';
+import { lotties } from '../../utils/icons';
+import { SCREEN } from '../../utils/screenConstants';
+import { resetStack } from '../../helpers/globalFunctions';
 
-const PaymentSuccess = ({route, navigation}: any) => {
-  const {orderID, isSucceed, desc, title} = route?.params ?? '';
+const PaymentSuccess = ({ route, navigation }: any) => {
+  const { orderID, isSucceed, desc, title, isWithdrawal } = route?.params ?? '';
+  console.log("isWithdrawalisWithdrawalisWithdrawal", isWithdrawal);
+
 
   return (
     <View style={styles.container}>
@@ -33,15 +35,15 @@ const PaymentSuccess = ({route, navigation}: any) => {
       <Text style={styles.descText}>{desc}</Text>
       <Text style={styles.refText}>{'Reference ID'}</Text>
       <Text style={styles.idText}>{orderID ? orderID : '---'}</Text>
-      <TouchableOpacity
+      {!isWithdrawal && <TouchableOpacity
         style={styles.continueBtn}
         onPress={() => navigation.goBack()}>
         <Text style={styles.btnText}>{'Continue Investing'}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>}
       <TouchableOpacity
         style={styles.dashboardBtn}
         onPress={() => resetStack(SCREEN.BOTTOMTABS)}>
-        <Text style={{...styles.btnText, color: colors.white}}>
+        <Text style={{ ...styles.btnText, color: colors.white }}>
           {'Dashboard'}
         </Text>
       </TouchableOpacity>

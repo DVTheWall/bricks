@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable quotes */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -13,30 +13,30 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import {font} from '../../utils/fonts';
-import {icons} from '../../utils/icons';
-import {commonStyles} from '../../styles/styles';
-import {SCREEN} from '../../utils/screenConstants';
+import { font } from '../../utils/fonts';
+import { icons } from '../../utils/icons';
+import { commonStyles } from '../../styles/styles';
+import { SCREEN } from '../../utils/screenConstants';
 import Header from '../../components/common/Header';
 import Shadow from '../../components/common/Shadow';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { colors, fontSize, hp, wp } from '../../utils';
 import CategoryListItem from '../../components/home/CategoryListItem';
 import PropertyItemList from '../../components/home/PropertyItemList';
-import {useDispatch, useSelector} from 'react-redux';
-import {getHomePageData} from '../../store/action/homeActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { getHomePageData } from '../../store/action/homeActions';
 import Loader from '../../components/common/Loader';
 import FastImage from 'react-native-fast-image';
 import BannerComponent from '../../components/home/BannerComponent';
 import CategoryComponent from '../../components/home/CategoryComponent';
 import PropertyComponent from '../../components/home/PropertyComponent';
-import {walletProfile} from '../../store/action/profileActions';
+import { walletProfile } from '../../store/action/profileActions';
 
-const Home = ({navigation}: any) => {
+const Home = ({ navigation }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const {homePageData, homeProfileData} = useSelector(
+  const { homePageData, homeProfileData } = useSelector(
     (state: any) => state.data,
   );
-  const {userData} = useSelector((state: any) => state.auth);
+  const { userData } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
@@ -72,30 +72,33 @@ const Home = ({navigation}: any) => {
   };
 
   useEffect(() => {
-    getWalletProfileData();
-    setIsLoading(true);
-    const request = {
-      data: {},
-      onSuccess: (res: any | []) => {
-        setIsLoading(false);
-      },
-      onFail: (err: any) => {
-        setIsLoading(false);
-      },
-    };
-    dispatch(getHomePageData(request) as never);
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getWalletProfileData();
+      setIsLoading(true);
+      const request = {
+        data: {},
+        onSuccess: (res: any | []) => {
+          setIsLoading(false);
+        },
+        onFail: (err: any) => {
+          setIsLoading(false);
+        },
+      };
+      dispatch(getHomePageData(request) as never);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
-  const renderCategoryItem = ({item}: any) => {
-    return <CategoryListItem item={item} onPress={() => {}} />;
+  const renderCategoryItem = ({ item }: any) => {
+    return <CategoryListItem item={item} onPress={() => { }} />;
   };
 
-  const renderHotPropertiesItem = ({item}: any) => {
+  const renderHotPropertiesItem = ({ item }: any) => {
     return (
       <PropertyItemList
         item={item}
         onBuyNowPress={() => {
-          navigation.navigate(SCREEN.PROPERTYDETAILS, {item: item});
+          navigation.navigate(SCREEN.PROPERTYDETAILS, { item: item });
         }}
       />
     );
@@ -105,17 +108,17 @@ const Home = ({navigation}: any) => {
     setCurrentIndex(index);
   };
 
-  const renderBannerItem = ({item}: any) => (
+  const renderBannerItem = ({ item }: any) => (
     <View>
       <FastImage
-        source={{uri: `https://bricks-dev.katsamsoft.com${item?.banner_image}`}}
-        style={{height: '100%', width: '100%'}}
+        source={{ uri: `https://bricks-dev.katsamsoft.com${item?.banner_image}` }}
+        style={{ height: '100%', width: '100%' }}
       />
     </View>
   );
 
   return (
-    <View style={{flex: 1, backgroundColor: colors.homeBg}}>
+    <View style={{ flex: 1, backgroundColor: colors.homeBg }}>
       <SafeAreaView />
       <Loader visible={isLoading} />
       <Header
@@ -124,8 +127,8 @@ const Home = ({navigation}: any) => {
         // onLeftIconPress={() => {}}
         onRightIconPress1={() => navigation.navigate(SCREEN.PROFILE)}
         onRightIconPress2={() => navigation.navigate(SCREEN.NOTIFICATION)}
-        customHeaderStyle={{backgroundColor: colors.homeBg}}
-        customNameStyle={{fontFamily: font.semiBold}}
+        customHeaderStyle={{ backgroundColor: colors.homeBg }}
+        customNameStyle={{ fontFamily: font.semiBold }}
       />
       <ScrollView
         style={commonStyles.flex}

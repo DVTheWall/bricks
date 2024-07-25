@@ -2,7 +2,7 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -14,18 +14,18 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {font} from '../../utils/fonts';
-import {icons} from '../../utils/icons';
-import {commonStyles} from '../../styles/styles';
+import { font } from '../../utils/fonts';
+import { icons } from '../../utils/icons';
+import { commonStyles } from '../../styles/styles';
 import Header from '../../components/common/Header';
 import Button from '../../components/common/Button';
-import {colors, fontSize, hp, wp} from '../../utils';
-import {removeAsyncStorage, resetStack} from '../../helpers/globalFunctions';
-import {useDispatch, useSelector} from 'react-redux';
-import {walletProfile} from '../../store/action/profileActions';
+import { colors, fontSize, hp, wp } from '../../utils';
+import { removeAsyncStorage, resetStack } from '../../helpers/globalFunctions';
+import { useDispatch, useSelector } from 'react-redux';
+import { walletProfile } from '../../store/action/profileActions';
 import Loader from '../../components/common/Loader';
-import {SCREEN} from '../../utils/screenConstants';
-import {LOGOUT} from '../../store/types';
+import { SCREEN } from '../../utils/screenConstants';
+import { LOGOUT } from '../../store/types';
 import ProfileListItem from '../../components/profile/ProfileListItem';
 import Modal from 'react-native-modal';
 import TextInputComp from '../../components/common/TextInput';
@@ -35,12 +35,12 @@ import {
   withdrawMoney,
 } from '../../store/action/transactionActions';
 import axios from 'axios';
-import {CFPaymentGatewayService} from 'react-native-cashfree-pg-sdk';
-import {CFEnvironment, CFSession} from 'cashfree-pg-api-contract';
+import { CFPaymentGatewayService } from 'react-native-cashfree-pg-sdk';
+import { CFEnvironment, CFSession } from 'cashfree-pg-api-contract';
 
-const Profile = ({navigation}: any) => {
-  const {walletProfileData} = useSelector((state: any) => state.data);
-  const {userData} = useSelector((state: any) => state.auth);
+const Profile = ({ navigation }: any) => {
+  const { walletProfileData } = useSelector((state: any) => state.data);
+  const { userData } = useSelector((state: any) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -86,6 +86,7 @@ const Profile = ({navigation}: any) => {
           isSucceed: true,
           title: 'Payment Successful',
           desc: 'Your transaction has successfully been completed.\nCheck more details of this transaction in your transaction history.',
+          isWithdrawal: false
         };
         //@ts-ignore
         navigation.navigate(SCREEN.PAYMENTSUCCESS, dataSuccess);
@@ -114,6 +115,7 @@ const Profile = ({navigation}: any) => {
           isSucceed: false,
           title: 'Payment Failed',
           desc: 'Your transaction has been failed.\nCheck more details of this transaction in your transaction history.',
+          isWithdrawal: false
         };
         navigation.navigate(SCREEN.PAYMENTSUCCESS, dataFailed);
         const request = {
@@ -211,11 +213,30 @@ const Profile = ({navigation}: any) => {
         getWalletProfileData();
         setMoneyInputSheet(false);
         setAmount('');
+        console.log("resresresres", res?.data?.message);
+
+        let dataSuccess = {
+          orderID: res?.data?.data?.withdrawal_money_id,
+          isSucceed: true,
+          title: 'Withdrawal Successful',
+          desc: res?.data?.message,
+          isWithdrawal: true
+        };
+        //@ts-ignore
+        navigation.navigate(SCREEN.PAYMENTSUCCESS, dataSuccess);
       },
-      onFail: (err: any) => {
+      onFail: (err: any, orderID: string) => {
         setIsLoading(false);
         setMoneyInputSheet(false);
         setAmount('');
+        let dataFailed = {
+          orderID: orderID,
+          isSucceed: false,
+          title: 'Withdrwal Failed',
+          desc: 'Your transaction has been failed.\nCheck more details of this transaction in your transaction history.',
+          isWithdrawal: true
+        };
+        navigation.navigate(SCREEN.PAYMENTSUCCESS, dataFailed);
       },
     };
     dispatch(withdrawMoney(request) as never);
@@ -316,7 +337,7 @@ const Profile = ({navigation}: any) => {
                   ...styles.addMoneyBtn,
                   backgroundColor: colors.mediumDarkBorder,
                 }}
-                textStyle={{...styles.addMoneyText, color: colors.semiGrey}}
+                textStyle={{ ...styles.addMoneyText, color: colors.semiGrey }}
               />
             </View>
           </View>
@@ -327,17 +348,17 @@ const Profile = ({navigation}: any) => {
           <ProfileListItem
             title={'Personal Details'}
             iconName={icons.userSquare}
-            onPress={() => {}}
+            onPress={() => { }}
           />
           <ProfileListItem
             title={'Accounts'}
             iconName={icons.user}
-            onPress={() => {}}
+            onPress={() => { }}
           />
           <ProfileListItem
             title={'Manage KYC'}
             iconName={icons.cardTick}
-            onPress={() => {}}
+            onPress={() => { }}
           />
           {/* <ProfileListItem
             title={'Security'}
@@ -348,7 +369,7 @@ const Profile = ({navigation}: any) => {
             title={'Sign Out'}
             iconName={icons.logout}
             onPress={() => {
-              dispatch({type: LOGOUT});
+              dispatch({ type: LOGOUT });
               removeAsyncStorage();
               resetStack(SCREEN.WELCOME);
             }}
@@ -360,7 +381,7 @@ const Profile = ({navigation}: any) => {
           <ProfileListItem
             title={'Notifications'}
             iconName={icons.notificationBing}
-            onPress={() => {}}
+            onPress={() => { }}
             switchValue={isNotificationON}
             onSwitchToggle={() => setIsNotificationON(!isNotificationON)}
           />
@@ -406,16 +427,16 @@ const Profile = ({navigation}: any) => {
           <Text style={styles.modalTitle}>{'Contact Us'}</Text>
           <Text style={styles.modalContentText}>
             {'Email us on:  '}
-            <Text style={{color: colors.blue}}>{'abcd@email.com'}</Text>
+            <Text style={{ color: colors.blue }}>{'abcd@email.com'}</Text>
           </Text>
           <Text style={styles.modalContentText}>
             {'Call us on:  '}
-            <Text style={{color: colors.blue}}>{'9898875465'}</Text>
+            <Text style={{ color: colors.blue }}>{'9898875465'}</Text>
           </Text>
           <TouchableOpacity
-            style={{padding: wp(8), alignSelf: 'center'}}
+            style={{ padding: wp(8), alignSelf: 'center' }}
             onPress={() => setIsContactUsVisible(false)}>
-            <Text style={{...styles.modalContentText, color: colors.primary}}>
+            <Text style={{ ...styles.modalContentText, color: colors.primary }}>
               {'Close'}
             </Text>
           </TouchableOpacity>
