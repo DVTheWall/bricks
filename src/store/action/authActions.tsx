@@ -4,7 +4,7 @@ import {localStore} from '../../api/constants';
 import {makeAPIRequest} from '../../api/global';
 import ToastAlert from '../../components/common/Alert';
 import {setAsyncStorage} from '../../helpers/globalFunctions';
-import {LOGIN, TOKEN} from '../types';
+import {FCM_TOKEN, LOGIN, TOKEN} from '../types';
 
 export const login =
   (request: {
@@ -64,7 +64,6 @@ export const verifyOtp =
       params: request.data,
     })
       .then((response: any) => {
-        console.log('OTP response', response);
         if (request.onSuccess) request.onSuccess(response);
         // setAsyncStorage(localStore.userData, response?.data?.user);
         setAsyncStorage(localStore.token, response?.data?.token);
@@ -78,7 +77,31 @@ export const verifyOtp =
         });
       })
       .catch(error => {
-        console.log('OTP ERRRR', error);
+        if (request.onFail) request.onFail(error);
+        ToastAlert({
+          toastType: 'error',
+          title: 'Oops!',
+          description: 'Something went wrong',
+        });
+      });
+  };
+
+export const verifyNewMobileNumberOTP =
+  (request: {
+    onSuccess(response: any): unknown;
+    onFail(error: any): unknown;
+    data: {} | any;
+  }) =>
+  async () => {
+    return makeAPIRequest({
+      method: GET,
+      url: api.verifyNewMobileOtp,
+      params: request.data,
+    })
+      .then((response: any) => {
+        if (request.onSuccess) request.onSuccess(response);
+      })
+      .catch(error => {
         if (request.onFail) request.onFail(error);
         ToastAlert({
           toastType: 'error',
@@ -101,11 +124,9 @@ export const putFcmToken =
       params: request.data,
     })
       .then((response: any) => {
-        console.log('FCM0---response', response);
         if (request.onSuccess) request.onSuccess(response);
       })
       .catch(error => {
-        console.log('FCM ERRR====', error);
         if (request.onFail) request.onFail(error);
         ToastAlert({
           toastType: 'error',
@@ -239,4 +260,17 @@ export const verifyAdharOtp =
           description: 'Please, Enter Correct OTP!',
         });
       });
+  };
+
+export const storeFcmToken =
+  (request: {
+    onSuccess(response: any): unknown;
+    onFail(error: any): unknown;
+    data: {};
+  }) =>
+  async (dispatch: any) => {
+    dispatch({
+      type: FCM_TOKEN,
+      payload: request,
+    });
   };

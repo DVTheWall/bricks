@@ -11,6 +11,7 @@ export const api = {
   verifyPAN: 'bricks.api.customer.pan_verification',
   verifyAdhar: 'bricks.api.customer.send_aadhaar_otp',
   verifyAdharOtp: 'bricks.api.customer.verify_aadhaar_otp',
+  verifyNewMobileOtp: 'bricks.api.customer.verify_otp',
 
   // profile
   walletProfile: 'bricks.api.wallet.profile',

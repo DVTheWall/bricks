@@ -1,8 +1,9 @@
-import {LOGIN, LOGOUT, TOKEN} from '../types';
+import {FCM_TOKEN, LOGIN, LOGOUT, TOKEN} from '../types';
 
 const INITIAL_STATE = {
   authToken: '',
   userData: {},
+  fcmToken: '',
 };
 
 export default (
@@ -19,6 +20,11 @@ export default (
       return {
         ...state,
         userData: action.payload,
+      };
+    case FCM_TOKEN:
+      return {
+        ...state,
+        fcmToken: action.payload,
       };
     case LOGOUT:
       return {

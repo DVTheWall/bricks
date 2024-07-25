@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -15,59 +15,59 @@ import {
   RefreshControl,
 } from 'react-native';
 
-import { LineChart } from 'react-native-gifted-charts';
+import {useDispatch, useSelector} from 'react-redux';
+import {LineChart} from 'react-native-gifted-charts';
 
-import { font } from '../../utils/fonts';
-import { commonStyles } from '../../styles/styles';
+import {font} from '../../utils/fonts';
+import {commonStyles} from '../../styles/styles';
 import Header from '../../components/common/Header';
 import Shadow from '../../components/common/Shadow';
-import { colors, fontSize, hp, wp } from '../../utils';
-import {
-  dummyData,
-  indicatorListData,
-  periodDataList,
-} from '../../utils/dataConstants';
-import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../components/common/Loader';
-import { getPortfolioDataApi } from '../../store/action/portfolioActions';
+import {colors, fontSize, hp, wp} from '../../utils';
+import {dummyData, periodDataList} from '../../utils/dataConstants';
+import {getPortfolioDataApi} from '../../store/action/portfolioActions';
 
 const Portfolio = () => {
-
   const dispatch = useDispatch();
 
-  const { portfolioData } = useSelector((state: any) => state.data);
+  const {portfolioData} = useSelector((state: any) => state.data);
+  const profileData = portfolioData?.profile_data?.[0];
 
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [periodData, setPeriodData] = useState(periodDataList);
 
-  const monthWiseData = portfolioData?.month_wise_total.map(item => ({
+  const monthWiseData = portfolioData?.month_wise_total.map((item: any) => ({
     label: item.month_year,
-    value: item.total_amount,
+    value: Number(item.total_amount.replace(/[^0-9.]/g, '')),
   }));
-  const threeMontheWiseData = portfolioData?.three_month_wise_total.map(item => ({
-    label: item.month_year,
-    value: item.total_amount,
-  }));
-  const sixMontheWiseData = portfolioData?.six_month_wise_total.map(item => ({
-    label: item.month_year,
-    value: item.total_amount,
-  }));
+  const threeMontheWiseData = portfolioData?.three_month_wise_total.map(
+    (item: any) => ({
+      label: item.month_year,
+      value: Number(item.total_amount.replace(/[^0-9.]/g, '')),
+    }),
+  );
+  const sixMontheWiseData = portfolioData?.six_month_wise_total.map(
+    (item: any) => ({
+      label: item.month_year,
+      value: Number(item.total_amount.replace(/[^0-9.]/g, '')),
+    }),
+  );
 
-  const yearWiseData = portfolioData?.one_year_wise_total.map(item => ({
+  const yearWiseData = portfolioData?.one_year_wise_total.map((item: any) => ({
     label: item.month_year,
-    value: item.total_amount,
+    value: Number(item.total_amount.replace(/[^0-9.]/g, '')),
   }));
 
   const [graphData, setGraphData] = useState(monthWiseData);
-  const profileData = portfolioData?.profile_data?.[0];
 
   // const {property_percentages} = portfolioData || [];
 
-  const isProfit = profileData?.profit > 0;
-  const profitLoss =
-    profileData?.profit < 0
-      ? `-₹${Math.abs(profileData?.profit)}`
-      : `₹${Math.abs(profileData?.profit)}`;
+  const isProfit = Number(profileData?.profit.replace(/[^0-9.]/g, '')) > 0;
+  // const profitLoss =
+  //   profileData?.profit < 0
+  //     ? `-₹${Math.abs(profileData?.profit)}`
+  //     : `₹${Math.abs(profileData?.profit)}`;
   // const profit = profileData?.profit ?? 0;
   // const invested = profileData?.invested ?? 1;
   // const profitLossPercentage = (profit / invested) * 100;
@@ -109,9 +109,7 @@ const Portfolio = () => {
   //   pointerComponent: pointerComponent,
   // };
 
-  const [periodData, setPeriodData] = useState(periodDataList);
-
-  const renderGraphIndicator = ({ item }: any) => {
+  const renderGraphIndicator = ({item}: any) => {
     return (
       <View style={styles.boxContainer}>
         <View
@@ -120,7 +118,7 @@ const Portfolio = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View
               style={{
                 backgroundColor: item?.color,
@@ -165,7 +163,7 @@ const Portfolio = () => {
       />
       <Loader visible={isLoading} />
       <ScrollView
-        style={{ paddingTop: hp(12) }}
+        style={{paddingTop: hp(12)}}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
@@ -177,16 +175,14 @@ const Portfolio = () => {
                   <View style={styles.orangeIndicator} />
                   <Text style={styles.boxTitleText}>{'Invested'}</Text>
                 </View>
-                <Text
-                  style={styles.amountText}>{profileData?.invested}</Text>
+                <Text style={styles.amountText}>{profileData?.invested}</Text>
               </View>
               <View style={commonStyles.flex}>
                 <View style={commonStyles.flexRow}>
                   <View style={styles.orangeIndicator} />
                   <Text style={styles.boxTitleText}>{'Current'}</Text>
                 </View>
-                <Text
-                  style={styles.amountText}>{profileData?.current}</Text>
+                <Text style={styles.amountText}>{profileData?.current}</Text>
               </View>
             </View>
             <View style={styles.boxSeperator} />
@@ -198,7 +194,7 @@ const Portfolio = () => {
                     ...styles.diffAmountText,
                     color: isProfit ? colors.greenNeon : colors.redNeon,
                   }}>
-                  {profitLoss}
+                  {profileData?.profit}
                 </Text>
                 <View
                   style={{
@@ -227,11 +223,12 @@ const Portfolio = () => {
             height={210} // You can adjust the height as needed
             color="#F36667"
             hideRules
+            curved
             adjustToWidth
             noOfSections={4}
             hideDataPoints
-            yAxisTextStyle={{ color: "black" }}
-            xAxisLabelTextStyle={{ color: 'transparent', fontSize: 1 }}
+            yAxisTextStyle={{color: 'black'}}
+            xAxisLabelTextStyle={{color: 'transparent', fontSize: 1}}
           />
 
           <View
@@ -245,25 +242,23 @@ const Portfolio = () => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    if (item?.id == 1) {
+                    if (item?.id === 1) {
                       setGraphData(monthWiseData);
-                    } else if (item?.id == 2) {
-                      setGraphData(threeMontheWiseData)
-                    } else if (item?.id == 3) {
-                      setGraphData(sixMontheWiseData)
-                    } else if (item?.id == 4) {
-                      setGraphData(yearWiseData)
+                    } else if (item?.id === 2) {
+                      setGraphData(threeMontheWiseData);
+                    } else if (item?.id === 3) {
+                      setGraphData(sixMontheWiseData);
+                    } else if (item?.id === 4) {
+                      setGraphData(yearWiseData);
                     }
-
 
                     let updatePeriodData = periodData?.map(obj => {
                       if (item?.id === obj?.id) {
-                        return { ...obj, isSelected: true };
+                        return {...obj, isSelected: true};
                       } else {
-                        return { ...obj, isSelected: false };
+                        return {...obj, isSelected: false};
                       }
                     });
-                    console.log("updatePeriodData", updatePeriodData);
 
                     setPeriodData(updatePeriodData);
                   }}
@@ -296,7 +291,7 @@ const Portfolio = () => {
               marginVertical: hp(27),
             }}
           />
-          <View style={{ width: '100%', paddingHorizontal: wp(16) }}>
+          <View style={{width: '100%', paddingHorizontal: wp(16)}}>
             <Text
               style={{
                 fontSize: fontSize(16),
@@ -362,11 +357,11 @@ const Portfolio = () => {
             data={portfolioData?.property_percentages}
             renderItem={renderGraphIndicator}
             // keyExtractor={(_, index) => index?.toString()}
-            ItemSeparatorComponent={() => <View style={{ height: hp(6) }} />}
+            ItemSeparatorComponent={() => <View style={{height: hp(6)}} />}
           />
           {/* </View> */}
         </Shadow>
-        <View style={{ height: hp(60) }} />
+        <View style={{height: hp(60)}} />
       </ScrollView>
     </View>
   );

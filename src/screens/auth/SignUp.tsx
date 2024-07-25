@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable quotes */
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Dropdown} from 'react-native-element-dropdown';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -29,6 +29,7 @@ import {
   verifyAdhar,
   verifyAdharOtp,
   verifyNewMobileNumber,
+  verifyNewMobileNumberOTP,
   verifyPAN,
 } from '../../store/action/authActions';
 import TextInputComp from '../../components/common/TextInput';
@@ -37,17 +38,19 @@ import {
   isValidPan,
   resetStack,
   isValidEmail,
-  getAsyncStorage,
 } from '../../helpers/globalFunctions';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
-import {localStore} from '../../api/constants';
 
 const SignUp = ({navigation}: any) => {
   const dispatch = useDispatch();
+  const {fcmToken} = useSelector((state: any) => state.auth);
 
   const [fullName, setFullName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
+  const [isMobileVerified, setIsMobileVerified] = useState(false);
+  const [mobileLoader, setMobileLoader] = useState(false);
+  const [otpMobile, setOtpMobile] = useState('');
 
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
@@ -87,16 +90,6 @@ const SignUp = ({navigation}: any) => {
 
   const [isPanVerified, setIsPanVerified] = useState(false);
   const [isAdharVerified, setIsAdharVerified] = useState(false);
-  const [fcmToken, setFcmToken] = useState('');
-
-  const retriveFcmToken = async () => {
-    const tokenFcm = await getAsyncStorage(localStore.fcmToken);
-    setFcmToken(tokenFcm);
-  };
-
-  useEffect(() => {
-    retriveFcmToken();
-  }, []);
 
   const clearStates = () => {
     setFullName('');
@@ -123,7 +116,7 @@ const SignUp = ({navigation}: any) => {
     {label: 'Married', value: 'Married'},
   ];
 
-  const step1Validation = () => {
+  const mobileValidation = () => {
     if (fullName === '') {
       setNameErr('Please enter your full name');
       return false;
@@ -134,6 +127,25 @@ const SignUp = ({navigation}: any) => {
     }
     if (mobileNumber?.length !== 10) {
       setNumberErr('Mobile number should contain 10 digits.');
+      return false;
+    }
+    setNumberErr('');
+    return true;
+  };
+
+  const step1Validation = () => {
+    if (!isMobileVerified) {
+      ToastAlert({
+        toastType: 'info',
+        description: 'Please verify your mobile first.',
+      });
+      return false;
+    }
+    if (otpMobile?.length !== 4) {
+      ToastAlert({
+        toastType: 'error',
+        description: 'Please enter correct OTP',
+      });
       return false;
     }
     if (!isTermsChecked) {
@@ -274,9 +286,6 @@ const SignUp = ({navigation}: any) => {
         name_on_pan: panName,
         dob: moment(dob).format('DD-MM-YYYY'),
         pan_card: pan,
-        // name_on_pan: 'Pan Testing',
-        // dob: '03-02-1981',
-        // pan_card: 'ABCPV1234Q',
       };
       setPanLoader(true);
       const checkRequest = {
@@ -297,7 +306,6 @@ const SignUp = ({navigation}: any) => {
     if (validateAdharDetails()) {
       const adharData = {
         aadhaar_number: adhar,
-        // aadhaar_number: '655675523712',
       };
       setAdharLoader(true);
       const checkRequest = {
@@ -317,13 +325,13 @@ const SignUp = ({navigation}: any) => {
   const onVerifyPress = () => {
     if (stepCount === 1) {
       if (step1Validation()) {
-        const mobileCheck = {
-          full_name: fullName,
+        const mobileNumCheck = {
           mobile_number: mobileNumber,
+          otp: otpMobile,
         };
         setIsLoading(true);
-        const checkRequest = {
-          data: mobileCheck,
+        const verifyOtpRequest = {
+          data: mobileNumCheck,
           onSuccess: (res: any | []) => {
             setIsLoading(false);
             setStepCount(stepCount + 1);
@@ -332,7 +340,7 @@ const SignUp = ({navigation}: any) => {
             setIsLoading(false);
           },
         };
-        dispatch(verifyNewMobileNumber(checkRequest) as never);
+        dispatch(verifyNewMobileNumberOTP(verifyOtpRequest) as never);
       }
     } else if (stepCount === 2) {
       if (step2Validation()) {
@@ -376,6 +384,27 @@ const SignUp = ({navigation}: any) => {
         };
         dispatch(verifyAdharOtp(request) as never);
       }
+    }
+  };
+
+  const onVerifyMobilePress = () => {
+    if (mobileValidation()) {
+      const mobileCheck = {
+        full_name: fullName,
+        mobile_number: mobileNumber,
+      };
+      setMobileLoader(true);
+      const checkRequest = {
+        data: mobileCheck,
+        onSuccess: (res: any | []) => {
+          setMobileLoader(false);
+          setIsMobileVerified(true);
+        },
+        onFail: (err: any) => {
+          setMobileLoader(false);
+        },
+      };
+      dispatch(verifyNewMobileNumber(checkRequest) as never);
     }
   };
 
@@ -465,7 +494,26 @@ const SignUp = ({navigation}: any) => {
                 maxLength={10}
                 onBlur={() => handleBlur('mobileNumber')}
                 keyboardType={'number-pad'}
+                isRightText={!isMobileVerified && !mobileLoader}
+                isRightIcon={isMobileVerified && !mobileLoader}
+                rightIconTintColor={colors.green}
+                rightIconSource={icons.checkRing}
+                onRightTextPress={onVerifyMobilePress}
+                loading={mobileLoader}
+                rightText="Verify"
+                editable={!isMobileVerified}
               />
+              {isMobileVerified && (
+                <TextInputComp
+                  isMandetory
+                  label={`OTP`}
+                  placeholder={`Enter OTP`}
+                  value={otpMobile}
+                  keyboardType={'number-pad'}
+                  onChangeText={text => setOtpMobile(text)}
+                  maxLength={4}
+                />
+              )}
             </View>
           </KeyboardAwareScrollView>
           <View style={{alignItems: 'flex-end'}}>

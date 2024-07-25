@@ -15,13 +15,10 @@ import {
   getAsyncStorage,
   navigationRef,
   resetStack,
-  setAsyncStorage,
 } from './src/helpers/globalFunctions';
 import {localStore} from './src/api/constants';
 import {SCREEN} from './src/utils/screenConstants';
 import {PersistGate} from 'redux-persist/integration/react';
-
-import messaging from '@react-native-firebase/messaging';
 
 const {persistor, store} = storage();
 
@@ -31,9 +28,6 @@ const App = () => {
     if (token !== null) {
       resetStack(SCREEN.BOTTOMTABS);
     }
-    await messaging().registerDeviceForRemoteMessages();
-    const fcmToken = await messaging().getToken();
-    await setAsyncStorage(localStore.fcmToken, fcmToken);
   };
 
   useEffect(() => {

@@ -2,6 +2,7 @@ export const TOKEN = 'TOKEN';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
+export const FCM_TOKEN = 'FCM_TOKEN';
 export const GET_WALLET_PROFILE_DATA = 'GET_WALLET_PROFILE_DATA';
 export const GET_PROPERTY_LIST = 'GET_PROPERTY_LIST';
 export const MY_TRANSACTIONS_LIST = 'MY_TRANSACTIONS_LIST';

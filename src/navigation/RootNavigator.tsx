@@ -18,11 +18,15 @@ import AddCustomer from '../screens/brokers/customers/AddCustomer';
 import PropertyList from '../screens/brokers/property/PropertyList';
 import OrderDetails from '../screens/brokers/orders/OrderDetails';
 import AddOrders from '../screens/brokers/orders/AddOrders';
-import {useSelector} from 'react-redux';
-import {resetStack} from '../helpers/globalFunctions';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetStack, setAsyncStorage} from '../helpers/globalFunctions';
 import {SCREEN} from '../utils/screenConstants';
 import SplashScreen from 'react-native-splash-screen';
 import PaymentSuccess from '../screens/success/PaymentSuccess';
+
+import messaging from '@react-native-firebase/messaging';
+import {localStore} from '../api/constants';
+import {storeFcmToken} from '../store/action/authActions';
 
 export type RootStackParamList = {
   Welcome: undefined;
@@ -49,10 +53,18 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
   const {authToken} = useSelector((state: any) => state.auth);
-  const getToken = () => {
+
+  const dispatch = useDispatch();
+
+  const getToken = async () => {
     if (authToken !== '') {
       resetStack(SCREEN.BOTTOMTABS);
     }
+    await messaging().registerDeviceForRemoteMessages();
+    const fcmToken = await messaging().getToken();
+    //@ts-ignore
+    dispatch(storeFcmToken(fcmToken));
+    await setAsyncStorage(localStore.fcmToken, fcmToken);
   };
 
   useEffect(() => {

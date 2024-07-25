@@ -58,11 +58,18 @@ const PropertyItemList = ({item, onBuyNowPress}: any) => {
                 color:
                   item?.rate_percent < 0 ? colors.redNeon : colors.greenNeon,
               }}>
-              {item?.rate_percent ? `${item?.rate_percent}% ` : '0%'}
+              {item?.rate_percent ? `${item?.rate_percent?.toFixed(2)}%` : '0%'}
             </Text>
             <View
               style={{transform: [{scaleY: item?.rate_percent < 0 ? -1 : 1}]}}>
-              <Image source={icons.growArrow} style={styles.growArrow} />
+              <Image
+                source={icons.growArrow}
+                style={{
+                  ...styles.growArrow,
+                  tintColor:
+                    item?.rate_percent < 0 ? colors.redNeon : colors.greenNeon,
+                }}
+              />
             </View>
           </View>
         </View>
