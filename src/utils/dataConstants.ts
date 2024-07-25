@@ -1,5 +1,5 @@
-import {colors} from './colors';
-import {icons} from './icons';
+import { colors } from './colors';
+import { icons } from './icons';
 
 export const categoryListData = [
   {
@@ -264,17 +264,17 @@ export const periodDataList = [
   },
   {
     id: 2,
-    title: '6M',
+    title: '3M',
     isSelected: false,
   },
   {
     id: 3,
-    title: '1Y',
+    title: '6M',
     isSelected: false,
   },
   {
     id: 4,
-    title: 'ALL',
+    title: '1Y',
     isSelected: false,
   },
 ];

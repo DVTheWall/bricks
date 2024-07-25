@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -15,57 +15,50 @@ import {
   RefreshControl,
 } from 'react-native';
 
-import {LineChart} from 'react-native-gifted-charts';
+import { LineChart } from 'react-native-gifted-charts';
 
-import {font} from '../../utils/fonts';
-import {commonStyles} from '../../styles/styles';
+import { font } from '../../utils/fonts';
+import { commonStyles } from '../../styles/styles';
 import Header from '../../components/common/Header';
 import Shadow from '../../components/common/Shadow';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { colors, fontSize, hp, wp } from '../../utils';
 import {
   dummyData,
   indicatorListData,
   periodDataList,
 } from '../../utils/dataConstants';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../components/common/Loader';
-import {getPortfolioDataApi} from '../../store/action/portfolioActions';
+import { getPortfolioDataApi } from '../../store/action/portfolioActions';
 
 const Portfolio = () => {
-  const data = [
-    {value: 10, label: 'Line 1'},
-    {value: 20, label: 'Line 1'},
-    {value: 30, label: 'Line 1'},
-    {value: 5, label: 'Line 2'},
-    {value: 15, label: 'Line 2'},
-    {value: 25, label: 'Line 2'},
-    {value: 25, label: 'Line 2'},
-  ];
-  const data2 = [
-    {value: 20, label: 'Line 1'},
-    {value: 10, label: 'Line 1'},
-    {value: 40, label: 'Line 1'},
-    {value: 8, label: 'Line 2'},
-    {value: 15, label: 'Line 2'},
-    {value: 19, label: 'Line 2'},
-    {value: 19, label: 'Line 2'},
-  ];
-  const data3 = [
-    {value: 3, label: 'Line 1'},
-    {value: 11, label: 'Line 1'},
-    {value: 29, label: 'Line 1'},
-    {value: 18, label: 'Line 2'},
-    {value: 25, label: 'Line 2'},
-    {value: 16, label: 'Line 2'},
-    {value: 19, label: 'Line 2'},
-  ];
 
   const dispatch = useDispatch();
 
-  const {portfolioData} = useSelector((state: any) => state.data);
+  const { portfolioData } = useSelector((state: any) => state.data);
 
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  const monthWiseData = portfolioData?.month_wise_total.map(item => ({
+    label: item.month_year,
+    value: item.total_amount,
+  }));
+  const threeMontheWiseData = portfolioData?.three_month_wise_total.map(item => ({
+    label: item.month_year,
+    value: item.total_amount,
+  }));
+  const sixMontheWiseData = portfolioData?.six_month_wise_total.map(item => ({
+    label: item.month_year,
+    value: item.total_amount,
+  }));
+
+  const yearWiseData = portfolioData?.one_year_wise_total.map(item => ({
+    label: item.month_year,
+    value: item.total_amount,
+  }));
+
+  const [graphData, setGraphData] = useState(monthWiseData);
   const profileData = portfolioData?.profile_data?.[0];
 
   // const {property_percentages} = portfolioData || [];
@@ -118,7 +111,7 @@ const Portfolio = () => {
 
   const [periodData, setPeriodData] = useState(periodDataList);
 
-  const renderGraphIndicator = ({item}: any) => {
+  const renderGraphIndicator = ({ item }: any) => {
     return (
       <View style={styles.boxContainer}>
         <View
@@ -127,7 +120,7 @@ const Portfolio = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View
               style={{
                 backgroundColor: item?.color,
@@ -172,7 +165,7 @@ const Portfolio = () => {
       />
       <Loader visible={isLoading} />
       <ScrollView
-        style={{paddingTop: hp(12)}}
+        style={{ paddingTop: hp(12) }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
@@ -185,7 +178,7 @@ const Portfolio = () => {
                   <Text style={styles.boxTitleText}>{'Invested'}</Text>
                 </View>
                 <Text
-                  style={styles.amountText}>{`₹${profileData?.invested}`}</Text>
+                  style={styles.amountText}>{profileData?.invested}</Text>
               </View>
               <View style={commonStyles.flex}>
                 <View style={commonStyles.flexRow}>
@@ -193,7 +186,7 @@ const Portfolio = () => {
                   <Text style={styles.boxTitleText}>{'Current'}</Text>
                 </View>
                 <Text
-                  style={styles.amountText}>{`₹${profileData?.current}`}</Text>
+                  style={styles.amountText}>{profileData?.current}</Text>
               </View>
             </View>
             <View style={styles.boxSeperator} />
@@ -229,52 +222,18 @@ const Portfolio = () => {
 
         <View style={styles.chartContainer}>
           <LineChart
-            // areaChart
-            data={data}
-            data2={data2}
-            data3={data3}
-            zIndex1={1}
-            zIndex2={2}
-            zIndex3={3}
-            color1={colors.orange}
-            color2={colors.purple}
-            color3={colors.greenLite}
-            // dataPointsColor1="transparent"
-            // dataPointsColor2="transparent"
-            // dataPointsColor3="transparent"
-            showDataPointOnFocus
-            // isAnimated={true}
-            // animateOnDataChange={true}
-            thickness={2}
-            xAxisLabelTextStyle={styles.xAxisLabel}
-            yAxisTextStyle={styles.yAxisLabel}
-            height={250}
-            width={390}
-            // yAxisLabelTexts={['0', '20', '40', '60', '80', '100']}
-            // backgroundColor={'red'}
-            curved
-            curvature={0.25}
-            // curveType={''}
-            // noOfSections={4}
-            spacing={70}
-            showVerticalLines={false}
-            // verticalLinesColor={colors.borderColor}
-            // verticalLinesThickness={0.7}
-            // verticalLinesStrokeDashArray={[10, 30]}
-            xAxisThickness={0}
-            yAxisThickness={0}
-            // noOfVerticalLines={4}
-            xAxisTextNumberOfLines={0}
-            yAxisTextNumberOfLines={0}
-            hideYAxisText
+            data={graphData}
+            width={320} // You can adjust the width as needed
+            height={210} // You can adjust the height as needed
+            color="#F36667"
             hideRules
-            areaChart1={true}
-            startFillColor={'#FF93644D'}
-            endFillColor={'#F25F3300'}
-            startOpacity={0.5}
-            endOpacity1={0}
-            // pointerConfig={pointerConfig}
+            adjustToWidth
+            noOfSections={4}
+            hideDataPoints
+            yAxisTextStyle={{ color: "black" }}
+            xAxisLabelTextStyle={{ color: 'transparent', fontSize: 1 }}
           />
+
           <View
             style={{
               flexDirection: 'row',
@@ -286,13 +245,26 @@ const Portfolio = () => {
               return (
                 <TouchableOpacity
                   onPress={() => {
+                    if (item?.id == 1) {
+                      setGraphData(monthWiseData);
+                    } else if (item?.id == 2) {
+                      setGraphData(threeMontheWiseData)
+                    } else if (item?.id == 3) {
+                      setGraphData(sixMontheWiseData)
+                    } else if (item?.id == 4) {
+                      setGraphData(yearWiseData)
+                    }
+
+
                     let updatePeriodData = periodData?.map(obj => {
                       if (item?.id === obj?.id) {
-                        return {...obj, isSelected: true};
+                        return { ...obj, isSelected: true };
                       } else {
-                        return {...obj, isSelected: false};
+                        return { ...obj, isSelected: false };
                       }
                     });
+                    console.log("updatePeriodData", updatePeriodData);
+
                     setPeriodData(updatePeriodData);
                   }}
                   style={{
@@ -324,7 +296,7 @@ const Portfolio = () => {
               marginVertical: hp(27),
             }}
           />
-          <View style={{width: '100%', paddingHorizontal: wp(16)}}>
+          <View style={{ width: '100%', paddingHorizontal: wp(16) }}>
             <Text
               style={{
                 fontSize: fontSize(16),
@@ -390,11 +362,11 @@ const Portfolio = () => {
             data={portfolioData?.property_percentages}
             renderItem={renderGraphIndicator}
             // keyExtractor={(_, index) => index?.toString()}
-            ItemSeparatorComponent={() => <View style={{height: hp(6)}} />}
+            ItemSeparatorComponent={() => <View style={{ height: hp(6) }} />}
           />
           {/* </View> */}
         </Shadow>
-        <View style={{height: hp(60)}} />
+        <View style={{ height: hp(60) }} />
       </ScrollView>
     </View>
   );
