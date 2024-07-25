@@ -162,7 +162,6 @@ const PropertyDetails = ({ navigation, route }: any) => {
           value: res?.data?.data?.graph_data?.y_axis[index],
           label: label,
         }));
-        console.log("chartData", chartData);
 
         setGraphData(chartData)
 
@@ -494,13 +493,15 @@ const PropertyDetails = ({ navigation, route }: any) => {
             <View style={styles.chartContainer}>
               <LineChart
                 data={graphData}
-                width={315} // You can adjust the width as needed
-                height={200} // You can adjust the height as needed
-                lineWidth={2}
-                lineColor="#FF0000"
+                width={320} // You can adjust the width as needed
+                height={210} // You can adjust the height as needed
+                color="#F36667"
+                hideRules
                 adjustToWidth
-                // dotColor="#3b5998" // Customize the dot color
+                noOfSections={4}
                 hideDataPoints
+                yAxisTextStyle={{ color: "black" }}
+                xAxisLabelTextStyle={{ color: '#000', marginRight: 28 }}
               />
 
             </View>
@@ -782,10 +783,12 @@ const styles = StyleSheet.create({
     fontFamily: font.semiBold,
   },
   chartContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.white,
     marginTop: hp(24),
+    marginLeft: hp(8)
   },
   image: {
     width: width,
