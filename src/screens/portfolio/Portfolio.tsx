@@ -37,24 +37,26 @@ const Portfolio = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [periodData, setPeriodData] = useState(periodDataList);
 
-  const monthWiseData = portfolioData?.month_wise_total.map((item: any) => ({
+  const monthWiseData = portfolioData?.month_wise_total?.map((item: any) => ({
     label: item.month_year,
     value: Number(item.total_amount.replace(/[^0-9.]/g, '')),
   }));
-  const threeMontheWiseData = portfolioData?.three_month_wise_total.map(
+
+  const threeMontheWiseData = portfolioData?.three_month_wise_total?.map(
     (item: any) => ({
       label: item.month_year,
       value: Number(item.total_amount.replace(/[^0-9.]/g, '')),
     }),
   );
-  const sixMontheWiseData = portfolioData?.six_month_wise_total.map(
+  const TempData = monthWiseData;
+  const sixMontheWiseData = portfolioData?.six_month_wise_total?.map(
     (item: any) => ({
       label: item.month_year,
       value: Number(item.total_amount.replace(/[^0-9.]/g, '')),
     }),
   );
 
-  const yearWiseData = portfolioData?.one_year_wise_total.map((item: any) => ({
+  const yearWiseData = portfolioData?.one_year_wise_total?.map((item: any) => ({
     label: item.month_year,
     value: Number(item.total_amount.replace(/[^0-9.]/g, '')),
   }));
@@ -63,7 +65,9 @@ const Portfolio = () => {
 
   // const {property_percentages} = portfolioData || [];
 
-  const isProfit = Number(profileData?.profit.replace(/[^0-9.]/g, '')) > 0;
+  const isProfit =
+    profileData?.profile &&
+    Number(profileData?.profit?.replace(/[^0-9.]/g, '')) > 0;
   // const profitLoss =
   //   profileData?.profit < 0
   //     ? `-₹${Math.abs(profileData?.profit)}`
@@ -218,7 +222,7 @@ const Portfolio = () => {
 
         <View style={styles.chartContainer}>
           <LineChart
-            data={graphData}
+            data={graphData || TempData}
             width={320} // You can adjust the width as needed
             height={210} // You can adjust the height as needed
             color="#F36667"
