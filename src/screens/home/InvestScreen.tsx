@@ -38,7 +38,7 @@ const InvestScreen = ({ route, navigation }: any) => {
 
   const { propertyData } = route?.params;
 
-  const [sqft, setSqft] = useState('');
+  const [sqft, setSqft] = useState('1');
   const [sqftErr, setSqftErr] = useState('');
   const [orderType, setOrderType] = useState('');
   const [orderTypeErr, setOrderTypeErr] = useState('');
