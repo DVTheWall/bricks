@@ -29,6 +29,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useDispatch, useSelector } from 'react-redux';
 import { investNowAction } from '../../store/action/ordersActions';
 import { SCREEN } from '../../utils/screenConstants';
+import ToastAlert from '../../components/common/Alert';
 
 const InvestScreen = ({ route, navigation }: any) => {
   const dispatch = useDispatch();
@@ -42,7 +43,6 @@ const InvestScreen = ({ route, navigation }: any) => {
   const [orderType, setOrderType] = useState('');
   const [orderTypeErr, setOrderTypeErr] = useState('');
   const [repeatDate, setRepeatDate] = useState(new Date());
-  const [isDatePicker, setIsDatePicker] = useState(false);
   const [isMonthlyActive, setIsMonthlyActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -63,6 +63,15 @@ const InvestScreen = ({ route, navigation }: any) => {
   };
 
   const onOneTimeOrderPress = () => {
+    if (Number(sqft) == 0) {
+      ToastAlert({
+        toastType: 'error',
+        title: 'Rate Invalid!',
+        description: 'Please enter a valid Rate per SQFT',
+      });
+      return;
+    }
+
     const data = {
       customer_name: userData?.mobile_no,
       date: moment(repeatDate)?.format('YYYY-MM-DD'),
@@ -87,15 +96,12 @@ const InvestScreen = ({ route, navigation }: any) => {
         },
         onFail: (error: any) => {
 
-          const colonIndex = error?.response?.data?.exception?.indexOf(':')
-          const extractedString = error?.response?.data?.exception?.substring(colonIndex + 1).trim();
-
           setIsLoading(false);
           let dataFailed = {
             orderID: undefined,
             isSucceed: false,
             title: 'Order Creation Failed',
-            desc: extractedString,
+            desc: "Sorry, this property is in a lock-in period and can't be sold now.",
           };
           navigation.navigate(SCREEN.PAYMENTSUCCESS, dataFailed);
         },
@@ -181,6 +187,22 @@ const InvestScreen = ({ route, navigation }: any) => {
           <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'}>
             <View style={styles.inputContainer}>
               <TextInputComp
+                editable={false}
+                label="Property Name"
+                value={propertyData?.property_name}
+                customLabelStyle={styles.textInputLabel}
+                customShadowStyle={{ shadowOpacity: 0 }}
+                customTextBoxStyle={styles.customTextBox}
+              />
+              <TextInputComp
+                editable={false}
+                label="Rate per Sqft"
+                value={propertyData?.rate?.toString()}
+                customLabelStyle={styles.textInputLabel}
+                customShadowStyle={{ shadowOpacity: 0 }}
+                customTextBoxStyle={styles.customTextBox}
+              />
+              <TextInputComp
                 label="Enter the Number of Sqft"
                 value={sqft}
                 keyboardType="number-pad"
@@ -242,18 +264,15 @@ const InvestScreen = ({ route, navigation }: any) => {
               <TextInputComp
                 label={`This event will repeat every month on:`}
                 value={moment(repeatDate)?.format('DD/MM/YYYY')}
-                isRightIcon
                 customLabelStyle={styles.textInputLabel}
                 customShadowStyle={{ shadowOpacity: 0 }}
                 customTextBoxStyle={styles.customTextBox}
-                rightIconSource={icons.calendar}
                 editable={false}
                 rightIconTintColor={colors.darkGrey}
-                onRightIconPress={() => setIsDatePicker(true)}
               />
             </View>
             <Text style={styles.paywithText}>{'Pay with'}</Text>
-            <Wallet />
+            <Wallet onPress={() => { navigation.navigate(SCREEN.PROFILE) }} />
           </KeyboardAwareScrollView>
         ) : (
           <View
@@ -282,25 +301,6 @@ const InvestScreen = ({ route, navigation }: any) => {
           shadowStyle={{ shadowOpacity: 0 }}
         />
       </View>
-      {isDatePicker && (
-        <DatePicker
-          modal
-          open={isDatePicker}
-          date={repeatDate}
-          onConfirm={date => {
-            setIsDatePicker(false);
-            setRepeatDate(date);
-          }}
-          onCancel={() => {
-            setIsDatePicker(false);
-          }}
-          buttonColor={colors.primary}
-          mode="date"
-          // maximumDate={new Date()}
-          dividerColor={colors.primary}
-          title={'Select Date'}
-        />
-      )}
       <SafeAreaView />
     </View>
   );
