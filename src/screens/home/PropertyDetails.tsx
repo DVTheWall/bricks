@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Text,
   View,
@@ -21,33 +21,34 @@ import {
 import RNFS from 'react-native-fs';
 
 import Modal from 'react-native-modal';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import FileViewer from 'react-native-file-viewer';
 import FastImage from 'react-native-fast-image';
-import { LineChart } from 'react-native-gifted-charts';
+import {LineChart} from 'react-native-gifted-charts';
 import Carousel from 'react-native-reanimated-carousel';
 import LinearGradient from 'react-native-linear-gradient';
 import RenderHtml from 'react-native-render-html';
 
-import { font } from '../../utils/fonts';
-import { icons } from '../../utils/icons';
-import { commonStyles } from '../../styles/styles';
-import { SCREEN } from '../../utils/screenConstants';
+import {font} from '../../utils/fonts';
+import {icons} from '../../utils/icons';
+import {commonStyles} from '../../styles/styles';
+import {SCREEN} from '../../utils/screenConstants';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
 import ToastAlert from '../../components/common/Alert';
-import { colors, fontSize, hp, isIos, wp } from '../../utils';
+import {colors, fontSize, hp, isIos, wp} from '../../utils';
 import BackButtonBlur from '../../components/common/BackButtonBlur';
-import { getPropertyDetails } from '../../store/action/propertyActions';
-import { screenWidth } from '../../utils/globalConstant';
+import {getPropertyDetails} from '../../store/action/propertyActions';
+import {screenWidth} from '../../utils/globalConstant';
 import CollapsibleView from '../../components/common/CollapsibleView';
 import PropertyItemList from '../../components/home/PropertyItemList';
-import { isEmpty } from 'lodash';
+import {isEmpty} from 'lodash';
+import {periodDataList} from '../../utils/dataConstants';
 // import {carouselData, propertyHighlightData} from '../../utils/dataConstants';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-const HighlightItem = ({ item }: any) => {
+const HighlightItem = ({item}: any) => {
   return (
     <View
       style={{
@@ -72,8 +73,8 @@ const HighlightItem = ({ item }: any) => {
         source={
           item?.relevant_image
             ? {
-              uri: `https://bricks-dev.katsamsoft.com${item?.relevant_image}`,
-            }
+                uri: `https://bricks-dev.katsamsoft.com${item?.relevant_image}`,
+              }
             : icons.building
         }
       />
@@ -98,8 +99,8 @@ const HighlightItem = ({ item }: any) => {
   );
 };
 
-const PropertyDetails = ({ navigation, route }: any) => {
-  const { item } = route?.params;
+const PropertyDetails = ({navigation, route}: any) => {
+  const {item} = route?.params;
   const dispatch = useDispatch();
   const scrollRef = useRef<ScrollView>(null);
 
@@ -108,22 +109,22 @@ const PropertyDetails = ({ navigation, route }: any) => {
   const highlightFlatListRef = useRef(null);
 
   const data = [
-    { value: 5000, label: '1' },
-    { value: 8000, label: '3' },
-    { value: 9000, label: '5' },
-    { value: 7000, label: '7' },
-    { value: 6000, label: '9' },
-    { value: 8000, label: '11' },
-    { value: 6500, label: '13' },
-    { value: 6000, label: '15' },
-    { value: 4000, label: '17' },
-    { value: 7000, label: '19' },
-    { value: 5500, label: '21' },
-    { value: 2090, label: '23' },
-    { value: 1100, label: '25' },
-    { value: 8000, label: '27' },
-    { value: 6000, label: '29' },
-    { value: 5600, label: '31' },
+    {value: 5000, label: '1'},
+    {value: 8000, label: '3'},
+    {value: 9000, label: '5'},
+    {value: 7000, label: '7'},
+    {value: 6000, label: '9'},
+    {value: 8000, label: '11'},
+    {value: 6500, label: '13'},
+    {value: 6000, label: '15'},
+    {value: 4000, label: '17'},
+    {value: 7000, label: '19'},
+    {value: 5500, label: '21'},
+    {value: 2090, label: '23'},
+    {value: 1100, label: '25'},
+    {value: 8000, label: '27'},
+    {value: 6000, label: '29'},
+    {value: 5600, label: '31'},
   ];
 
   const [highlightIndex, setHighlightIndex] = useState(0);
@@ -137,6 +138,11 @@ const PropertyDetails = ({ navigation, route }: any) => {
   const [selectedDoc, setSelectedDoc] = useState<any>({});
   const [relatedProperty, setRelatedProperty] = useState<any>([]);
   const [graphData, setGraphData] = useState<any>(data);
+  const [monthwiseGraphData, setMonthwiseGraphData] = useState([]);
+  const [threeMonthwiseGraphData, setThreeMonthwiseGraphData] = useState([]);
+  const [sixMonthwiseGraphData, setSixMonthwiseGraphData] = useState([]);
+  const [yearwiseGraphData, setYearwiseGraphData] = useState([]);
+  const [periodData, setPeriodData] = useState(periodDataList);
   const ratePercentage =
     propertyDetailsData?.rate_percent < 0
       ? `${propertyDetailsData?.rate_percent}%`
@@ -155,14 +161,26 @@ const PropertyDetails = ({ navigation, route }: any) => {
         setPropertyDocuments(res?.data?.data?.properties_document);
         setRelatedProperty(res?.data?.data?.related_property);
 
-        const chartData = res?.data?.data?.graph_data?.x_axis.map(
-          (label: string, index: number) => ({
-            value: res?.data?.data?.graph_data?.y_axis[index],
-            label: label,
-          }),
+        // console.log('res?.data?.data===', res?.data?.data);
+        setMonthwiseGraphData(transformGraphData(res?.data?.data?.month_data));
+        setThreeMonthwiseGraphData(
+          transformGraphData(res?.data?.data?.three_monthly_data),
+        );
+        setSixMonthwiseGraphData(
+          transformGraphData(res?.data?.data?.six_monthly_data),
+        );
+        setYearwiseGraphData(
+          transformGraphData(res?.data?.data?.one_year_data),
         );
 
-        setGraphData(chartData);
+        // const chartData = res?.data?.data?.graph_data?.x_axis.map(
+        //   (label: string, index: number) => ({
+        //     value: res?.data?.data?.graph_data?.y_axis[index],
+        //     label: label,
+        //   }),
+        // );
+
+        // setGraphData(chartData);
 
         setIsLoading(false);
       },
@@ -172,6 +190,17 @@ const PropertyDetails = ({ navigation, route }: any) => {
     };
     dispatch(getPropertyDetails(request) as never);
   }, [item]);
+
+  const transformGraphData = (data: any) => {
+    const {x_axis, y_axis} = data;
+
+    return x_axis.map((label: string, index: index) => ({
+      label,
+      value: y_axis[index] === null ? 0 : y_axis[index],
+    }));
+  };
+
+  console.log('graphData::--', graphData);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -190,11 +219,11 @@ const PropertyDetails = ({ navigation, route }: any) => {
   //   return () => clearInterval(interval);
   // }, [highlightIndex]);
 
-  const renderItem = ({ item, index }: any) => {
+  const renderItem = ({item, index}: any) => {
     const imagePath = `https://bricks-dev.katsamsoft.com${item?.image}`;
     return (
       <View>
-        <FastImage source={{ uri: imagePath }} style={styles.image} />
+        <FastImage source={{uri: imagePath}} style={styles.image} />
         <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']}
           style={styles.linearGradient}
@@ -207,7 +236,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
     return url.split(/[#?]/)[0].split('.').pop().trim();
   }
 
-  const renderPropertyHighlight = ({ item }: any) => {
+  const renderPropertyHighlight = ({item}: any) => {
     return <HighlightItem item={item} />;
   };
 
@@ -215,7 +244,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
     setActiveIndex(index);
     if (flatListRef.current && index > 0) {
       //@ts-ignore
-      flatListRef.current.scrollToIndex({ index: index - 1, animated: true });
+      flatListRef.current.scrollToIndex({index: index - 1, animated: true});
     }
   };
 
@@ -223,17 +252,17 @@ const PropertyDetails = ({ navigation, route }: any) => {
     setActiveIndex(index + 1);
     if (carouselRef.current) {
       //@ts-ignore
-      carouselRef.current.scrollTo({ index: index + 1, animated: true });
+      carouselRef.current.scrollTo({index: index + 1, animated: true});
     }
   };
 
-  const renderRelatedProperty = ({ item }: any) => {
+  const renderRelatedProperty = ({item}: any) => {
     return (
       <PropertyItemList
         item={item}
         onBuyNowPress={() => {
-          navigation.navigate(SCREEN.PROPERTYDETAILS, { item: item });
-          scrollRef?.current?.scrollTo({ y: 0, animated: true });
+          navigation.navigate(SCREEN.PROPERTYDETAILS, {item: item});
+          scrollRef?.current?.scrollTo({y: 0, animated: true});
         }}
       />
     );
@@ -298,7 +327,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
         <Carousel
           loop={true}
           ref={carouselRef}
-          data={[{ image: item?.property_cover_image }, ...imageList]}
+          data={[{image: item?.property_cover_image}, ...imageList]}
           renderItem={renderItem}
           width={width}
           height={width * 0.75}
@@ -309,7 +338,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
           data={imageList}
           horizontal
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => (
+          renderItem={({item, index}) => (
             <TouchableOpacity onPress={() => handleFlatListPress(index)}>
               <FastImage
                 source={{
@@ -330,8 +359,8 @@ const PropertyDetails = ({ navigation, route }: any) => {
           )}
           contentContainerStyle={styles.previewList}
           style={styles.previewFlatList}
-          ItemSeparatorComponent={() => <View style={{ width: wp(16) }} />}
-          ListFooterComponent={() => <View style={{ width: wp(40) }} />}
+          ItemSeparatorComponent={() => <View style={{width: wp(16)}} />}
+          ListFooterComponent={() => <View style={{width: wp(40)}} />}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -397,7 +426,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
           </View>
           <View style={styles.boxContainer}>
             <View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image source={icons.location} style={commonStyles.icon16} />
                 <Text
                   style={{
@@ -437,7 +466,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
               }}>
               <Image
                 source={icons.mapBtn}
-                style={{ width: wp(83), height: hp(40), resizeMode: 'contain' }}
+                style={{width: wp(83), height: hp(40), resizeMode: 'contain'}}
               />
             </TouchableOpacity>
           </View>
@@ -448,10 +477,10 @@ const PropertyDetails = ({ navigation, route }: any) => {
               borderColor: colors.borderColor,
               padding: wp(16),
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
                 source={icons.alignLeft}
-                style={{ width: wp(16), height: hp(16), resizeMode: 'contain' }}
+                style={{width: wp(16), height: hp(16), resizeMode: 'contain'}}
               />
               <Text
                 style={{
@@ -464,7 +493,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
               </Text>
             </View>
 
-            <View style={{ marginTop: hp(14) }}>
+            <View style={{marginTop: hp(14)}}>
               <Carousel
                 {...baseOptions}
                 loop={true}
@@ -474,16 +503,6 @@ const PropertyDetails = ({ navigation, route }: any) => {
                 autoPlay={propertyHighlightList?.length > 3 ? true : false}
                 autoPlayInterval={2000}
               />
-              {/* <FlatList
-                horizontal
-                ref={highlightFlatListRef}
-                data={propertyHighlightList}
-                renderItem={renderPropertyHighlight}
-                showsHorizontalScrollIndicator={false}
-                onScrollToIndexFailed={() => {
-                  setHighlightIndex(0);
-                }}
-              /> */}
             </View>
           </View>
 
@@ -499,9 +518,71 @@ const PropertyDetails = ({ navigation, route }: any) => {
                 adjustToWidth
                 noOfSections={4}
                 hideDataPoints
-                yAxisTextStyle={{ color: 'black' }}
-                xAxisLabelTextStyle={{ color: '#000', marginRight: 28 }}
+                yAxisTextStyle={{color: 'black'}}
+                xAxisLabelTextStyle={{
+                  color: '#000',
+                  marginRight: 0,
+                  fontSize: fontSize(12),
+                  marginRight: 20,
+                }}
+                spacing={60}
+                endSpacing={10}
               />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                width: '100%',
+                marginTop: hp(10),
+              }}>
+              {periodData?.map(item => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (item?.id === 1) {
+                        setGraphData(monthwiseGraphData);
+                      } else if (item?.id === 2) {
+                        setGraphData(threeMonthwiseGraphData);
+                      } else if (item?.id === 3) {
+                        setGraphData(sixMonthwiseGraphData);
+                      } else if (item?.id === 4) {
+                        setGraphData(yearwiseGraphData);
+                      }
+
+                      let updatePeriodData = periodData?.map(obj => {
+                        if (item?.id === obj?.id) {
+                          return {...obj, isSelected: true};
+                        } else {
+                          return {...obj, isSelected: false};
+                        }
+                      });
+
+                      setPeriodData(updatePeriodData);
+                    }}
+                    style={{
+                      paddingHorizontal: wp(12),
+                      paddingVertical: hp(6),
+                      borderRadius: wp(100),
+                      backgroundColor: item?.isSelected
+                        ? colors.lightBlack
+                        : colors.transparent,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: fontSize(11),
+                        lineHeight: hp(15),
+                        color: item?.isSelected
+                          ? colors.white
+                          : colors.darkGrey,
+                        fontFamily: font.mrRegular,
+                      }}>
+                      {item?.title}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           </View>
 
@@ -516,7 +597,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
                 }}>
                 <RenderHtml
                   contentWidth={width}
-                  source={{ html: propertyDetailsData?.description }}
+                  source={{html: propertyDetailsData?.description}}
                   tagsStyles={customStyles}
                 />
               </View>
@@ -562,7 +643,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
                 borderColor: colors.mediumGrey,
                 marginHorizontal: wp(16),
               }}
-              renderItem={({ item }) => {
+              renderItem={({item}) => {
                 return (
                   <View
                     style={{
@@ -623,7 +704,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
               />
             </View>
           )}
-          <View style={{ height: hp(40) }} />
+          <View style={{height: hp(40)}} />
         </View>
       </ScrollView>
 
@@ -636,7 +717,7 @@ const PropertyDetails = ({ navigation, route }: any) => {
             })
           }
           buttonStyle={styles.btn}
-          shadowStyle={{ shadowOpacity: 0 }}
+          shadowStyle={{shadowOpacity: 0}}
         />
       </View>
       <SafeAreaView />
@@ -650,34 +731,34 @@ const PropertyDetails = ({ navigation, route }: any) => {
           {selectedDoc?.document_number && (
             <Text style={styles.modalContentText}>
               {'Document Number:  '}
-              <Text style={{ color: colors.black }}>
+              <Text style={{color: colors.black}}>
                 {selectedDoc?.document_number}
               </Text>
             </Text>
           )}
           <Text style={styles.modalContentText}>
             {'Date of Allotment:  '}
-            <Text style={{ color: colors.black }}>
+            <Text style={{color: colors.black}}>
               {selectedDoc?.date_of_allotment}
             </Text>
           </Text>
           <Text style={styles.modalContentText}>
             {'Provision for Data:  '}
-            <Text style={{ color: colors.black }}>
+            <Text style={{color: colors.black}}>
               {selectedDoc?.provision_for_data}
             </Text>
           </Text>
           {selectedDoc?.additional_information && (
             <Text style={styles.modalContentText}>
               {'Additional Information:  '}
-              <Text style={{ color: colors.black }}>
+              <Text style={{color: colors.black}}>
                 {selectedDoc?.additional_information}
               </Text>
             </Text>
           )}
           {selectedDoc?.attachment && (
             <TouchableOpacity
-              style={{ padding: wp(8), alignSelf: 'center' }}
+              style={{padding: wp(8), alignSelf: 'center'}}
               onPress={async () => {
                 setIsLoading(true);
                 const url = `https://bricks-dev.katsamsoft.com${selectedDoc?.attachment}`;
@@ -711,15 +792,15 @@ const PropertyDetails = ({ navigation, route }: any) => {
                 //   `https://bricks-dev.katsamsoft.com${selectedDoc?.attachment}`,
                 // );
               }}>
-              <Text style={{ ...styles.modalContentText, color: colors.primary }}>
+              <Text style={{...styles.modalContentText, color: colors.primary}}>
                 {'View Attachment'}
               </Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            style={{ padding: wp(8), alignSelf: 'center' }}
+            style={{padding: wp(8), alignSelf: 'center'}}
             onPress={() => setIsDocumentVisible(false)}>
-            <Text style={{ ...styles.modalContentText, color: colors.black }}>
+            <Text style={{...styles.modalContentText, color: colors.black}}>
               {'Close'}
             </Text>
           </TouchableOpacity>
