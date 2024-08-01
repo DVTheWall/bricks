@@ -34,7 +34,10 @@ export const api = {
 
   // portfolio
   getPortfolioData: 'bricks.api.wallet.portfolio',
+  getPortfolioGraphData: 'bricks.api.wallet.portfolio_graph',
 
   // Fcm Token
   fcmToken: 'bricks.api.auth.fcm_token',
+
+
 };

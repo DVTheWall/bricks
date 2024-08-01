@@ -1,24 +1,24 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-import {font} from '../../utils/fonts';
-import {commonStyles} from '../../styles/styles';
+import { font } from '../../utils/fonts';
+import { commonStyles } from '../../styles/styles';
 import PropertyItemList from './PropertyItemList';
-import {SCREEN} from '../../utils/screenConstants';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { SCREEN } from '../../utils/screenConstants';
+import { colors, fontSize, hp, wp } from '../../utils';
 
-const PropertyComponent = ({data}: any) => {
-  const {navigate} = useNavigation();
+const PropertyComponent = ({ data }: any) => {
+  const { navigate } = useNavigation();
 
-  const renderHotPropertiesItem = ({item}: any) => {
+  const renderHotPropertiesItem = ({ item }: any) => {
     return (
       <PropertyItemList
         item={item}
         onBuyNowPress={() => {
           //@ts-ignore
-          navigate(SCREEN.PROPERTYDETAILS, {item: item});
+          navigate(SCREEN.PROPERTYDETAILS, { item: item });
         }}
       />
     );
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: wp(20),
     justifyContent: 'space-between',
+    marginTop: hp(15)
   },
   subTitleText: {
     lineHeight: hp(36),
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     fontFamily: font.semiBold,
   },
   propertyListStyle: {
-    marginTop: hp(16),
+    marginTop: hp(12),
     marginHorizontal: wp(10),
   },
 });

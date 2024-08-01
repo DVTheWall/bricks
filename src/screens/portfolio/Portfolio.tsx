@@ -25,9 +25,10 @@ import Shadow from '../../components/common/Shadow';
 import Loader from '../../components/common/Loader';
 import { colors, fontSize, hp, wp } from '../../utils';
 import { dummyData, periodDataList } from '../../utils/dataConstants';
-import { getPortfolioDataApi } from '../../store/action/portfolioActions';
+import { getPortfolioDataApi, getPortfolioGraphDataApi } from '../../store/action/portfolioActions';
 
 const Portfolio = () => {
+
   const dispatch = useDispatch();
 
   const { portfolioData } = useSelector((state: any) => state.data);
@@ -36,19 +37,20 @@ const Portfolio = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [periodData, setPeriodData] = useState(periodDataList);
-  console.log("portfolioData", portfolioData);
 
-  const monthWiseData = portfolioData?.month_wise_total?.map((item: any) => ({
-    label: item.month_year,
-    value: Number(item?.total_amount?.replace(/[^0-9.]/g, '')),
-  }));
 
-  const threeMontheWiseData = portfolioData?.three_month_wise_total?.map(
-    (item: any) => ({
-      label: item?.month_year,
-      value: Number(item?.total_amount?.replace(/[^0-9.]/g, '')),
-    }),
-  );
+  const [selectedTimeRange, setSelectedTimeRange] = useState('daily_data_last_month');
+
+  const timeRanges = {
+    '1M': 'daily_data_last_month',
+    '3M': 'three_month_wise_total',
+    '6M': 'six_month_wise_total',
+    '1Y': 'twelve_month_wise_total'
+  };
+
+  const [graph, setGraph] = useState();
+  const [apiGraphData, setApiGraphData] = useState();
+  const [lables, setlabels] = useState();
   const TempData = [
     {
       label: '2024-May',
@@ -63,40 +65,18 @@ const Portfolio = () => {
       value: 200,
     },
   ];
-  const sixMontheWiseData = portfolioData?.six_month_wise_total?.map(
-    (item: any) => ({
-      label: item?.month_year,
-      value: Number(item?.total_amount?.replace(/[^0-9.]/g, '')),
-    }),
-  );
-
-  const yearWiseData = portfolioData?.one_year_wise_total?.map((item: any) => ({
-    label: item?.month_year,
-    value: Number(item?.total_amount?.replace(/[^0-9.]/g, '')),
-  }));
-
-  const [graphData, setGraphData] = useState(monthWiseData);
-
-  // const {property_percentages} = portfolioData || [];
 
   const isProfit = Number(profileData?.profit?.replace(/[^0-9.]/g, '')) > 0;
 
-  // const profitLoss =
-  //   profileData?.profit < 0
-  //     ? `-₹${Math.abs(profileData?.profit)}`
-  //     : `₹${Math.abs(profileData?.profit)}`;
-  // const profit = profileData?.profit ?? 0;
-  // const invested = profileData?.invested ?? 1;
-  // const profitLossPercentage = (profit / invested) * 100;
-  // const profitLossPerc = Math.abs(profitLossPercentage).toFixed(2) + '%';
-
   useEffect(() => {
     getPortfolioData();
+    getPortfolioGraphData()
   }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getPortfolioData();
+    getPortfolioGraphData()
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
@@ -115,16 +95,21 @@ const Portfolio = () => {
     };
     dispatch(getPortfolioDataApi(request) as never);
   };
+  const getPortfolioGraphData = () => {
+    setIsLoading(true);
+    const request = {
+      data: {},
+      onSuccess: (res: any | []) => {
+        manageGraphData(res?.data?.data, selectedTimeRange)
+        setIsLoading(false);
+      },
+      onFail: (err: any) => {
+        setIsLoading(false);
+      },
+    };
+    dispatch(getPortfolioGraphDataApi(request) as never);
+  };
 
-  // const pointerComponent = () => {
-  //   return <View style={{height: 5, width: 5, backgroundColor: 'red'}} />;
-  // };
-
-  // const pointerConfig = {
-  //   height: 5,
-  //   width: 5,
-  //   pointerComponent: pointerComponent,
-  // };
 
   const renderGraphIndicator = ({ item }: any) => {
     return (
@@ -168,6 +153,21 @@ const Portfolio = () => {
       </View>
     );
   };
+
+  const manageGraphData = (apiData, timeRanges) => {
+    const selectedData = apiData?.[timeRanges]?.chart_data || [];
+    const lineData = Object.keys?.(selectedData)?.map(key => ({
+      data: selectedData?.[key]?.values,
+      color: selectedData?.[key]?.color,
+      title: key
+    }));
+    const labels = selectedData?.Flat?.values?.map(item => item.label);
+    setApiGraphData(apiData);
+    setGraph(lineData);
+    setlabels(labels)
+  }
+
+
 
   return (
     <View style={commonStyles.container}>
@@ -235,7 +235,7 @@ const Portfolio = () => {
         </Shadow>
 
         <View style={styles.chartContainer}>
-          <LineChart
+          {/* <LineChart
             data={graphData || TempData}
             width={320} // You can adjust the width as needed
             height={210} // You can adjust the height as needed
@@ -247,6 +247,25 @@ const Portfolio = () => {
             hideDataPoints
             yAxisTextStyle={{ color: 'black' }}
             xAxisLabelTextStyle={{ color: 'transparent', fontSize: 1 }}
+          /> */}
+          <LineChart
+            hideRules
+            hideDataPoints
+            scrollToEnd={true}
+            data={graph?.[0]?.data || TempData}
+            data2={graph?.[1]?.data || TempData}
+            data3={graph?.[2]?.data || TempData}
+            data3={graph?.[3]?.data || TempData}
+            color={graph?.[0]?.color}
+            color1={graph?.[1]?.color}
+            color2={graph?.[2]?.color}
+            color3={graph?.[3]?.color}
+            noOfSections={4}
+            xLabels={lables}
+            height={250}
+            width={350}
+            curved
+            color={'#000'}
           />
 
           <View
@@ -261,13 +280,21 @@ const Portfolio = () => {
                 <TouchableOpacity
                   onPress={() => {
                     if (item?.id === 1) {
-                      setGraphData(monthWiseData);
+                      setSelectedTimeRange(timeRanges?.['1M']);
+                      manageGraphData(apiGraphData, timeRanges?.['1M'])
+                      // setNewGraph(graph?.['daily_data_last_month']?.chart_data)
                     } else if (item?.id === 2) {
-                      setGraphData(threeMontheWiseData);
+                      setSelectedTimeRange(timeRanges?.['3M']);
+                      manageGraphData(apiGraphData, timeRanges?.['3M'])
+                      // setNewGraph(graph?.['three_month_wise_total']?.chart_data)
                     } else if (item?.id === 3) {
-                      setGraphData(sixMontheWiseData);
+                      setSelectedTimeRange(timeRanges?.['6M']);
+                      manageGraphData(apiGraphData, timeRanges?.['6M'])
+                      // setNewGraph(graph?.['six_month_wise_total']?.chart_data)
                     } else if (item?.id === 4) {
-                      setGraphData(yearWiseData);
+                      setSelectedTimeRange(timeRanges?.['1Y']);
+                      manageGraphData(apiGraphData, timeRanges?.['1Y'])
+                      // setNewGraph(graph?.['twelve_month_wise_total']?.chart_data)
                     }
 
                     let updatePeriodData = periodData?.map(obj => {

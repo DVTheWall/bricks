@@ -17,15 +17,15 @@ const TransactionListItem = ({ item }: any) => {
   const getTagColor = (status: string) => {
     switch (status) {
       case 'Approved':
-        return { light: '#E9F8F0', dark: '#54A77B' };
+        return { light: '#188F7110', dark: '#188F71' };
       case 'Pending':
         return { light: '#E1E1E1', dark: '#636363' };
       case 'Processing':
-        return { light: 'orange', dark: '#000080' };
+        return { light: '#FF6D1710', dark: '#FF6D17' };
       case 'Pending at Bank':
-        return { light: 'orange', dark: '#000080' };
+        return { light: '#FF6D1710', dark: '#FF6D17' };
       case 'Rejected':
-        return { light: '#FAEAEA', dark: '#E16032' };
+        return { light: '#F21B1B10', dark: '#F21B1B' };
       default:
         return { light: '#E9F8F0', dark: '#54A77B' };
     }
@@ -67,7 +67,7 @@ const TransactionListItem = ({ item }: any) => {
         <Text
           style={{
             ...styles.amountText,
-            color: isCredited ? colors.green : colors.saffron,
+            color: isCredited ? "#188F71" : colors.saffron,
           }}>
           {`${isCredited ? '+' : '-'}₹${item?.amount}`}
         </Text>
