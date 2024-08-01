@@ -1,14 +1,14 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import moment from 'moment';
 
-import {font} from '../../utils/fonts';
-import {icons} from '../../utils/icons';
-import {colors, fontSize, hp, wp} from '../../utils';
-import {commonStyles} from '../../styles/styles';
+import { font } from '../../utils/fonts';
+import { icons } from '../../utils/icons';
+import { colors, fontSize, hp, wp } from '../../utils';
+import { commonStyles } from '../../styles/styles';
 
-const TransactionListItem = ({item}: any) => {
+const TransactionListItem = ({ item }: any) => {
   const isCredited = item?.transaction_type === 'Credit';
   const title =
     item?.property_id !== null ? item?.property_id : 'Added to Wallet';
@@ -17,15 +17,17 @@ const TransactionListItem = ({item}: any) => {
   const getTagColor = (status: string) => {
     switch (status) {
       case 'Approved':
-        return {light: '#E9F8F0', dark: '#54A77B'};
+        return { light: '#E9F8F0', dark: '#54A77B' };
       case 'Pending':
-        return {light: '#E1E1E1', dark: '#636363'};
+        return { light: '#E1E1E1', dark: '#636363' };
+      case 'Processing':
+        return { light: 'orange', dark: '#000080' };
       case 'Pending at Bank':
-        return {light: '#C9D2FF', dark: '#000080'};
+        return { light: 'orange', dark: '#000080' };
       case 'Rejected':
-        return {light: '#FAEAEA', dark: '#E16032'};
+        return { light: '#FAEAEA', dark: '#E16032' };
       default:
-        return {light: '#E9F8F0', dark: '#54A77B'};
+        return { light: '#E9F8F0', dark: '#54A77B' };
     }
   };
 

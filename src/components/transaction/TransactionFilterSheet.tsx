@@ -1,5 +1,5 @@
 /* eslint-disable quotes */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,15 +12,15 @@ import {
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Shadow from '../common/Shadow';
-import {font} from '../../utils/fonts';
-import {icons} from '../../utils/icons';
-import {commonStyles} from '../../styles/styles';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { font } from '../../utils/fonts';
+import { icons } from '../../utils/icons';
+import { commonStyles } from '../../styles/styles';
+import { colors, fontSize, hp, wp } from '../../utils';
 
-const TransactionFilterSheet = ({isVisible, onClose, onApply}: any) => {
+const TransactionFilterSheet = ({ isVisible, onClose, onApply }: any) => {
   const insets = useSafeAreaInsets();
   const [selectedCategory, setSelectedCategory] = useState('Transaction Type');
   const [transactionType, setTransactionType] = useState('');
@@ -28,7 +28,7 @@ const TransactionFilterSheet = ({isVisible, onClose, onApply}: any) => {
   const [paymentMode, setPaymentMode] = useState('');
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState({show: false, type: ''});
+  const [showDatePicker, setShowDatePicker] = useState({ show: false, type: '' });
 
   const categories = [
     'Transaction Type',
@@ -37,12 +37,12 @@ const TransactionFilterSheet = ({isVisible, onClose, onApply}: any) => {
     'Time Period',
   ];
   const transactionOptions = ['Credit', 'Debit'];
-  const statusOptions = ['Pending', 'Pending at Bank', 'Approved', 'Rejected'];
+  const statusOptions = ['Pending', 'Processing', 'Approved', 'Rejected'];
   const paymentModeOptions = ['Online', 'Offline'];
 
   const handleDateChange = (selectedDate: any) => {
     const currentDate = selectedDate || new Date();
-    setShowDatePicker({show: false, type: ''});
+    setShowDatePicker({ show: false, type: '' });
     if (showDatePicker.type === 'from') {
       if (currentDate > toDate) {
         setToDate(currentDate);
@@ -86,7 +86,7 @@ const TransactionFilterSheet = ({isVisible, onClose, onApply}: any) => {
     );
   };
 
-  const renderCategory = ({item}: any) => (
+  const renderCategory = ({ item }: any) => (
     <TouchableOpacity
       style={[
         styles.categoryView,
@@ -155,7 +155,7 @@ const TransactionFilterSheet = ({isVisible, onClose, onApply}: any) => {
               {status.includes(option) && (
                 <Image
                   source={icons.checkMark}
-                  style={{...commonStyles.icon12, tintColor: colors.white}}
+                  style={{ ...commonStyles.icon12, tintColor: colors.white }}
                 />
               )}
             </View>
@@ -197,18 +197,18 @@ const TransactionFilterSheet = ({isVisible, onClose, onApply}: any) => {
         ));
       case 'Time Period':
         return (
-          <View style={{padding: wp(10)}}>
+          <View style={{ padding: wp(10) }}>
             <Text style={styles.dateTypeText}>{'From:'}</Text>
             <TouchableOpacity
               style={styles.dateView}
-              onPress={() => setShowDatePicker({show: true, type: 'from'})}>
+              onPress={() => setShowDatePicker({ show: true, type: 'from' })}>
               <Text>{moment(fromDate).format('YYYY-MM-DD')}</Text>
             </TouchableOpacity>
-            <View style={{height: hp(10)}} />
+            <View style={{ height: hp(10) }} />
             <Text style={styles.dateTypeText}>{'To:'}</Text>
             <TouchableOpacity
               style={styles.dateView}
-              onPress={() => setShowDatePicker({show: true, type: 'to'})}>
+              onPress={() => setShowDatePicker({ show: true, type: 'to' })}>
               <Text>{moment(toDate).format('YYYY-MM-DD')}</Text>
             </TouchableOpacity>
           </View>
@@ -243,7 +243,7 @@ const TransactionFilterSheet = ({isVisible, onClose, onApply}: any) => {
               date={showDatePicker.type === 'from' ? fromDate : toDate}
               onConfirm={handleDateChange}
               onCancel={() => {
-                setShowDatePicker({show: false, type: ''});
+                setShowDatePicker({ show: false, type: '' });
               }}
               buttonColor={colors.primary}
               mode="date"

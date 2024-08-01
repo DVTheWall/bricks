@@ -192,7 +192,7 @@ const InvestScreen = ({ route, navigation }: any) => {
                 value={propertyData?.property_name}
                 customLabelStyle={styles.textInputLabel}
                 customShadowStyle={{ shadowOpacity: 0 }}
-                customTextBoxStyle={styles.customTextBox}
+                customTextBoxStyle={{ ...styles.customTextBox, backgroundColor: "lightgray" }}
               />
               <TextInputComp
                 editable={false}
@@ -200,7 +200,7 @@ const InvestScreen = ({ route, navigation }: any) => {
                 value={propertyData?.rate?.toString()}
                 customLabelStyle={styles.textInputLabel}
                 customShadowStyle={{ shadowOpacity: 0 }}
-                customTextBoxStyle={styles.customTextBox}
+                customTextBoxStyle={{ ...styles.customTextBox, backgroundColor: "lightgray" }}
               />
               <TextInputComp
                 label="Enter the Number of Sqft"
@@ -266,7 +266,7 @@ const InvestScreen = ({ route, navigation }: any) => {
                 value={moment(repeatDate)?.format('DD/MM/YYYY')}
                 customLabelStyle={styles.textInputLabel}
                 customShadowStyle={{ shadowOpacity: 0 }}
-                customTextBoxStyle={styles.customTextBox}
+                customTextBoxStyle={{ ...styles.customTextBox, backgroundColor: "lightgray" }}
                 editable={false}
                 rightIconTintColor={colors.darkGrey}
               />
