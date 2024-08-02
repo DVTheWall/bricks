@@ -54,15 +54,15 @@ const Portfolio = () => {
   const TempData = [
     {
       label: '2024-May',
-      value: 10,
+      value: 0,
     },
     {
       label: '2024-Jun',
-      value: 20,
+      value: 0,
     },
     {
       label: '2024-Jul',
-      value: 200,
+      value: 0,
     },
   ];
 
@@ -262,9 +262,8 @@ const Portfolio = () => {
             color3={graph?.[3]?.color}
             noOfSections={4}
             xLabels={lables}
-            height={250}
+            height={260}
             width={350}
-            curved
             color={'#000'}
           />
 

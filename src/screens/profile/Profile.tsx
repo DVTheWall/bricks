@@ -154,7 +154,7 @@ const Profile = ({ navigation }: any) => {
       customer_details: {
         customer_id: 'USER123',
         customer_name: userData?.full_name,
-        customer_email: userData?.email,
+        customer_email: walletProfileData?.[0]?.email,
         customer_phone: `+91${userData?.mobile_no}`,
       },
       order_meta: {

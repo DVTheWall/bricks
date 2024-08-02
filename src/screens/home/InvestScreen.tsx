@@ -261,7 +261,7 @@ const InvestScreen = ({ route, navigation }: any) => {
               <Text style={styles.errText}>
                 {orderType === '' ? orderTypeErr : ''}
               </Text>
-              <TextInputComp
+              {/* <TextInputComp
                 label={`This event will repeat every month on:`}
                 value={moment(repeatDate)?.format('DD/MM/YYYY')}
                 customLabelStyle={styles.textInputLabel}
@@ -269,7 +269,7 @@ const InvestScreen = ({ route, navigation }: any) => {
                 customTextBoxStyle={{ ...styles.customTextBox, backgroundColor: "lightgray" }}
                 editable={false}
                 rightIconTintColor={colors.darkGrey}
-              />
+              /> */}
             </View>
             <Text style={styles.paywithText}>{'Pay with'}</Text>
             <Wallet onPress={() => { navigation.navigate(SCREEN.PROFILE) }} />
