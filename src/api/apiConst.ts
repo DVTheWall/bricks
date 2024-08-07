@@ -38,6 +38,6 @@ export const api = {
 
   // Fcm Token
   fcmToken: 'bricks.api.auth.fcm_token',
-
-
+  //logout
+  logout: 'logout',
 };

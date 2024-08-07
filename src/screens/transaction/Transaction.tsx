@@ -2,7 +2,7 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -13,22 +13,22 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
-import {debounce} from 'lodash';
-import {useDispatch, useSelector} from 'react-redux';
+import { debounce } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {font} from '../../utils/fonts';
-import {commonStyles} from '../../styles/styles';
+import { font } from '../../utils/fonts';
+import { commonStyles } from '../../styles/styles';
 import Header from '../../components/common/Header';
 import Loader from '../../components/common/Loader';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { colors, fontSize, hp, wp } from '../../utils';
 import SearchBar from '../../components/common/SearchBar';
-import {getMyTransactionsList} from '../../store/action/transactionActions';
+import { getMyTransactionsList } from '../../store/action/transactionActions';
 import TransactionListItem from '../../components/transaction/TransactionListItem';
 import TransactionFilterSheet from '../../components/transaction/TransactionFilterSheet';
 
 const Transaction = () => {
   // const {userData} = useSelector((state: any) => state.auth);
-  const {myTransactionsList} = useSelector((state: any) => state.data);
+  const { myTransactionsList } = useSelector((state: any) => state.data);
   const dispatch = useDispatch();
   const [searchText, setSerachText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -59,9 +59,9 @@ const Transaction = () => {
           filters.paymentMode === 'Online'
             ? '1'
             : filters.paymentMode === 'Offline'
-            ? '0'
-            : '',
-        from_date: filters.fromDateFormate,
+              ? '0'
+              : '',
+        from_date: filters.formDateFormate,
         to_date: filters.toDateFormate,
       },
       onSuccess: (res: any | []) => {
@@ -71,10 +71,12 @@ const Transaction = () => {
         setIsLoading(false);
       },
     };
+    console.log("request", request?.data);
+
     dispatch(getMyTransactionsList(request) as never);
   };
 
-  const renderTransactionHistory = ({item}: any) => {
+  const renderTransactionHistory = ({ item }: any) => {
     return <TransactionListItem item={item} />;
   };
 
@@ -120,11 +122,11 @@ const Transaction = () => {
       <FlatList
         data={myTransactionsList}
         renderItem={renderTransactionHistory}
-        ListFooterComponent={() => <View style={{height: hp(60)}} />}
+        ListFooterComponent={() => <View style={{ height: hp(60) }} />}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListEmptyComponent={() => (
           <View style={styles.emptyView}>
-            <Text style={{fontSize: fontSize(20), color: colors.grey}}>
+            <Text style={{ fontSize: fontSize(20), color: colors.grey }}>
               {'No Data Found'}
             </Text>
           </View>

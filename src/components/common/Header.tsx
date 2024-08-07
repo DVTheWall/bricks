@@ -1,12 +1,12 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import BackButton from './BackButton';
-import {font} from '../../utils/fonts';
-import {icons} from '../../utils/icons';
-import {commonStyles} from '../../styles/styles';
-import {HeaderProps} from '../../interface/Common';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { font } from '../../utils/fonts';
+import { icons } from '../../utils/icons';
+import { commonStyles } from '../../styles/styles';
+import { HeaderProps } from '../../interface/Common';
+import { colors, fontSize, hp, wp } from '../../utils';
 
 const Header = ({
   name,
@@ -34,7 +34,7 @@ const Header = ({
         {title && (
           <Text style={[styles.titleText, customTitleStyle]}>
             {title}
-            <Text style={customNameStyle}>{name}</Text>
+            {name !== "undefined!" && <Text style={customNameStyle}>{name}</Text>}
           </Text>
         )}
       </View>

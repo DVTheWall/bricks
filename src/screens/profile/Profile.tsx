@@ -25,10 +25,10 @@ import Button from '../../components/common/Button';
 import { colors, fontSize, hp, isIos, wp } from '../../utils';
 import { removeAsyncStorage, resetStack } from '../../helpers/globalFunctions';
 import { useDispatch, useSelector } from 'react-redux';
-import { walletProfile } from '../../store/action/profileActions';
+import { logOutAPI, walletProfile } from '../../store/action/profileActions';
 import Loader from '../../components/common/Loader';
 import { SCREEN } from '../../utils/screenConstants';
-import { LOGOUT } from '../../store/types';
+import { LOGOUT, LOGOUT_1 } from '../../store/types';
 import ProfileListItem from '../../components/profile/ProfileListItem';
 import Modal from 'react-native-modal';
 import TextInputComp from '../../components/common/TextInput';
@@ -45,7 +45,6 @@ import { useIsFocused } from '@react-navigation/native';
 const Profile = ({ navigation }: any) => {
   const { walletProfileData } = useSelector((state: any) => state.data);
   const { userData } = useSelector((state: any) => state.auth);
-  console.log('walletProfileData', walletProfileData);
 
   const dispatch = useDispatch();
 
@@ -169,7 +168,6 @@ const Profile = ({ navigation }: any) => {
       headers: {
         'x-api-version': '2023-08-01',
         'Content-Type': 'application/json',
-
         Accept: 'application/json',
       },
       data: data,
@@ -285,7 +283,7 @@ const Profile = ({ navigation }: any) => {
       />
       <View style={styles.boxView}>
         <Text style={styles.userNameText}>
-          {walletProfileData[0]?.customer_name}
+          {walletProfileData?.[0]?.customer_name}
         </Text>
       </View>
 
@@ -301,27 +299,27 @@ const Profile = ({ navigation }: any) => {
               <Text
                 style={{
                   ...styles.amountText,
-                  color: walletProfileData[0]?.wallet_amount
+                  color: walletProfileData?.[0]?.wallet_amount
                     ? colors.green
                     : colors.red,
                 }}>
-                {walletProfileData[0]?.wallet_amount
-                  ? `₹${walletProfileData[0]?.wallet_amount}`
+                {walletProfileData?.[0]?.wallet_amount
+                  ? `₹${walletProfileData?.[0]?.wallet_amount}`
                   : '₹0.0'}
               </Text>
               <Image
                 source={icons.arrowUp}
                 style={{
                   ...styles.upChevronStyle,
-                  tintColor: walletProfileData[0]?.wallet_amount
+                  tintColor: walletProfileData?.[0]?.wallet_amount
                     ? colors.green
                     : colors.red,
                 }}
               />
             </View>
-            <Text style={styles.walletDescText}>
+            {/* <Text style={styles.walletDescText}>
               {'Added 0.0% more last week'}
-            </Text>
+            </Text> */}
             <View style={styles.walletBtnContainer}>
               <Button
                 title="Add money"
@@ -375,9 +373,22 @@ const Profile = ({ navigation }: any) => {
             title={'Sign Out'}
             iconName={icons.logout}
             onPress={() => {
-              dispatch({ type: LOGOUT });
-              removeAsyncStorage();
-              resetStack(SCREEN.WELCOME);
+              const request = {
+                data: {},
+                onSuccess: (res: any | []) => {
+                  dispatch({ type: LOGOUT });
+                  dispatch({ type: LOGOUT_1 });
+                  removeAsyncStorage();
+                  resetStack(SCREEN.WELCOME);
+                },
+                onFail: (err: any) => {
+                  dispatch({ type: LOGOUT });
+                  dispatch({ type: LOGOUT_1 });
+                  removeAsyncStorage();
+                  resetStack(SCREEN.WELCOME);
+                },
+              };
+              dispatch(logOutAPI(request) as never);
             }}
           />
         </View>

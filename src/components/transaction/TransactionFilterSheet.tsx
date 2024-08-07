@@ -66,6 +66,7 @@ const TransactionFilterSheet = ({ isVisible, onClose, onApply }: any) => {
       toDateFormate,
       paymentMode,
     };
+
     onApply && onApply(filters);
     onClose && onClose();
   };

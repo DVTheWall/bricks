@@ -2,7 +2,7 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
-import React, {useLayoutEffect, useState} from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -11,20 +11,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {useDispatch} from 'react-redux';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { useDispatch } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import {font} from '../../utils/fonts';
+import { font } from '../../utils/fonts';
 import SvgIcons from '../../helpers/SvgIcons';
-import {commonStyles} from '../../styles/styles';
-import {SCREEN} from '../../utils/screenConstants';
+import { commonStyles } from '../../styles/styles';
+import { SCREEN } from '../../utils/screenConstants';
 import Button from '../../components/common/Button';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { colors, fontSize, hp, wp } from '../../utils';
 import ToastAlert from '../../components/common/Alert';
 import TextInputComp from '../../components/common/TextInput';
-import {login, sendOtp} from '../../store/action/authActions';
+import { login, sendOtp } from '../../store/action/authActions';
 
-const Login = ({navigation, route}: any) => {
+const Login = ({ navigation, route }: any) => {
   const dispatch = useDispatch();
 
   const isFromSignUp = route?.params?.isFromSignUp || false;
@@ -49,7 +49,7 @@ const Login = ({navigation, route}: any) => {
       });
       return;
     }
-    const data = {mobile: mobileNumber};
+    const data = { mobile: mobileNumber };
     setIsLoading(true);
     const loginRequest = {
       data: data,
@@ -87,7 +87,8 @@ const Login = ({navigation, route}: any) => {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.skipBtn}
-          onPress={() => navigation.navigate(SCREEN.BOTTOMTABS)}>
+          // onPress={() => navigation.navigate(SCREEN.BOTTOMTABS)}>
+          onPress={() => { }}>
           <Text style={styles.skipText}>{'Skip Now'}</Text>
         </TouchableOpacity>
       </View>
@@ -122,7 +123,7 @@ const Login = ({navigation, route}: any) => {
             <Text style={styles.accText}>
               {`Don't Have an Account?`}
               <Text
-                style={{color: colors.blue}}
+                style={{ color: colors.blue }}
                 onPress={() => {
                   navigation.navigate(SCREEN.SIGNUP);
                 }}>

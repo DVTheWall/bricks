@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable quotes */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,18 +12,18 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {useDispatch, useSelector} from 'react-redux';
-import {Dropdown} from 'react-native-element-dropdown';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { useDispatch, useSelector } from 'react-redux';
+import { Dropdown } from 'react-native-element-dropdown';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import {font} from '../../utils/fonts';
-import {icons} from '../../utils/icons';
+import { font } from '../../utils/fonts';
+import { icons } from '../../utils/icons';
 import SvgIcons from '../../helpers/SvgIcons';
-import {commonStyles} from '../../styles/styles';
-import {SCREEN} from '../../utils/screenConstants';
+import { commonStyles } from '../../styles/styles';
+import { SCREEN } from '../../utils/screenConstants';
 import Shadow from '../../components/common/Shadow';
 import Button from '../../components/common/Button';
-import {colors, fontSize, hp, wp} from '../../utils';
+import { colors, fontSize, hp, wp } from '../../utils';
 import ToastAlert from '../../components/common/Alert';
 import {
   verifyAdhar,
@@ -42,9 +42,9 @@ import {
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 
-const SignUp = ({navigation}: any) => {
+const SignUp = ({ navigation }: any) => {
   const dispatch = useDispatch();
-  const {fcmToken} = useSelector((state: any) => state.auth);
+  const { fcmToken } = useSelector((state: any) => state.auth);
 
   const [fullName, setFullName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
@@ -53,8 +53,6 @@ const SignUp = ({navigation}: any) => {
   const [otpMobile, setOtpMobile] = useState('');
 
   const [email, setEmail] = useState('');
-  const [gender, setGender] = useState('');
-  const [maritalStatus, setMaritalStatus] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
@@ -95,8 +93,8 @@ const SignUp = ({navigation}: any) => {
     setFullName('');
     setMobileNumber('');
     setEmail('');
-    setGender('');
-    setMaritalStatus('');
+    // setGender('');
+    // setMaritalStatus('');
     setAddress('');
     setCity('');
     setState('');
@@ -106,14 +104,14 @@ const SignUp = ({navigation}: any) => {
   };
 
   const data = [
-    {label: 'Male', value: 'Male'},
-    {label: 'Female', value: 'Female'},
-    {label: 'Other', value: 'Other'},
+    { label: 'Male', value: 'Male' },
+    { label: 'Female', value: 'Female' },
+    { label: 'Other', value: 'Other' },
   ];
 
   const data1 = [
-    {label: 'Single', value: 'Single'},
-    {label: 'Married', value: 'Married'},
+    { label: 'Single', value: 'Single' },
+    { label: 'Married', value: 'Married' },
   ];
 
   const mobileValidation = () => {
@@ -167,14 +165,14 @@ const SignUp = ({navigation}: any) => {
       setEmailErr('Please enter valid email address');
       return false;
     }
-    if (gender === '') {
-      setGenderErr('Please select your gender');
-      return false;
-    }
-    if (maritalStatus === '') {
-      setMaritalErr('Please select your marital status');
-      return false;
-    }
+    // if (gender === '') {
+    //   setGenderErr('Please select your gender');
+    //   return false;
+    // }
+    // if (maritalStatus === '') {
+    //   setMaritalErr('Please select your marital status');
+    //   return false;
+    // }
     if (address === '') {
       setAddressErr('Please enter your address');
       return false;
@@ -353,8 +351,8 @@ const SignUp = ({navigation}: any) => {
           mobile_number: mobileNumber,
           is_terms_agreed: isTermsChecked ? '1' : '0',
           email: email,
-          gender: gender,
-          marital_status: maritalStatus,
+          // gender: gender,
+          // marital_status: maritalStatus,
           address: address,
           city: city,
           state: state,
@@ -452,8 +450,8 @@ const SignUp = ({navigation}: any) => {
             stepCount < 2
               ? colors.xLightGrey
               : stepCount > 2
-              ? colors.green
-              : colors.primary
+                ? colors.green
+                : colors.primary
           }
         />
         <StepIndicator
@@ -462,8 +460,8 @@ const SignUp = ({navigation}: any) => {
             stepCount < 3
               ? colors.xLightGrey
               : stepCount > 3
-              ? colors.green
-              : colors.primary
+                ? colors.green
+                : colors.primary
           }
         />
       </View>
@@ -516,7 +514,7 @@ const SignUp = ({navigation}: any) => {
               )}
             </View>
           </KeyboardAwareScrollView>
-          <View style={{alignItems: 'flex-end'}}>
+          <View style={{ alignItems: 'flex-end' }}>
             <View style={commonStyles.flexRowOnly}>
               <TouchableOpacity
                 onPress={() => setIsDescChecked(!isDescChecked)}
@@ -531,7 +529,7 @@ const SignUp = ({navigation}: any) => {
                 }
               </Text>
             </View>
-            <View style={{flexDirection: 'row', marginTop: hp(25)}}>
+            <View style={{ flexDirection: 'row', marginTop: hp(25) }}>
               <TouchableOpacity
                 onPress={() => setIsTermsChecked(!isTermsChecked)}
                 style={styles.checkBoxStyle}>
@@ -541,7 +539,7 @@ const SignUp = ({navigation}: any) => {
               </TouchableOpacity>
               <Text style={styles.termsText}>
                 {'I Agree '}
-                <Text style={{color: colors.blue}} onPress={() => {}}>
+                <Text style={{ color: colors.blue }} onPress={() => { }}>
                   {'Terms & Privacy Policy'}
                 </Text>
               </Text>
@@ -563,13 +561,13 @@ const SignUp = ({navigation}: any) => {
             error={emailErr}
             onBlur={() => handleBlur('email')}
           />
-          <Text style={styles.labelText}>
+          {/* <Text style={styles.labelText}>
             {'Gender'}
-            <Text style={{...styles.labelText, color: colors.redNeon}}>
+            <Text style={{ ...styles.labelText, color: colors.redNeon }}>
               {' *'}
             </Text>
-          </Text>
-          <Shadow shadowStyle={{shadowColor: colors.cyan}}>
+          </Text> */}
+          {/* <Shadow shadowStyle={{ shadowColor: colors.cyan }}>
             <Dropdown
               style={styles.dropdown}
               placeholderStyle={styles.placeholderStyle}
@@ -592,15 +590,15 @@ const SignUp = ({navigation}: any) => {
                 borderBottomRightRadius: wp(10),
               }}
             />
-          </Shadow>
-          <Text style={styles.errText}>{gender === '' ? genderErr : ''}</Text>
-          <Text style={styles.labelText}>
+          </Shadow> */}
+          {/* <Text style={styles.errText}>{gender === '' ? genderErr : ''}</Text> */}
+          {/* <Text style={styles.labelText}>
             {'Marital Status'}
-            <Text style={{...styles.labelText, color: colors.redNeon}}>
+            <Text style={{ ...styles.labelText, color: colors.redNeon }}>
               {' *'}
             </Text>
-          </Text>
-          <Shadow shadowStyle={{shadowColor: colors.cyan}}>
+          </Text> */}
+          {/* <Shadow shadowStyle={{ shadowColor: colors.cyan }}>
             <Dropdown
               style={styles.dropdown}
               placeholderStyle={styles.placeholderStyle}
@@ -623,10 +621,10 @@ const SignUp = ({navigation}: any) => {
                 borderBottomRightRadius: wp(10),
               }}
             />
-          </Shadow>
-          <Text style={styles.errText}>
+          </Shadow> */}
+          {/* <Text style={styles.errText}>
             {maritalStatus === '' ? maritalErr : ''}
-          </Text>
+          </Text> */}
           <TextInputComp
             isMandetory
             label={`Address`}
@@ -682,11 +680,11 @@ const SignUp = ({navigation}: any) => {
             // onFocus={() => setIsDatePicker(true)}
             rightIconDisable={isPanVerified}
             onRightIconPress={() => setIsDatePicker(true)}
-            // customLabelStyle={styles.customLabelStyle}
-            // customTextBoxStyle={styles.customTextBoxStyle}
-            // customShadowStyle={styles.customShadowStyle}
-            // customInputStyle={styles.customInputStyle}
-            // error={otpErr}
+          // customLabelStyle={styles.customLabelStyle}
+          // customTextBoxStyle={styles.customTextBoxStyle}
+          // customShadowStyle={styles.customShadowStyle}
+          // customInputStyle={styles.customInputStyle}
+          // error={otpErr}
           />
           <TextInputComp
             isMandetory
@@ -736,7 +734,7 @@ const SignUp = ({navigation}: any) => {
               onChangeText={text => setOtp(text)}
               // error={adharErr}
               maxLength={6}
-              // onBlur={() => handleBlur('adhar')}
+            // onBlur={() => handleBlur('adhar')}
             />
           )}
         </KeyboardAwareScrollView>

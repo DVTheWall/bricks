@@ -57,6 +57,11 @@ const InvestScreen = ({ route, navigation }: any) => {
       return false;
     }
     if (orderType === '') {
+      ToastAlert({
+        toastType: 'error',
+        title: 'Please select order type',
+        description: '',
+      });
       return false;
     }
     return true;
@@ -69,7 +74,6 @@ const InvestScreen = ({ route, navigation }: any) => {
         title: 'Rate Invalid!',
         description: 'Please enter a valid Rate per SQFT',
       });
-      return;
     }
 
     const data = {
@@ -91,6 +95,7 @@ const InvestScreen = ({ route, navigation }: any) => {
             isSucceed: true,
             title: 'Order Creation Successful',
             desc: 'Your order has successfully been Completed.',
+            fromInvestNow: true
           };
           navigation.navigate(SCREEN.PAYMENTSUCCESS, dataSuccess);
         },
@@ -102,6 +107,7 @@ const InvestScreen = ({ route, navigation }: any) => {
             isSucceed: false,
             title: 'Order Creation Failed',
             desc: "Sorry, this property is in a lock-in period and can't be sold now.",
+            fromInvestNow: true
           };
           navigation.navigate(SCREEN.PAYMENTSUCCESS, dataFailed);
         },
@@ -220,7 +226,8 @@ const InvestScreen = ({ route, navigation }: any) => {
                 // onChangeText={text => setAmount(text)}
                 customLabelStyle={styles.textInputLabel}
                 customShadowStyle={{ shadowOpacity: 0 }}
-                customTextBoxStyle={[styles.customTextBox, { marginBottom: 0 }]}
+                customTextBoxStyle={[styles.customTextBox, { marginBottom: 0, backgroundColor: "lightgray" }]}
+
               // error={amountErr}
               />
               <View style={[commonStyles.flexRow, { marginBottom: hp(32) }]}>

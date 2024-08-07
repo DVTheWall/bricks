@@ -123,7 +123,7 @@ const Home = ({ navigation }: any) => {
       <Loader visible={isLoading} />
       <Header
         title={'Hello, '}
-        name={`${userData?.first_name}!`}
+        name={`${userData?.first_name}!` || ''}
         // onLeftIconPress={() => {}}
         onRightIconPress1={() => navigation.navigate(SCREEN.PROFILE)}
         onRightIconPress2={() => navigation.navigate(SCREEN.NOTIFICATION)}

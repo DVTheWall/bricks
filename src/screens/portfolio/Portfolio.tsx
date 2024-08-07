@@ -31,7 +31,7 @@ const Portfolio = () => {
 
   const dispatch = useDispatch();
 
-  const { portfolioData } = useSelector((state: any) => state.data);
+  const { portfolioData } = useSelector((state: any) => state?.data);
   const profileData = portfolioData?.profile_data?.[0];
 
   const [isLoading, setIsLoading] = useState(false);
@@ -156,18 +156,16 @@ const Portfolio = () => {
 
   const manageGraphData = (apiData, timeRanges) => {
     const selectedData = apiData?.[timeRanges]?.chart_data || [];
-    const lineData = Object.keys?.(selectedData)?.map(key => ({
+    const lineData = Object?.keys?.(selectedData)?.map(key => ({
       data: selectedData?.[key]?.values,
       color: selectedData?.[key]?.color,
       title: key
     }));
-    const labels = selectedData?.Flat?.values?.map(item => item.label);
+    const labels = selectedData?.Flat?.values?.map(item => item?.label);
     setApiGraphData(apiData);
     setGraph(lineData);
     setlabels(labels)
   }
-
-
 
   return (
     <View style={commonStyles.container}>
@@ -192,14 +190,14 @@ const Portfolio = () => {
                   <View style={styles.orangeIndicator} />
                   <Text style={styles.boxTitleText}>{'Invested'}</Text>
                 </View>
-                <Text style={styles.amountText}>{profileData?.invested}</Text>
+                <Text style={styles.amountText}>{profileData?.invested || 0}</Text>
               </View>
               <View style={commonStyles.flex}>
                 <View style={commonStyles.flexRow}>
                   <View style={styles.orangeIndicator} />
                   <Text style={styles.boxTitleText}>{'Current'}</Text>
                 </View>
-                <Text style={styles.amountText}>{profileData?.current}</Text>
+                <Text style={styles.amountText}>{profileData?.current || 0}</Text>
               </View>
             </View>
             <View style={styles.boxSeperator} />
@@ -211,10 +209,9 @@ const Portfolio = () => {
                     ...styles.diffAmountText,
                     color: isProfit ? colors.greenNeon : colors.redNeon,
                   }}>
-                  {console.log("profileData?.profit", profileData?.profit)}
                   {profileData?.profit}
                 </Text>
-                <View
+                {profileData?.profit_per && <View
                   style={{
                     ...styles.boxPercView,
                     backgroundColor: isProfit
@@ -228,38 +225,26 @@ const Portfolio = () => {
                     }}>
                     {`${profileData?.profit_per}%`}
                   </Text>
-                </View>
+                </View>}
               </View>
             </View>
           </View>
         </Shadow>
 
         <View style={styles.chartContainer}>
-          {/* <LineChart
-            data={graphData || TempData}
-            width={320} // You can adjust the width as needed
-            height={210} // You can adjust the height as needed
-            color="#F36667"
-            hideRules
-            curved
-            adjustToWidth
-            noOfSections={4}
-            hideDataPoints
-            yAxisTextStyle={{ color: 'black' }}
-            xAxisLabelTextStyle={{ color: 'transparent', fontSize: 1 }}
-          /> */}
           <LineChart
             hideRules
             hideDataPoints
             scrollToEnd={true}
-            data={graph?.[0]?.data || TempData}
+            data={graph?.[1]?.data || TempData}
             data2={graph?.[1]?.data || TempData}
             data3={graph?.[2]?.data || TempData}
             data3={graph?.[3]?.data || TempData}
-            color={graph?.[0]?.color}
-            color1={graph?.[1]?.color}
-            color2={graph?.[2]?.color}
-            color3={graph?.[3]?.color}
+            color={graph?.[0]?.color || 'white'}
+            color1={graph?.[1]?.color || 'white'}
+            color2={graph?.[2]?.color || 'white'}
+            color3={graph?.[3]?.color || 'white'}
+            curved
             noOfSections={4}
             xLabels={lables}
             height={260}

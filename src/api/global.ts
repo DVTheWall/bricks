@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import {getEnvVars} from './config';
-import {localStore} from './constants';
-import {getAsyncStorage, removeAsyncStorage} from '../helpers/globalFunctions';
+import { getEnvVars } from './config';
+import { localStore } from './constants';
+import { getAsyncStorage, removeAsyncStorage } from '../helpers/globalFunctions';
 
 export const makeAPIRequest = ({
   method,
@@ -23,10 +23,10 @@ export const makeAPIRequest = ({
       method,
       baseURL: BASE_URL,
       url,
-      // headers: {
-      //   'Content-Type': 'application/json',
-      //   // Authorization: token ? `Token ${token}` : null,
-      // },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? `Token ${token}` : null,
+      },
       params,
     };
 

@@ -1,7 +1,9 @@
 /* eslint-disable curly */
 import { api, GET } from '../../api/apiConst';
+import { localStore } from '../../api/constants';
 import { makeAPIRequest } from '../../api/global';
 import ToastAlert from '../../components/common/Alert';
+import { getAsyncStorage } from '../../helpers/globalFunctions';
 import { GET_PORTFOLIO_DATA } from '../types';
 
 export const getPortfolioDataApi =
@@ -23,13 +25,16 @@ export const getPortfolioDataApi =
             payload: response?.data?.data,
           });
         })
-        .catch(error => {
+        .catch(async error => {
           if (request.onFail) request.onFail(error);
-          ToastAlert({
-            toastType: 'error',
-            title: 'Oops!',
-            description: 'Something went wrong',
-          });
+          const token = await getAsyncStorage(localStore.token);
+          if (token) {
+            ToastAlert({
+              toastType: 'error',
+              title: 'Oops!',
+              description: 'Something went wrong',
+            });
+          }
         });
     };
 
@@ -48,12 +53,15 @@ export const getPortfolioGraphDataApi =
         .then((response: any) => {
           if (request.onSuccess) request.onSuccess(response);
         })
-        .catch(error => {
+        .catch(async error => {
           if (request.onFail) request.onFail(error);
-          ToastAlert({
-            toastType: 'error',
-            title: 'Oops!',
-            description: 'Something went wrong',
-          });
+          const token = await getAsyncStorage(localStore.token);
+          if (token) {
+            ToastAlert({
+              toastType: 'error',
+              title: 'Oops!',
+              description: 'Something went wrong',
+            });
+          }
         });
     };

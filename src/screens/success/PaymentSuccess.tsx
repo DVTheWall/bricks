@@ -14,8 +14,8 @@ import { SCREEN } from '../../utils/screenConstants';
 import { resetStack } from '../../helpers/globalFunctions';
 
 const PaymentSuccess = ({ route, navigation }: any) => {
-  const { orderID, isSucceed, desc, title, isWithdrawal } = route?.params ?? '';
-  console.log("isWithdrawalisWithdrawalisWithdrawal", isWithdrawal);
+  const { orderID, isSucceed, desc, title, isWithdrawal, fromInvestNow } = route?.params ?? '';
+  console.log("fromInvestNow", fromInvestNow);
 
 
   return (
@@ -35,7 +35,7 @@ const PaymentSuccess = ({ route, navigation }: any) => {
       <Text style={styles.descText}>{desc}</Text>
       <Text style={styles.refText}>{'Reference ID'}</Text>
       <Text style={styles.idText}>{orderID ? orderID : '---'}</Text>
-      {!isWithdrawal && <TouchableOpacity
+      {(!isWithdrawal && !fromInvestNow) && <TouchableOpacity
         style={styles.continueBtn}
         onPress={() => navigation.goBack()}>
         <Text style={styles.btnText}>{'Continue Investing'}</Text>
@@ -44,7 +44,7 @@ const PaymentSuccess = ({ route, navigation }: any) => {
         style={styles.dashboardBtn}
         onPress={() => resetStack(SCREEN.BOTTOMTABS)}>
         <Text style={{ ...styles.btnText, color: colors.white }}>
-          {'Dashboard'}
+          {fromInvestNow ? 'Okay' : 'Dashboard'}
         </Text>
       </TouchableOpacity>
     </View>
